@@ -21,10 +21,11 @@ const Topbar = ({ isSidebarOpen, user, currentNavItem }) => {
         />
         <MdSettings
           className="cursor-pointer text-gray-600 hover:text-gray-300"
-          onClick={() => router.push("/settings")}
+          onClick={() => alert("Settings clicked.")}
           aria-label="Settings-Button"
           size={20}
         />
+
 
         <div className="flex items-center space-x-2 hover:bg-gray-100 p-1 rounded-full cursor-pointer">
           {user?.avatar ? (
