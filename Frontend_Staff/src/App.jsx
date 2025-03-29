@@ -19,6 +19,8 @@ import AddBooking from "./pages/Reservations/AddBooking";
 import AddGuest from "./pages/Guests/AddGuest";
 import EditBooking from "./pages/Reservations/EditBooking";
 import EditGuest from "./pages/Guests/EditGuest";
+import AddFood from "./pages/Food/AddFood";
+import AddRoom from "./pages/Room/AddRoom";
 
 const App = () => {
   return (
@@ -34,6 +36,9 @@ const App = () => {
           element={<EditBooking />}
         />
         <Route path="/guests/edit-guests/:id" element={<EditGuest />} />
+        <Route path="/restaurant/add-food" element={<AddFood />} />
+        {/* <Route path="/restaurant/edit-food/:id" element={<AddFood />} /> */}
+        <Route path="/rooms/add-room" element={<AddRoom />} />
 
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/dashboard" />} />
