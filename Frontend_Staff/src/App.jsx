@@ -1,44 +1,56 @@
-import { useState } from "react";
-import Sidebar from "./components/Sidebar/Sidebar";
-import Topbar from "./components/Topbar/Topbar";
-import { hotelName, navItems, userProfile } from "./TestData/HotelConfig.js";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Layout from "./components/Layout/Layout";
 import GuestList from "./pages/Guests/GuestList";
 import ReservationList from "./pages/Reservations/ReservationList";
+import Room from "./pages/Room/Room";
+import Food from "./pages/Food/Food";
+import Services from "./pages/Services/Services";
+import Setting from "./pages/Setting/Setting";
 import EditProfile from "./pages/Profile/profileEdit";
+import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/Signup";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import AddBooking from "./pages/Reservations/AddBooking";
+import AddGuest from "./pages/Guests/AddGuest";
+import EditBooking from "./pages/Reservations/EditBooking";
+import EditGuest from "./pages/Guests/EditGuest";
 
 const App = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeNavItem, setActiveNavItem] = useState(navItems[0]);
-
   return (
-    <div className="flex w-full h-screen bg-gray-100">
-      <Sidebar
-        appName={hotelName}
-        navItems={navItems}
-        isOpen={sidebarOpen}
-        activeNavItem={activeNavItem}
-        onNavItemChange={(item) => setActiveNavItem(item)}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
-      />
-
-      <div className="flex flex-col overflow-hidden flex-1">
-        <Topbar
-          isSidebarOpen={sidebarOpen}
-          user={userProfile}
-          currentNavItem={activeNavItem.name}
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<Login />} />
+        <Route path="/reservations/add-booking" element={<AddBooking />} />
+        <Route path="/guests/add-guests" element={<AddGuest />} />
+        <Route
+          path="/reservations/edit-booking/:id"
+          element={<EditBooking />}
         />
+        <Route path="/guests/edit-guests/:id" element={<EditGuest />} />
 
-        <main className="flex-1 overflow-y-auto p-6 bg-gray-100">
-          {/* 
-          respective page displayed based on which navItem is open 
-          /* {activeNavItem.id === "guests" ? 0 : 1}
-          */}
-          {activeNavItem.id === "guests" && <GuestList />}
-          {activeNavItem.id === "reservations" && <ReservationList />}
-          {/* <EditProfile/> */}
-        </main>
-      </div>
-    </div>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/guests" element={<GuestList />} />
+          <Route path="/reservations" element={<ReservationList />} />
+          <Route path="/profile" element={<EditProfile />} />
+          <Route path="/rooms" element={<Room />} />
+          <Route path="/restaurant" element={<Food />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/settings" element={<Setting />} />
+          {/* <Route path="/reports" element={<Reports />} /> */}
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 };
 

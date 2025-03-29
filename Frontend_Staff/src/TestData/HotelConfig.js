@@ -5,7 +5,7 @@ export const navItems = [
     id: "dashboard",
     name: "Dashboard",
     icon: "🏠",
-    path: "/",
+    path: "/dashboard",
   },
   {
     id: "guests",
