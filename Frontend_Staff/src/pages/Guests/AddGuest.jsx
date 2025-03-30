@@ -2,7 +2,11 @@ import React from 'react'
 
 const AddGuest = () => {
   return (
-    <div>Add Guest</div>
+    <div>
+      <button>
+        Hello
+      </button>
+    </div>
   )
 }
 

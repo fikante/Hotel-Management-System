@@ -2,7 +2,7 @@ import React from 'react'
 
 const AddRoom = () => {
   return (
-    <div>AddRoom</div>
+    <div className='w-1/2'>AddRoom</div>
   )
 }
 
