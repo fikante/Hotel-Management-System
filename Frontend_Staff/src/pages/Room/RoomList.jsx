@@ -16,6 +16,7 @@ const RoomList = () => {
       addButtonText="Add Room"
       maxWidth={"48"}
       onAddClick={handleAddRoom}
+      pageSize={5}
     />
   );
 };

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-const SidebarNav = ({ isOpen, items, activeItem, onItemClick }) => {
+const SidebarNav = ({ isOpen, items, activeItem }) => {
   return (
     <nav className="px-4 w-full py-5">
       <ul className="space-y-3">
@@ -22,7 +22,6 @@ const SidebarNav = ({ isOpen, items, activeItem, onItemClick }) => {
                   }
                 `
                 }
-                onClick={() => onItemClick(item)}
               >
                 <span className={isActive ? "text-blue-600" : "text-gray-500"}>
                   {item.icon}

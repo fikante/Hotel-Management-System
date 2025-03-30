@@ -19,7 +19,6 @@ const Layout = () => {
         isOpen={sidebarOpen}
         activeNavItem={activeNavItem}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
-        onNavItemClick={(item) => navigate(item.path)}
       />
 
       <div className="flex flex-col flex-1 overflow-hidden">

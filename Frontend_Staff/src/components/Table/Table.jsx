@@ -22,9 +22,10 @@ export const CustomTable = ({
   data,
   columns,
   defaultSort = [],
-  pageSize = 10,
+  pageSize,
   addButtonText,
   maxWidth,
+  EnableSelection=false,
   onAddClick = () => {},
 }) => {
   const [sorting, setSorting] = useState(defaultSort);
@@ -90,10 +91,9 @@ export const CustomTable = ({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`py-2 pl-4 truncate ${maxWidth ? `max-w-${maxWidth}` : ""}`}
+                      className={`py-2 pl-4 truncate max-w-${maxWidth}`}
 
                     >
-                      {console.log(maxWidth)}
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -120,3 +120,4 @@ export const CustomTable = ({
     </div>
   );
 };
+
