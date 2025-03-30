@@ -21,7 +21,7 @@ const ProfileAndBooking = () => {
         {/* {selectedRoom && (
           <div>{"Selected Room: " + selectedRoom.roomNumber}</div>
         )} */}
-        <div className="flex flex-row border-b w-fill text-[#718EBF] gap-12">
+        <div className="flex flex-row border-b w-fill text-[#718EBF] gap-12 font-serif text-lg">
           <button
             className={`items-center ${
               activeButton === "profile"

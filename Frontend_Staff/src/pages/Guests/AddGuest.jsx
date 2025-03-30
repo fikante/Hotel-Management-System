@@ -1,27 +1,18 @@
-// AddGuest.js
-import React, { useState } from 'react';
-import CountrySelect from '@/components/Country/CountriesNames'; // Adjust path if needed
+import React, { useState } from "react";
+import CountrySelect from "@/components/Country/CountriesNames";
 
 const AddGuest = () => {
-  return (
-    <div>
-      <button>
-        Hello
-      </button>
-    </div>
-  )
-}
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    dob: '',
-    gender: '',
-    email: '',
-    phone: '',
-    address: '',
-    nationality: '',
-    idType: '',
-    idNumber: '',
+    firstName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+    email: "",
+    phone: "",
+    address: "",
+    nationality: "",
+    idType: "",
+    idNumber: "",
   });
 
   const handleChange = (e) => {
@@ -34,18 +25,18 @@ const AddGuest = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitted Data:', formData);
+    console.log("Submitted Data:", formData);
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-4xl w-full p-6 bg-white shadow rounded-md overflow-auto">
-        <h1 className="text-2xl font-bold mb-6">Guest Profile</h1>
-
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div className="flex items-center justify-center">
+      <div className=" w-full p-6 ">
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block font-medium text-gray-700 mb-1">First Name</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                First Name
+              </label>
               <input
                 type="text"
                 name="firstName"
@@ -56,7 +47,9 @@ const AddGuest = () => {
               />
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Last Name</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Last Name
+              </label>
               <input
                 type="text"
                 name="lastName"
@@ -67,7 +60,9 @@ const AddGuest = () => {
               />
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Date of Birth</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Date of Birth
+              </label>
               <input
                 type="date"
                 name="dob"
@@ -77,7 +72,9 @@ const AddGuest = () => {
               />
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Gender</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Gender
+              </label>
               <select
                 name="gender"
                 value={formData.gender}
@@ -91,7 +88,9 @@ const AddGuest = () => {
               </select>
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Email</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -102,7 +101,9 @@ const AddGuest = () => {
               />
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Phone</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Phone
+              </label>
               <input
                 type="tel"
                 name="phone"
@@ -113,7 +114,9 @@ const AddGuest = () => {
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="block font-medium text-gray-700 mb-1">Address</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Address
+              </label>
               <input
                 type="text"
                 name="address"
@@ -124,14 +127,18 @@ const AddGuest = () => {
               />
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Nationality</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Nationality
+              </label>
               <CountrySelect
                 value={formData.nationality}
                 onChange={handleChange}
               />
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Identification Type</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Identification Type
+              </label>
               <select
                 name="idType"
                 value={formData.idType}
@@ -145,7 +152,9 @@ const AddGuest = () => {
               </select>
             </div>
             <div>
-              <label className="block font-medium text-gray-700 mb-1">Identification Number</label>
+              <label className="block font-medium text-gray-700 mb-1">
+                Identification Number
+              </label>
               <input
                 type="text"
                 name="idNumber"
@@ -156,14 +165,17 @@ const AddGuest = () => {
               />
             </div>
           </div>
-          <button
-            type="submit"
-            className="w-full px-6 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
-          >
-            Save Profile
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="w-1/4 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+            >
+              Next
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
+};
 export default AddGuest;
