@@ -10,7 +10,6 @@ export const guestColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className={"flex items-center"} 
       >
         Guest ID
         <ArrowUpDown className="size-4" />
@@ -47,20 +46,20 @@ export const guestColumns = [
     ),
     size: 20,
   },
-  {
-    id: "email",
-    accessorKey: "email",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Email
-        <ArrowUpDown className="size-4" />
-      </Button>
-    ),
-    size: 28,
-  },
+  // {
+  //   id: "email",
+  //   accessorKey: "email",
+  //   header: ({ column }) => (
+  //     <Button
+  //       variant="ghost"
+  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //     >
+  //       Email
+  //       <ArrowUpDown className="size-4" />
+  //     </Button>
+  //   ),
+  //   size: 28,
+  // },
   {
     id: "phone",
     accessorKey: "phone",
@@ -89,20 +88,20 @@ export const guestColumns = [
     ),
     size: 32,
   },
-  // {
-  //   id: "nationality",
-  //   accessorKey: "nationality",
-  //   header: ({ column }) => (
-  //     <Button
-  //       variant="ghost"
-  //        className="text-sm"
-  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //     >
-  //       Nationality
-  //       <ArrowUpDown className="size-4" />
-  //     </Button>
-  //   ),
-  // },
+  {
+    id: "nationality",
+    accessorKey: "nationality",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+         className="text-sm"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Nationality
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
+  },
   {
     id: "idType",
     accessorKey: "idType",
@@ -140,8 +139,7 @@ export const guestColumns = [
           variant="ghost"
           size="sm"
           onClick={useEditGuest(row.original.id)}
-
-           className="text-sm"
+          className="text-sm"
         >
           <Edit className="h-4 w-4 text-blue-600" />
         </Button>
@@ -159,8 +157,6 @@ export const guestColumns = [
     size: 100,
   },
 ];
-
-
 
 export const useEditGuest = (guestId) => {
   const navigate = useNavigate();

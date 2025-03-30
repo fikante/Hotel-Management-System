@@ -2,7 +2,7 @@ import SidebarHeader from "./SidebarHeader";
 import SidebarNav from "./SidebarNav";
 import SidebarFooter from "./SidebarFooter";
 
-const Sidebar = ({ appName, navItems, isOpen, onToggle, activeNavItem, onNavItemChange }) => {
+const Sidebar = ({ appName, navItems, isOpen, onToggle, activeNavItem }) => {
   
   return (
     <div
@@ -20,7 +20,6 @@ const Sidebar = ({ appName, navItems, isOpen, onToggle, activeNavItem, onNavItem
         isOpen={isOpen} 
         items={navItems} 
         activeItem={activeNavItem}
-        onItemClick={onNavItemChange}
       />
       
       <SidebarFooter 
