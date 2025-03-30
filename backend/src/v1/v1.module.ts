@@ -6,10 +6,9 @@ import { BookingsModule } from './bookings/bookings.module';
 import { FoodMenuModule } from './food-menu/food-menu.module';
 import { StaffModule } from './hms/staff/staff.module';
 import { DashboardModule } from './hms/dashboard/dashboard.module';
-import { CommonModule } from '../common/common.module';
 import { HmsModule } from './hms/hms.module';
 
 @Module({
-  imports: [AuthModule, HotelsModule, BookingsModule, FoodMenuModule, HmsModule, CommonModule]
+  imports: [AuthModule, HotelsModule, BookingsModule, FoodMenuModule, HmsModule]
 })
 export class V1Module {}
