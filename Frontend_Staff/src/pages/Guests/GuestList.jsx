@@ -18,6 +18,7 @@ const GuestListPage = () => {
         columns={guestColumns}
         addButtonText="Add Guest"
         onAddClick={handleAddGuest}
+        maxWidth={"32"}
       />
     </div>
   );

@@ -32,10 +32,10 @@ export const navItems = [
     path: "/restaurant",
   },
   {
-    id: "manitenance",
-    name: "Manitenance",
-    icon: "👨🏻‍🔧",
-    path: "/manitenance",
+    id: "staff",
+    name: "Staff Members",
+    icon: "👨‍💼",
+    path: "/staff",
   },
   {
     id: "settings",
@@ -45,10 +45,8 @@ export const navItems = [
   },
 ];
 
-
 export const userProfile = {
   name: "Johan Abraham",
   role: "Senior Staff",
   avatar: "https://randomuser.me/api/portraits/men/1.jpg",
 };
-

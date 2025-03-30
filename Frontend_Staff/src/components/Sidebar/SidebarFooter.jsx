@@ -1,4 +1,7 @@
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 const SidebarFooter = ({ isOpen, onToggle }) => {
   return (
@@ -10,11 +13,11 @@ const SidebarFooter = ({ isOpen, onToggle }) => {
       >
         {isOpen ? (
           <>
-            <FiChevronLeft className="size-10" />
+            <ChevronsLeft className="size-10" />
           </>
         ) : (
           <>
-            <FiChevronRight className="size-10" />
+            <ChevronsRight className="size-10" />
           </>
         )}
       </button>

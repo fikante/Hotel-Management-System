@@ -18,6 +18,7 @@ const ReservationListPage = () => {
         defaultSort={[{ id: "created_at", desc: false }]}
         addButtonText="Add Reservation"
         onAddClick={handleAddBooking}
+        maxWidth={"32"}
       />
     </div>
   );

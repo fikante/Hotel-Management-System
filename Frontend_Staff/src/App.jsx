@@ -9,7 +9,7 @@ import GuestList from "./pages/Guests/GuestList";
 import ReservationList from "./pages/Reservations/ReservationList";
 import Room from "./pages/Room/Room";
 import Food from "./pages/Food/Food";
-import Services from "./pages/Services/Services";
+import Staff from "./pages/Staff/Staff";
 import Setting from "./pages/Setting/Setting";
 import EditProfile from "./pages/Profile/profileEdit";
 import Login from "./pages/Auth/Login";
@@ -21,6 +21,8 @@ import EditBooking from "./pages/Reservations/EditBooking";
 import EditGuest from "./pages/Guests/EditGuest";
 import AddFood from "./pages/Food/AddFood";
 import AddRoom from "./pages/Room/AddRoom";
+import RoomList from "./pages/Room/RoomList";
+import EditRoom from "./pages/Room/EditRoom";
 
 const App = () => {
   return (
@@ -39,6 +41,7 @@ const App = () => {
         <Route path="/restaurant/add-food" element={<AddFood />} />
         {/* <Route path="/restaurant/edit-food/:id" element={<AddFood />} /> */}
         <Route path="/rooms/add-room" element={<AddRoom />} />
+        <Route path="/rooms/edit-room/:id" element={<EditRoom />} />
 
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/dashboard" />} />
@@ -46,9 +49,9 @@ const App = () => {
           <Route path="/guests" element={<GuestList />} />
           <Route path="/reservations" element={<ReservationList />} />
           <Route path="/profile" element={<EditProfile />} />
-          <Route path="/rooms" element={<Room />} />
+          <Route path="/rooms" element={<RoomList />} />
           <Route path="/restaurant" element={<Food />} />
-          <Route path="/services" element={<Services />} />
+          <Route path="/staff" element={<Staff />} />
           <Route path="/settings" element={<Setting />} />
           {/* <Route path="/reports" element={<Reports />} /> */}
         </Route>
