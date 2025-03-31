@@ -5,17 +5,16 @@ import { staffDatabase } from "@/TestData/staffDatabase";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
-
+import AddStaff from "./AddStaff";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 const StaffList = () => {
   const [selectedStaff, setSelectedStaff] = useState(null);
+  const [isAddStaffOpen, setIsAddStaffOpen] = useState(false);
   const navigate = useNavigate();
 
   const onAddClick = () => {
     console.log(selectedStaff.id);
     navigate(`/staff/assign-staff/${selectedStaff.id}`);
-  };
-  const handleAddStaff = () => {
-    navigate("/staff/add-staff");
   };
 
   return (
@@ -24,7 +23,7 @@ const StaffList = () => {
         data={staffDatabase}
         columns={staffColumns}
         addButtonText="Add Staff"
-        onAddClick={handleAddStaff}
+        onAddClick={() => setIsAddStaffOpen(true)}
         pageSize={8}
         EnableSelection={true}
         onSelectionChange={setSelectedStaff}
@@ -41,6 +40,13 @@ const StaffList = () => {
           </Button>
         </div>
       )}
+
+
+      <Dialog open={isAddStaffOpen} onOpenChange={setIsAddStaffOpen}>
+        <DialogContent className="">
+          <AddStaff onSuccess={() => setIsAddStaffOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

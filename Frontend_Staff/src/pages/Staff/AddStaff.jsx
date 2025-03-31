@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const AddStaff = () => {
+const AddStaff = ({onSuccess}) => {
   const form = useForm({
     defaultValues: {
       fname: "",
@@ -21,6 +21,19 @@ const AddStaff = () => {
   const { errors } = formState;
   const onSubmit = (data) => {
     console.log(data);
+    onSuccess();
+    alert(`
+      First Name: ${data.fname}
+      Last Name: ${data.lname}
+      Email: ${data.email}
+      Date of Birth: ${data.dob}
+      Address: ${data.address}
+      Phone Number: ${data.phone}
+      Salary: ${data.salary}
+      Role: ${data.role}
+      Employed At: ${data.employed_at}
+      Status: ${data.status}
+      `);
   };
   const [profileImage, setProfileImage] = useState(null);
 
@@ -33,7 +46,7 @@ const AddStaff = () => {
     }
   };
   return (
-    <div className="flex items-center flex-col justify-center font-serif shadow-md size-1/2 p-3  gap-3">
+    <div className="flex items-center flex-col justify-center font-serif p-4 gap-3">
       <h2 className="text-2xl font-semibold">Add Staff</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -118,7 +131,7 @@ const AddStaff = () => {
               <input
                 type="date"
                 id="dob"
-                {...register("dot", {
+                {...register("dob", {
                   required: {
                     value: true,
                     message: "Date of Birth is required",
