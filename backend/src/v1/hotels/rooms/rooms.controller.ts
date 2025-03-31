@@ -1,4 +1,69 @@
-import { Controller } from '@nestjs/common';
 
-@Controller('rooms')
-export class RoomsController {}
+import { Controller, Get, Post, Param, Body, UseGuards,Query } from '@nestjs/common';
+import { Room } from './entities/room.entity';
+import { CreateRoomDto } from './dto/create-room.dto';
+import { RoomsService } from './rooms.service';
+
+@Controller('api/v1/hotels')
+export class RoomsController {
+  constructor(private readonly roomService: RoomsService){}
+
+  @Get(':hotelId/rooms')
+  async getRoomsByHotelId(@Param('hotelId') hotelId: string) {
+    const rooms = await this.roomService.getRoomsByHotelId(hotelId);
+    return {
+      success: true,
+      data: rooms,
+    };
+  }
+
+  @Post(':hotelId/rooms')
+  async createRoom(
+    @Param('hotelId') hotelId: string,
+    @Body() createRoomDto: CreateRoomDto,
+  ) {
+    const room = await this.roomService.createRoom(hotelId, createRoomDto);
+    return {
+      success: true,
+      data: room,
+    };
+  }
+
+
+
+  @Get(':hotelId/rooms')
+  @UseGuards(JwtAuthGuard) // Ensure the user is authenticated
+  async getAvailableRooms(
+    @Param('hotelId') hotelId: string,
+    @Query('check_in') checkIn: string,
+    @Query('check_out') checkOut: string,
+    @Query('occupancy') occupancy: number
+  ) {
+    // Ensure check-in and check-out dates are provided in the query parameters
+    if (!checkIn || !checkOut || !occupancy) {
+      throw new Error('Missing required query parameters');
+    }
+
+    // Get available rooms from the service
+    const availableRooms = await this.roomService.getAvailableRooms(
+      hotelId,
+      checkIn,
+      checkOut,
+      occupancy
+    );
+
+    return {
+      success: true,
+      data: availableRooms,
+    };
+  }
+}
+
+
+
+
+
+ 
+}
+
+
