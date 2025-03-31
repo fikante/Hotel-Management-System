@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Staff } from './entities/staff.entity';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { AssignTaskDto } from './dto/assign-task.dto';
 import { GetStaffDto } from './dto/get-staff.dto';
-import { Hotel } from '../../hotels/entities/hotel.entity';
+import { Hotel } from 'src/common/entities/hotel.entity';
+import { Staff } from 'src/common/entities/staff.entity';
 
 @Injectable()
 export class StaffService {
@@ -81,7 +81,7 @@ export class StaffService {
     data: any[] 
   }> {
     const staffMembers = await this.staffRepository.find({
-      where: { hotel: { id: getStaffDto.hotelId } },
+      where: { hotel: { id: Number(getStaffDto.hotelId) } },
       relations: ['hotel'],
     });
 

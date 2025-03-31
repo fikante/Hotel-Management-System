@@ -3,7 +3,6 @@ import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class AssignTaskDto {
   @IsNotEmpty()
-  @IsUUID()
   roomId: string;
 
   @IsNotEmpty()
