@@ -16,8 +16,8 @@ const ProfileAndBooking = () => {
     setActiveButton(val);
   };
   return (
-    <div className="p-4 flex justify-center items-center size-3/5"> {/* Remember w-3/5 h-screen */}
-      <div className="flex flex-col rounded-3xl flex-1 p-8 bg-white">
+    <div className="p-4 flex justify-center items-center w-3/5 h-screen "> {/* Remember w-3/5 h-screen */}
+      <div className="flex flex-col rounded-3xl flex-1 p-8 bg-white w-full h-full">
         {/* {selectedRoom && (
           <div>{"Selected Room: " + selectedRoom.roomNumber}</div>
         )} */}
@@ -56,6 +56,7 @@ const ProfileAndBooking = () => {
         {activeButton === "profile" && <AddGuest />}
         {activeButton === "room" && (
           <div className="p-4 flex flex-col gap-4">
+            
             <CustomTable
               data={roomDatabase}
               columns={roomSelection}
