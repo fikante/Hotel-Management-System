@@ -108,8 +108,8 @@ const AddRoom = () => {
             )}
           </div>
 
-          <div className="flex-1 space-y-5">
-            <div className="mb-5">
+          <div className="flex-1 space-y-2">
+            <div>
               <label
                 htmlFor="roomNumber"
                 className="block text-sm font-medium text-gray-700"
@@ -128,7 +128,7 @@ const AddRoom = () => {
               />
             </div>
 
-            <div className="mb-5">
+            <div>
               <label
                 htmlFor="roomName"
                 className="block text-sm font-medium text-gray-700"
@@ -147,7 +147,7 @@ const AddRoom = () => {
               />
             </div>
 
-            <div className="mb-5">
+            <div>
               <label
                 htmlFor="roomType"
                 className="block text-sm font-medium text-gray-700"
@@ -171,7 +171,7 @@ const AddRoom = () => {
               </select>
             </div>
 
-            <div className="mb-5">
+            <div>
               <label
                 htmlFor="description"
                 className="block text-sm font-medium text-gray-700"
@@ -185,13 +185,10 @@ const AddRoom = () => {
                 onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Room description"
-                rows="5"
+                style={{ resize: "none" }}
               />
             </div>
-          </div>
-
-          <div className="flex-1 space-y-5">
-            <div className="mb-5">
+            <div>
               <label
                 htmlFor="bedType"
                 className="block text-sm font-medium text-gray-700"
@@ -211,8 +208,10 @@ const AddRoom = () => {
                 <option value="King">King</option>
               </select>
             </div>
+          </div>
 
-            <div className="mb-5">
+          <div className="flex-1 space-y-2">
+            <div>
               <label
                 htmlFor="size"
                 className="block text-sm font-medium text-gray-700"
@@ -232,7 +231,7 @@ const AddRoom = () => {
               />
             </div>
 
-            <div className="mb-5">
+            <div>
               <label
                 htmlFor="status"
                 className="block text-sm font-medium text-gray-700"
@@ -252,7 +251,7 @@ const AddRoom = () => {
               </select>
             </div>
 
-            <div className="mb-5">
+            <div>
               <label
                 htmlFor="price"
                 className="block text-sm font-medium text-gray-700"
@@ -292,16 +291,15 @@ const AddRoom = () => {
                 required
               />
             </div>
+            <div className="flex justify-center ">
+              <button
+                type="submit"
+                className="bg-blue-500 mt-14 w-full text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+              >
+                Add Room
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-          >
-            Add Room
-          </button>
         </div>
       </form>
     </div>

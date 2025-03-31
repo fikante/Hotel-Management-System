@@ -1,83 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
 import AddGuest from "../Guests/AddGuest";
-import RoomList from "../Room/RoomList";
 import AddBooking from "../Reservations/AddBooking";
-import { useState } from "react";
-import { CustomTable } from "@/components/Table/Table";
-import { roomSelection } from "@/components/Room/roomSelection";
-import { roomDatabase } from "@/TestData/roomDataTest";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
-const ProfileAndBooking = () => {
+const UserProfileAndBooking = () => {
   const [activeButton, setActiveButton] = useState("profile");
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const handleOnClick = (val) => {
-    setActiveButton(val);
+
+  const [guestFormData, setGuestFormData] = useState({
+    firstName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+    email: "",
+    phone: "",
+    address: "",
+    nationality: "",
+    idType: "",
+    idNumber: "",
+  });
+
+  const [bookingFormData, setBookingFormData] = useState({
+    checkIn: "",
+    checkOut: "",
+  });
+
+  const handleGuestFormSubmit = (formData) => {
+    setActiveButton("book");
   };
+
+  const handleBookingChange = (e) => {
+    const { name, value } = e.target;
+    setBookingFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleBookingSubmit = (e) => {
+    e.preventDefault();
+    if (!bookingFormData.checkIn || !bookingFormData.checkOut) {
+      alert("Please fill in all fields.");
+      return;
+    }
+    if (
+      new Date(bookingFormData.checkOut) <= new Date(bookingFormData.checkIn)
+    ) {
+      alert("Check-Out date must be after Check-In date.");
+      return;
+    }
+    if (!selectedRoom) {
+      alert("Please select a room.");
+      return;
+    }
+    alert(`
+      Room Number ${selectedRoom.roomNumber}
+      Checkin ${bookingFormData.checkIn}
+      Checkout ${bookingFormData.checkOut}
+      Name ${guestFormData.firstName + " " + guestFormData.lastName}
+    `);
+  };
+
   return (
-    <div className="p-4 flex justify-center items-center size-3/5"> {/* Remember w-3/5 h-screen */}
-      <div className="flex flex-col rounded-3xl flex-1 p-8 bg-white">
-        {/* {selectedRoom && (
-          <div>{"Selected Room: " + selectedRoom.roomNumber}</div>
-        )} */}
+    <div className="p-4 flex justify-center items-center w-3/5 h-screen">
+      <div className="flex flex-col rounded-3xl flex-1 p-8 bg-white size-full shadow-lg">
         <div className="flex flex-row border-b w-fill text-[#718EBF] gap-12 font-serif text-lg">
           <button
             className={`items-center ${
               activeButton === "profile"
-                ? "border-b-2  text-[#1814F3] border-[#1814F3]"
+                ? "border-b-2 text-[#1814F3] border-[#1814F3]"
                 : ""
-            }  `}
-            onClick={() => handleOnClick("profile")}
+            }`}
+            onClick={() => setActiveButton("profile")}
           >
             Create Profile
           </button>
           <button
-            className={` items-center ${
-              activeButton === "room"
-                ? "border-b-2  text-[#1814F3] border-[#1814F3]"
+            className={`items-center ${
+              activeButton === "book"
+                ? "border-b-2 text-[#1814F3] border-[#1814F3]"
                 : ""
-            }  `}
-            onClick={() => handleOnClick("room")}
-          >
-            Select Room
-          </button>
-          <button
-            className={` items-center ${
-              activeButton === "booking"
-                ? "border-b-2  text-[#1814F3] border-[#1814F3]"
-                : ""
-            }  `}
-            onClick={() => handleOnClick("booking")}
+            }`}
           >
             Booking
           </button>
         </div>
-        {activeButton === "profile" && <AddGuest />}
-        {activeButton === "room" && (
-          <div className="p-4 flex flex-col gap-4">
-            <CustomTable
-              data={roomDatabase}
-              columns={roomSelection}
-              EnableSelection={true}
-              onSelectionChange={setSelectedRoom}
-              pageSize={5}
-              maxWidth="32"
-            />
-            <div className="flex justify-end">
-              <Button
-                variant="default"
-                className="bg-blue-600 hover:bg-blue-700 text-white gap-2 w-1/4"
-                onClick={() => setActiveButton("booking")}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
+
+        {activeButton === "profile" && (
+          <AddGuest
+            formData={guestFormData}
+            setFormData={setGuestFormData}
+            onSubmit={handleGuestFormSubmit}
+          />
         )}
-        {activeButton === "booking" && <AddBooking />}
+
+        {activeButton === "book" && (
+          <AddBooking
+            bookingFormData={bookingFormData}
+            handleBookingChange={handleBookingChange}
+            handleBookingSubmit={handleBookingSubmit}
+            setSelectedRoom={setSelectedRoom}
+          />
+        )}
       </div>
     </div>
   );
 };
-export default ProfileAndBooking;
+
+export default UserProfileAndBooking;

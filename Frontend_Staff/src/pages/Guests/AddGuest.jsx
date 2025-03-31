@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import CountrySelect from "@/components/Country/CountriesNames";
 
-const AddGuest = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    dob: "",
-    gender: "",
-    email: "",
-    phone: "",
-    address: "",
-    nationality: "",
-    idType: "",
-    idNumber: "",
-  });
-
+const AddGuest = ({ formData, setFormData, onSubmit }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -25,7 +12,7 @@ const AddGuest = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData);
+    onSubmit(formData);
   };
 
   return (
@@ -42,6 +29,7 @@ const AddGuest = () => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
+                required
                 placeholder="Natan"
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
               />
@@ -55,6 +43,7 @@ const AddGuest = () => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
+                required
                 placeholder="Samuel"
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
               />
@@ -67,6 +56,7 @@ const AddGuest = () => {
                 type="date"
                 name="dob"
                 value={formData.dob}
+                required
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
               />
@@ -79,6 +69,7 @@ const AddGuest = () => {
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
+                required
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
               >
                 <option value="">Select gender</option>
@@ -108,6 +99,7 @@ const AddGuest = () => {
                 type="tel"
                 name="phone"
                 value={formData.phone}
+                required
                 onChange={handleChange}
                 placeholder="+251928384839"
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
@@ -122,11 +114,13 @@ const AddGuest = () => {
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
+                required
                 placeholder="5kilo,Addis Ababa"
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
               />
             </div>
             <div>
+            
               <label className="block font-medium text-gray-700 mb-1">
                 Nationality
               </label>
@@ -143,6 +137,7 @@ const AddGuest = () => {
                 name="idType"
                 value={formData.idType}
                 onChange={handleChange}
+                required
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
               >
                 <option value="">Select ID type</option>
@@ -161,6 +156,7 @@ const AddGuest = () => {
                 value={formData.idNumber}
                 onChange={handleChange}
                 placeholder="123456789"
+                required
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
               />
             </div>
