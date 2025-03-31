@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AddGuest from "../Guests/AddGuest";
 import AddBooking from "../Reservations/AddBooking";
 
-const UserProfileAndBooking = () => {
+const UserProfileAndBooking = ({onSuccess}) => {
   const [activeButton, setActiveButton] = useState("profile");
   const [selectedRoom, setSelectedRoom] = useState(null);
 
@@ -49,6 +49,7 @@ const UserProfileAndBooking = () => {
       alert("Please select a room.");
       return;
     }
+    onSuccess()
     alert(`
       Room Number ${selectedRoom.roomNumber}
       Checkin ${bookingFormData.checkIn}
@@ -58,8 +59,7 @@ const UserProfileAndBooking = () => {
   };
 
   return (
-    <div className="p-4 flex justify-center items-center w-3/5 h-screen">
-      <div className="flex flex-col rounded-3xl flex-1 p-8 bg-white size-full shadow-lg">
+      <div className="flex flex-col flex-1 p-4 bg-white w-full h-full ">
         <div className="flex flex-row border-b w-fill text-[#718EBF] gap-12 font-serif text-lg">
           <button
             className={`items-center ${
@@ -99,7 +99,6 @@ const UserProfileAndBooking = () => {
           />
         )}
       </div>
-    </div>
   );
 };
 

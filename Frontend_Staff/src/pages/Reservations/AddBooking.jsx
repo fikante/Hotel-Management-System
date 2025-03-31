@@ -56,7 +56,7 @@ const AddBooking = ({
         columns={roomSelection}
         EnableSelection={true}
         onSelectionChange={setSelectedRoom}
-        pageSize={5}
+        pageSize={4}
         maxWidth="32"
       />
 

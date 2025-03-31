@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AddRoom = () => {
+const AddRoom = ({onSuccess}) => {
   const [formData, setFormData] = useState({
     roomNumber: "",
     roomName: "",
@@ -38,6 +38,8 @@ const AddRoom = () => {
       data.append(key, formData[key]);
     });
     console.log("Room Data Submitted:", Object.fromEntries(data));
+    onSuccess()
+    alert("Room added successfully!", data);
     setFormData({
       roomNumber: "",
       roomName: "",
@@ -53,7 +55,7 @@ const AddRoom = () => {
   };
 
   return (
-    <div className=" space-y-4 rounded-lg p-8 w-3/5">
+    <div className=" space-y-4 rounded-lg p-8 w-full">
       <h2 className="text-2xl font-semibold text-center">Add New Room</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col md:flex-row gap-x-5">
