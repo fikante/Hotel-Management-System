@@ -9,6 +9,6 @@ import { DashboardModule } from './hms/dashboard/dashboard.module';
 import { HmsModule } from './hms/hms.module';
 
 @Module({
-  imports: [AuthModule, HotelsModule, BookingsModule, FoodMenuModule, HmsModule]
+  imports: [AuthModule, HotelsModule, BookingsModule, FoodMenuModule, HmsModule, StaffModule]
 })
 export class V1Module {}

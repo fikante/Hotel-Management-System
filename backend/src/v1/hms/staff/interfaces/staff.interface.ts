@@ -1,10 +1,10 @@
 // src/hms/staff/interfaces/staff.interface.ts
-import { Role } from '../../../auth/enums/role.enum';
+// import { Role } from '../../../auth/enums/role.enum';
 
 export interface IStaff {
   id: string;
   name: string;
-  role: Role;
+  // role: Role;
   email: string;
   status: 'available' | 'working' | 'on_break';
   currentTask?: string;
@@ -23,7 +23,7 @@ export interface IStaffResponse {
 
 export interface IStaffQueryOptions {
   hotelId: string;
-  role?: Role;
+  // role?: Role;
   status?: string;
   activeOnly?: boolean;
   page?: number;
