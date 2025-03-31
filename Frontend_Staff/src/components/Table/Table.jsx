@@ -28,6 +28,7 @@ export const CustomTable = ({
   EnableSelection = false,
   onAddClick = () => {},
   onSelectionChange = () => {},
+  meta = {},
 }) => {
   const [sorting, setSorting] = useState(defaultSort);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -48,7 +49,7 @@ export const CustomTable = ({
                 onSelectionChange(row.original);
               }}
               onClick={(e) => e.stopPropagation()}
-              className="h-4 w-4"
+              className="size-4"
             />
           ),
           size: 40,
@@ -60,6 +61,7 @@ export const CustomTable = ({
   const table = useReactTable({
     data,
     columns: tableColumns,
+    meta,
     state: {
       sorting,
       columnFilters,
@@ -120,6 +122,7 @@ export const CustomTable = ({
                       setSelectedRowId(row.id);
                       onSelectionChange(row.original);
                     }
+
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

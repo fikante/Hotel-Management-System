@@ -18,7 +18,7 @@ const GuestListPage = () => {
       />
 
       <Dialog open={isAddGuestOpen} onOpenChange={setIsAddGuestOpen}>
-        <DialogContent className="">
+        <DialogContent>
           <UserProfileAndBooking onSuccess={() => setIsAddGuestOpen(false)} />
         </DialogContent>
       </Dialog>

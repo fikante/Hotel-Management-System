@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const AddStaff = ({onSuccess}) => {
+const AddStaff = ({ onSuccess }) => {
   const form = useForm({
     defaultValues: {
       fname: "",
