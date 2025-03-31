@@ -2,10 +2,11 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typ
 import { Room } from './room.entity';
 import { Manager } from './manager.entity';
 import { Assignment } from './assignments.entity';
+import { Staff } from './staff.entity';
 
 @Entity('hotels')
 export class Hotel {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column({ type: 'varchar', length: 255 })
@@ -40,4 +41,7 @@ export class Hotel {
 
     @OneToMany(() => Assignment, (assignment) => assignment.hotel)
     assignments: Assignment[];
+
+    @OneToMany(() => Staff, (staff) => staff.hotel)
+    staff: Staff[];
 }

@@ -40,8 +40,8 @@ export class CreateStaffDto {
   phonenumber: string;
 
   @IsNotEmpty()
-  @IsString()
-  hotelId: string;
+  @IsNumber()
+  hotelId: number;
 
   @IsUrl()
   @IsNotEmpty()

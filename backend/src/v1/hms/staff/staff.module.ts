@@ -1,10 +1,10 @@
 // src/hms/staff/staff.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Staff } from './entities/staff.entity';
-import { Hotel } from '../../hotels/entities/hotel.entity';
 import { StaffService } from './staff.service';
 import { StaffController } from './staff.controller';
+import { Hotel } from 'src/common/entities/hotel.entity';
+import { Staff } from 'src/common/entities/staff.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Staff, Hotel])],
