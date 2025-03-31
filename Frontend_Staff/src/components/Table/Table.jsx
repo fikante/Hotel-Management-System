@@ -47,7 +47,7 @@ export const CustomTable = ({
                 setSelectedRowId(row.id);
                 onSelectionChange(row.original);
               }}
-              onClick={(e) => e.stopPropagation()} // what does this do ->
+              onClick={(e) => e.stopPropagation()}
               className="h-4 w-4"
             />
           ),
@@ -125,7 +125,7 @@ export const CustomTable = ({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`py-2 pl-4 truncate max-w-${maxWidth} font-serif`}
+                      className={`py-2 pl-4 truncate max-w-32 font-serif`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

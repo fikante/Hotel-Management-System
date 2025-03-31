@@ -24,6 +24,8 @@ import AddRoom from "./pages/Room/AddRoom";
 import RoomList from "./pages/Room/RoomList";
 import EditRoom from "./pages/Room/EditRoom";
 import ProfileAndBooking from "./pages/Process/GuestCreation";
+import AddStaff from "./pages/Staff/AddStaff";
+import EditStaff from "./pages/Staff/EditStaff";
 
 const App = () => {
   return (
@@ -44,6 +46,8 @@ const App = () => {
         <Route path="/rooms/add-room" element={<AddRoom />} />
         <Route path="/rooms/edit-room/:id" element={<EditRoom />} />
         <Route path="/process" element={<ProfileAndBooking />} />
+        <Route path="/staff/add-staff" element={<AddStaff />} />
+        <Route path="/staff/edit-staff/:id" element={<EditStaff />} />
 
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/dashboard" />} />
