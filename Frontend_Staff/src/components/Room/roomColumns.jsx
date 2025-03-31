@@ -37,9 +37,7 @@ export const roomColumns = [
   {
     id: "roomDetails",
     header: "Room Details",
-    cell: ({ row }) => (
-      <RoomDetail row={row} />
-    ),
+    cell: ({ row }) => <RoomDetail row={row} />,
     size: 300,
     enableSorting: false,
   },
@@ -91,36 +89,34 @@ export const roomColumns = [
     id: "actions",
     header: "Quick Action",
     cell: ({ row }) => (
-      <div className="flex  justify-between">
+      <div className="flex justify-between">
         <Button
           variant="ghost"
           size="sm"
           onClick={useEditRoom(row.original.roomNumber)}
-          className="text-blue-600 hover:bg-blue-50"
+          className=" hover:bg-gray-200"
         >
-          <Edit className="size-4" />
+          <Edit className="size-4 text-blue-600" />
         </Button>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => alert(`Delete: ${row.original.roomNumber}`)}
-          className="text-red-600 hover:bg-red-50"
+          className=" hover:bg-gray-200"
         >
-          <Trash2 className="size-4" />
+          <Trash2 className="size-4 text-red-600" />
         </Button>
       </div>
     ),
     enableSorting: false,
-    size: 90,
+    size: 80,
   },
 ];
 
-
-export const useEditRoom = (guestId) => {
-    // console.log(guestId)
-    const navigate = useNavigate();
-    const handleEditGuest = () => {
-      navigate(`/rooms/edit-room/${guestId}`);
-    };
-    return handleEditGuest;
+export const useEditRoom = (roomNo) => {
+  const navigate = useNavigate();
+  const handleEditGuest = () => {
+    navigate(`/rooms/edit-room/${roomNo}`);
   };
+  return handleEditGuest;
+};
