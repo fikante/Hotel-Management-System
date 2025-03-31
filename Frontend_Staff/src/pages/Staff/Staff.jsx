@@ -9,7 +9,7 @@ import { PlusCircleIcon } from "lucide-react";
 const StaffList = () => {
   const [selectedStaff, setSelectedStaff] = useState(null);
   const onAddClick = () => {
-    console.log("Selected Staff: ", selectedStaff);
+    navigate("/staff/assign-staff");
   }
 
   const navigate = useNavigate();
