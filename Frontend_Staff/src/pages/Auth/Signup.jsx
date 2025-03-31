@@ -4,8 +4,11 @@ import InputField from "../../components/SignUp/InputField";
 import Button from "../../components/SignUp/Button";
 import ProfilePicUpload from "../../components/SignUp/ProfilePicUpload";
 import HotelDropdown from "../../components/SignUp/HotelDropdown";
+import SubmissionStatus from "../../components/SignUp/SubmissionStatus";
 
 import { assets } from "@/assets/assets";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = ({ hotels }) => {
   const {
@@ -15,7 +18,25 @@ const Signup = ({ hotels }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const navigate = useNavigate();
+  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const hotelName = "Pickachu Hotel";
+  const onSubmit = async (data) => {
+    try {
+      console.log(data);
+      setSubmissionStatus({
+        type: "success",
+        message: "Account created successfully!",
+      });
+      // Redirect after 3 seconds
+      setTimeout(() => navigate("/dashboard"), 3000);
+    } catch (error) {
+      setSubmissionStatus({
+        type: "error",
+        message: error.message || "Account creation failed",
+      });
+    }
+  };
 
   // Password matching validation
   const validatePasswordMatch = (value) => {
@@ -49,7 +70,17 @@ const Signup = ({ hotels }) => {
 
       {/* Right Side - Signup Form */}
       <div className="w-full md:w-1/2 md:ml-auto px-30 bg-white py-8">
-        <h1 className="text-center mb-6 text-2xl font-bold">
+        <div className="absolute top-4 right-4 flex items-center gap-2 cursor-pointer">
+          <img
+            src="/hotel.png" 
+            alt="Hotel Logo"
+            className="h-8 w-8 md:h-10 md:w-10 object-contain"
+          />
+          <span className="font-semibold text-sm md:text-base">
+            {hotelName}
+          </span>
+        </div>
+        <h1 className="text-center my-6 text-2xl font-bold">
           Create your Account
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -57,14 +88,14 @@ const Signup = ({ hotels }) => {
           <HotelDropdown
             register={register}
             hotels={[
-              { id: 1, name: "Sky Light Hotel" },
+              { id: 1, name: "Skylight Hotel" },
               { id: 2, name: "Sheraton Hotel" },
               { id: 3, name: "Intercontinental Hotel" },
               { id: 4, name: "Haile Resort" },
             ]}
             errors={errors}
           />
-          <div className="flex flex-row justify-between gap-4">
+          <div className="flex flex-col w-full space-y-4 md:flex-row md:space-y-0 md:space-x-4 md:justify-between">
             <InputField
               label="First Name"
               register={register}
@@ -72,29 +103,27 @@ const Signup = ({ hotels }) => {
             />
             <InputField label="Last Name" register={register} errors={errors} />
           </div>
-
-          <div className="flex flex-row justify-between gap-4">
-            <InputField
-              label="Email"
-              type="email"
-              register={register}
-              errors={errors}
-              pattern={{
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
-              }}
-            />
-            <InputField
-              label="Phone Number"
-              type="tel"
-              register={register}
-              errors={errors}
-              pattern={{
-                value: /^[0-9]{10,15}$/,
-                message: "Invalid phone number (10-15 digits)",
-              }}
-            />
-          </div>
+          <InputField
+            label="Email"
+            type="email"
+            register={register}
+            errors={errors}
+            pattern={{
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Invalid email address",
+            }}
+          />
+          <InputField
+            label="Phone Number"
+            type="tel"
+            register={register}
+            errors={errors}
+            pattern={{
+              value: /^\+?[0-9]{10,15}$/, // Allows optional '+' and 10-15 digits
+              message:
+                "Invalid phone number (e.g., +251968096620 or 0968096620)",
+            }}
+          />
           <InputField
             label="Password"
             type="password"
@@ -122,11 +151,11 @@ const Signup = ({ hotels }) => {
             />
             <label>
               I agree to all the{" "}
-              <a href="#Terms" className="text-blue-400">
+              <a href="#Terms" className="text-blue-400 underline">
                 Terms
               </a>{" "}
               and{" "}
-              <a className="text-blue-400" href="#Privacy Policies.">
+              <a className="text-blue-400 underline" href="#Privacy Policies.">
                 Privacy Policies.
               </a>
             </label>
@@ -141,10 +170,15 @@ const Signup = ({ hotels }) => {
 
           <p className="text-center mt-4">
             Already have an account?{" "}
-            <a href="#Login" className="text-blue-400">
+            <a href="#Login" className="text-blue-400 underline">
               Login
             </a>
           </p>
+
+          <SubmissionStatus
+            status={submissionStatus}
+            onClose={() => setSubmissionStatus(null)}
+          />
         </form>
       </div>
     </div>

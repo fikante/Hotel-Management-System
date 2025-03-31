@@ -36,7 +36,7 @@ const InputField = ({
             className="absolute right-3 top-1/2 transform -translate-y-1/2"
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+            {showPassword ? <FaEye /> : <FaEyeSlash /> }
           </button>
         )}
       </div>
