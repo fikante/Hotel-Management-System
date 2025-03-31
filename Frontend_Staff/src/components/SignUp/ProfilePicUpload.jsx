@@ -49,7 +49,7 @@ const ProfilePicUpload = ({ register, errors, watch }) => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-gray-500 text-xs">Choose Image</span>
+              <span className="text-gray-500 text-xs">Choose Hotel Logo</span>
             )}
           </div>
           <input
