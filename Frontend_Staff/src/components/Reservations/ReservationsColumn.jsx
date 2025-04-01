@@ -31,6 +31,16 @@ export const reservationColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
+    cell: ({ row }) => (
+      <div className="flex items-center flex-col">
+        <div>
+          {row.original.first_name} {row.original.last_name}
+        </div>
+        <div className="text-sm text-muted-foreground">
+          {row.original.guest_id}
+        </div>
+      </div>
+    ),
     size: 150,
   },
   {
