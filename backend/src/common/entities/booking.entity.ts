@@ -9,13 +9,13 @@ export class Booking {
     id: string;
 
     @ManyToOne(() => Hotel, (hotel) => hotel.id, { nullable: false })
-    hotel: Hotel;
+    hotelId: Hotel;
 
     @ManyToOne(() => Room, (room) => room.id, { nullable: false })
-    room: Room;
+    roomId: Room;
 
     @ManyToOne(() => User, (user) => user.id, { nullable: false })
-    guest: User;
+    guestId: User;
 
     @Column({ type: 'enum', enum: ['Group', 'Individual'] })
     bookingType: 'Group' | 'Individual';
