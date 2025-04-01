@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { CustomTable } from "@/components/Table/Table";
 import { roomColumns } from "@/components/Room/roomColumns";
 import { roomDatabase } from "@/TestData/roomDataTest.js";
-import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import AddRoom from "./AddRoom";
 
 const RoomList = () => {
-  const navigate = useNavigate();
-  const handleAddRoom = () => {
-    navigate("/rooms/add-room");
-  };
+  const [isAddRoomOpen, setIsAddRoomOpen] = useState(false);
   return (
-    <CustomTable
-      data={roomDatabase}
-      columns={roomColumns}
-      addButtonText="Add Room"
-      maxWidth="56"
-      onAddClick={handleAddRoom}
-      pageSize={5}
-    />
+    <div>
+      <CustomTable
+        data={roomDatabase}
+        columns={roomColumns}
+        addButtonText="Add Room"
+        maxWidth="56"
+        onAddClick={() => setIsAddRoomOpen(true)}
+        pageSize={5}
+      />
+      <Dialog open={isAddRoomOpen} onOpenChange={setIsAddRoomOpen}>
+        <DialogContent className="">
+          <AddRoom onSuccess={() => setIsAddRoomOpen(false)} />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 

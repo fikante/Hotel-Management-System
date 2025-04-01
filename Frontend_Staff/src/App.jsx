@@ -23,7 +23,7 @@ import AddFood from "./pages/Food/AddFood";
 import AddRoom from "./pages/Room/AddRoom";
 import RoomList from "./pages/Room/RoomList";
 import EditRoom from "./pages/Room/EditRoom";
-import ProfileAndBooking from "./pages/Process/GuestCreation";
+import UserProfileAndBooking from "./pages/Process/GuestCreation";
 import AddStaff from "./pages/Staff/AddStaff";
 import EditStaff from "./pages/Staff/EditStaff";
 import AssignStaff from "./pages/Staff/AssignStaff";
@@ -35,8 +35,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<Login />} />
-        <Route path="/reservations/add-booking" element={<AddBooking />} />
-        <Route path="/guests/add-guests" element={<AddGuest />} />
+        <Route path="/reservations/add-booking" element={<UserProfileAndBooking />} />
+        <Route path="/guests/add-guests" element={<UserProfileAndBooking />} />
         <Route
           path="/reservations/edit-booking/:id"
           element={<EditBooking />}
@@ -46,10 +46,10 @@ const App = () => {
         {/* <Route path="/restaurant/edit-food/:id" element={<AddFood />} /> */}
         <Route path="/rooms/add-room" element={<AddRoom />} />
         <Route path="/rooms/edit-room/:id" element={<EditRoom />} />
-        <Route path="/process" element={<ProfileAndBooking />} />
+        <Route path="/process" element={<UserProfileAndBooking />} />
         <Route path="/staff/add-staff" element={<AddStaff />} />
         <Route path="/staff/edit-staff/:id" element={<EditStaff />} />
-        <Route path="/staff/assign-staff" element={<AssignStaff/>} />
+        <Route path="/staff/assign-staff/:id" element={<AssignStaff />} />
 
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/dashboard" />} />

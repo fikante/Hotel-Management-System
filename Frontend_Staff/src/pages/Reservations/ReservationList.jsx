@@ -1,13 +1,11 @@
 import { CustomTable } from "@/components/Table/Table";
 import { reservationDatabase } from "@/TestData/reservationDatabase";
 import { reservationColumns } from "@/components/Reservations/ReservationsColumn";
-import { useNavigate } from "react-router-dom";
+import UserProfileAndBooking from "../Process/GuestCreation";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
 const ReservationListPage = () => {
-  const navigate = useNavigate();
-
-  const handleAddBooking = () => {
-    navigate("/reservations/add-booking");
-  };
+  const [isAddBookOpen, setIsAddBookOpen] = useState(false);
 
   return (
     <div>
@@ -16,11 +14,15 @@ const ReservationListPage = () => {
         columns={reservationColumns}
         defaultSort={[{ id: "created_at", desc: false }]}
         addButtonText="Add Reservation"
-        onAddClick={handleAddBooking}
+        onAddClick={() => setIsAddBookOpen(true)}
       />
+      <Dialog open={isAddBookOpen} onOpenChange={setIsAddBookOpen}>
+        <DialogContent className="">
+          <UserProfileAndBooking onSuccess={() => setIsAddBookOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
 export default ReservationListPage;
-

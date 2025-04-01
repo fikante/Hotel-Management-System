@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import RoomDetail from "@/pages/Room/RoomDetail";
 import { Edit, Trash2, ArrowUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { DeleteButton } from "../Delete/DeleteButton";
 
 export const roomColumns = [
   {
@@ -98,14 +99,12 @@ export const roomColumns = [
         >
           <Edit className="size-4 text-blue-600" />
         </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => alert(`Delete: ${row.original.roomNumber}`)}
-          className=" hover:bg-gray-200"
-        >
-          <Trash2 className="size-4 text-red-600" />
-        </Button>
+        <DeleteButton
+          onDelete={
+            () => alert(`Delete guest with ID: ${row.original.roomNumber}`)
+            // backend team space to implement delete functionality
+          }
+        />
       </div>
     ),
     enableSorting: false,
