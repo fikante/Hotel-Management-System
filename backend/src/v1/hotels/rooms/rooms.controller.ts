@@ -10,7 +10,7 @@ export class RoomsController {
 
   @Get(':hotelId/rooms')
   async getRoomsByHotelId(@Param('hotelId') hotelId: string) {
-    const rooms = await this.roomService.getRoomsByHotelId(hotelId);
+    const rooms = await this.roomService.getRoomsByHotelId(hotelId); //Fetches all rooms by hotel id 
     return {
       success: true,
       data: rooms,
@@ -22,7 +22,7 @@ export class RoomsController {
     @Param('hotelId') hotelId: string,
     @Body() createRoomDto: CreateRoomDto,
   ) {
-    const room = await this.roomService.createRoom(hotelId, createRoomDto);
+    const room = await this.roomService.createRoom(hotelId, createRoomDto); //Create new room info in the database 
     return {
       success: true,
       data: room,
@@ -32,11 +32,11 @@ export class RoomsController {
 
 
   @Get(':hotelId/rooms')
-  @UseGuards(JwtAuthGuard) // Ensure the user is authenticated
+  //@UseGuards(JwtAuthGuard) // Ensure the user is authenticated
   async getAvailableRooms(
     @Param('hotelId') hotelId: string,
-    @Query('check_in') checkIn: string,
-    @Query('check_out') checkOut: string,
+    @Query('check_in') checkIn: Date,
+    @Query('check_out') checkOut: Date,
     @Query('occupancy') occupancy: number
   ) {
     // Ensure check-in and check-out dates are provided in the query parameters
@@ -64,6 +64,6 @@ export class RoomsController {
 
 
  
-}
+
 
 

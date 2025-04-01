@@ -14,13 +14,20 @@ export class HotelsController {
 
     @Get()
      async getHotel() {
-    return this.hotelService.getHotel();
+    const hotel = this.hotelService.getHotel();
+
+    return { Sucess : true ,
+      data : hotel 
+     }
   }
 
   
   @Post()
   async CreateHotel(@Body() createhoteldto:CreateHotelDto) {
-    return this.hotelService.createHotel(createhoteldto);
+     const hotel = await this.hotelService.createHotel(createhoteldto);
+     return { Sucess : true ,
+      data : hotel 
+     }
   }
 
 

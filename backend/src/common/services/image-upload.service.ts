@@ -5,12 +5,12 @@ import { v2 as cloudinary } from 'cloudinary';
 export class ImageUploadService {
   constructor() {
     cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      cloud_name: process.env.CLOUDINARY_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
   }
-
+   // note : Provide an URl and a self generated publicID to receive a Secure URl for the image URl 
   async uploadImage(imageUrl: string, publicId: string): Promise<string> {
     try {
       const uploadResult = await cloudinary.uploader.upload(imageUrl, {

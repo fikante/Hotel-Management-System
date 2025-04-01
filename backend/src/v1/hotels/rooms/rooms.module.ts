@@ -4,11 +4,13 @@ import { RoomsService } from './rooms.service';
 import { Room } from './entities/room.entity';
 import { Hotel } from '../entities/hotel.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ImageUploadService } from '../image-upload.service';
+import { ImageUploadService } from '../../../common/services/image-upload.service';
+import { Booking } from 'src/common/entities/booking.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Room, Hotel])],
+  imports:[TypeOrmModule.forFeature([Room, Hotel,Booking])],
   controllers: [RoomsController],
-  providers: [RoomsService, ImageUploadService]
+  providers: [RoomsService, ImageUploadService],
+  exports:[RoomsService]
 })
 export class RoomsModule {}
