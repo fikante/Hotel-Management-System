@@ -16,6 +16,7 @@ export class DashboardService {
   async getCountryBookings(
     hotelId: number, // Changed from string to number to match Hotel entity
   ): Promise<Array<Record<string, number>>> {
+    console.log(hotelId);
     const result = await this.bookingRepository
       .createQueryBuilder('booking')
       .select('user.nationality', 'country')
