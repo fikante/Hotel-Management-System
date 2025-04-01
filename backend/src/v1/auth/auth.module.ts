@@ -5,16 +5,16 @@ import { PassportModule } from '@nestjs/passport';
 
 import { AuthController } from './controllers/auth.controller';
 import { StaffAuthController } from './controllers/staff-auth.controller';
+import { User } from '../../common/entities/user.entity';
+import { Staff } from '../../common/entities/staff.entity';
 import { AuthService } from './services/auth.service';
 import { StaffAuthService } from './services/staff-auth.service';
-import { Guest_Auth } from './entities/guest.entity';
-import { Staff_Auth } from './entities/staff.entity';
 import { JwtStrategy, StaffJwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     // Register the Guest_Auth and Staff_Auth entities for use with TypeORM.
-    TypeOrmModule.forFeature([Guest_Auth, Staff_Auth]),
+    TypeOrmModule.forFeature([User, Staff]),
 
     // Import PassportModule to enable authentication features.
     PassportModule,

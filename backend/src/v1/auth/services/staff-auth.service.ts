@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Staff_Auth } from '../entities/staff.entity';
+import { Staff } from '../../../common/entities/staff.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChangePasswordDto } from '../dto/change-password.dto';
@@ -10,16 +10,13 @@ import { ChangePasswordDto } from '../dto/change-password.dto';
 export class StaffAuthService {
   // Inject the Staff_Auth repository and JwtService via dependency injection.
   constructor(
-    @InjectRepository(Staff_Auth)
-    private staffRepository: Repository<Staff_Auth>,
+    @InjectRepository(Staff)
+    private staffRepository: Repository<Staff>,
     private jwtService: JwtService,
   ) {}
 
   // Validate staff credentials.
-  async validateStaff(
-    email: string,
-    password: string,
-  ): Promise<Staff_Auth | null> {
+  async validateStaff(email: string, password: string): Promise<Staff | null> {
     // Retrieve the staff record by email.
     const staff = await this.staffRepository.findOne({ where: { email } });
     // Compare the provided password with the stored hashed password.
@@ -30,9 +27,9 @@ export class StaffAuthService {
   }
 
   // Generates a JWT token for an authenticated staff member.
-  login(staff: Staff_Auth): { token: string } {
+  login(staff: Staff): { token: string } {
     // Create a payload with the staff's unique identifier and email.
-    const payload = { sub: staff.staffId, email: staff.email };
+    const payload = { sub: staff.id, email: staff.email };
     // Return a signed JWT token with an expiration time, using the secret from environment variables.
     return {
       token: this.jwtService.sign(payload, {
@@ -44,11 +41,11 @@ export class StaffAuthService {
 
   // Changes the password for a given staff member.
   async changePassword(
-    staffId: string,
+    id: string,
     changePasswordDto: ChangePasswordDto,
   ): Promise<void> {
     // Find the staff by their unique staffId.
-    const staff = await this.staffRepository.findOne({ where: { staffId } });
+    const staff = await this.staffRepository.findOne({ where: { id } });
     if (!staff) throw new Error('Staff not found');
 
     // Validate the old password provided by the staff.
