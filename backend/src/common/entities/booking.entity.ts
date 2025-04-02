@@ -33,4 +33,7 @@ export class Booking {
   @ManyToOne(() => User, (user) => user.id, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'guestId' }) // Explicitly set the foreign key column name
   guest: User;
+
+  @Column({type: 'date', nullable: false})
+  createdAt: Date;
 }

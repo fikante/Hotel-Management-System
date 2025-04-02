@@ -106,6 +106,7 @@ export class BookingService {
             // Create the booking
             const booking = this.bookingRepository.create({
                 ...createBookingDto,
+                createdAt: new Date(),
                 hotel,
                 room,
                 guest,

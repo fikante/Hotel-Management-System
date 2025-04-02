@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Hotel } from './hotel.entity';
 
 @Entity('foods')
 export class Food {
@@ -23,6 +24,12 @@ export class Food {
     @Column({ type: 'time', nullable: false })
     estimatedTime: string;
 
-    // @OneToMany(() => Ingredient, (ingredient) => ingredient.food, { cascade: true })
-    // ingredients: Ingredient[];
+    @Column({ nullable: true })
+    description: string;
+
+    @Column({ nullable: true })
+    timeToMake: number;
+
+    @ManyToOne(() => Hotel, hotel => hotel.foods)
+    hotel: Hotel;
 }

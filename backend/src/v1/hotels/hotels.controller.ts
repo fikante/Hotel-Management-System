@@ -12,7 +12,6 @@ export class HotelsController {
 
    constructor(private hotelService : HotelService){}
 
-
    @Get()
    async getHotel() {
       const hotel = await this.hotelService.getHotel();
@@ -20,10 +19,7 @@ export class HotelsController {
          Sucess : true ,
          data : hotel 
       }
-
   }
-
-  
   @Post()
   async CreateHotel(@Body() createhoteldto:CreateHotelDto) {
      const hotel = await this.hotelService.createHotel(createhoteldto);
@@ -31,11 +27,5 @@ export class HotelsController {
       data : hotel 
      }
   }
-
-
-
-
-
-
 
 }

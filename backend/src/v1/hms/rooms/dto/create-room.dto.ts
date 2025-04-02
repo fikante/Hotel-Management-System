@@ -4,9 +4,6 @@ import { Type } from 'class-transformer';
 
 class AmenityDto {
   @IsString()
-
-  @IsString()
-
   amenityName: string;
 }
 

@@ -11,9 +11,9 @@ export class ImageUploadService {
     });
   }
    // note : Provide an URl and a self generated publicID to receive a Secure URl for the image URl 
-  async uploadImage(imageUrl: string, publicId: string): Promise<string> {
+  async uploadImage(imagePathOrUrl: string, publicId: string): Promise<string> {
     try {
-      const uploadResult = await cloudinary.uploader.upload(imageUrl, {
+      const uploadResult = await cloudinary.uploader.upload(imagePathOrUrl, {
         public_id: publicId,
       });
       return uploadResult.secure_url; // Return the secure URL
@@ -22,4 +22,15 @@ export class ImageUploadService {
       throw new Error('Error uploading image');
     }
   }
+
+  async deleteImage(publicId: string): Promise<void> {
+    try {
+      await cloudinary.uploader.destroy(publicId);
+      console.log(`Image with publicId ${publicId} deleted successfully.`);
+    } catch (error) {
+      console.error('Cloudinary delete failed:', error);
+      throw new Error('Error deleting image');
+    }
+  }
 }
+// note: Provide a publicID to delete the corresponding image from Cloudinary

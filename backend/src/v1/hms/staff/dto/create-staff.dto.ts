@@ -7,7 +7,8 @@ import {
   IsPhoneNumber,
   IsUrl,
   IsDateString,
-  IsEnum
+  IsEnum,
+  IsOptional
 } from 'class-validator';
 
 export class CreateStaffDto {
@@ -39,12 +40,10 @@ export class CreateStaffDto {
   @IsPhoneNumber()
   phonenumber: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  hotelId: number;
-
   @IsUrl()
   @IsNotEmpty()
+  @IsOptional()
+
   profilePic: string;
 
   @IsNotEmpty()

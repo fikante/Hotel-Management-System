@@ -21,28 +21,28 @@ export class StaffService {
     private hotelRepository: Repository<Hotel>,
   ) {}
 
-  async createStaff(createStaffDto: CreateStaffDto): Promise<{ success: boolean; message: string }> {
+  async createStaff(createStaffDto: CreateStaffDto, hotelId: number): Promise<{ success: boolean; message: string }> {
     // Check if email already exists
-    const existingStaff = await this.staffRepository.findOne({ 
-      where: { email: createStaffDto.email } 
+
+    const targetHotel = await this.hotelRepository.findOne({ where: { id: hotelId } });
+    if (!targetHotel) {
+      throw new NotFoundException('Hotel not found');
+    }
+    const existingStaff = await this.staffRepository.findOne({
+      where: {
+        email: createStaffDto.email,
+        hotel: { id: hotelId }, // Only check the hotel ID
+      },
+      relations: ['hotel'], // Ensure the hotel relation is loaded
     });
-    
     if (existingStaff) {
       throw new ConflictException('Email already in use');
     }
-
-    // Verify hotel exists
-    const hotel = await this.hotelRepository.findOne({ 
-      where: { id: createStaffDto.hotelId } 
-    });
     
-    if (!hotel) {
-      throw new NotFoundException('Hotel not found');
-    }
 
     const staff = this.staffRepository.create({
       ...createStaffDto,
-      hotel,
+      hotel: targetHotel,
       isTemporaryPassword: true,
     });
 
@@ -51,6 +51,7 @@ export class StaffService {
     return {
       success: true,
       message: 'Staff member invited successfully',
+
     };
   }
 

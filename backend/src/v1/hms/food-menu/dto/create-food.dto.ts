@@ -2,8 +2,6 @@
 import { IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateFoodDto {
-  @IsString()
-  hotelId: string;
 
   @IsString()
   name: string;

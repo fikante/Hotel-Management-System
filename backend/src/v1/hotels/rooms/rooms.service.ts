@@ -1,13 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { Room } from './entities/room.entity';
+import { Room } from 'src/common/entities/room.entity';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { ImageUploadService } from '../../../common/services/image-upload.service';
 import { Repository,LessThan,MoreThan } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Hotel } from '../entities/hotel.entity';
 import { Booking } from 'src/common/entities/booking.entity';
+import { Hotel } from 'src/common/entities/hotel.entity';
 
 
 
@@ -24,9 +24,9 @@ export class RoomsService {
     
   ) {}
 
-  async getRoomsByHotelId(hotelId: string) {
+  async getRoomsByHotelId(hotelId: number) {
     const hotel = await this.hotelRepository.findOne({
-      where: { hotelId },
+      where: { id: hotelId },  // Fetches the hotel by id
       relations: ['rooms'], 
     });      // Find the hotel by id and retreives the hotel includes the rooms from the database 
 
@@ -38,8 +38,8 @@ export class RoomsService {
   }  
 
 
-  async createRoom(hotelId: string, createRoomDto: CreateRoomDto): Promise<Room> {
-    const hotel = await this.hotelRepository.findOne({ where: { hotelId } }); // Festches the hotel by hotel id 
+  async createRoom(hotelId: number, createRoomDto: CreateRoomDto): Promise<Room> {
+    const hotel = await this.hotelRepository.findOne({ where: { id: hotelId } }); // Festches the hotel by hotel id 
 
     if (!hotel) {
       throw new Error('Hotel not found');
@@ -68,14 +68,14 @@ export class RoomsService {
 
 
   async getAvailableRooms(
-    hotelId: string,
+    hotelId: number,
     checkInDate: Date,
     checkOutDate: Date,
     occupancy: number
   ): Promise<Room[]> {
     // Fetch the hotel with its rooms
     const hotel = await this.hotelRepository.findOne({
-      where: { hotelId },
+      where: { id: hotelId },
       relations: ['rooms'],
     });
   
@@ -104,9 +104,9 @@ export class RoomsService {
     );
   
     
-    availableRooms = filteredRooms.filter((room): room is Room => room !== null);  //Filters out the null values 
+    availableRooms = filteredRooms.filter((room): room is Room => room !== null && typeof room === 'object');  // Filters out the null values and ensures room is an object
   
-    return availableRooms;
+    return availableRooms as Room[];
   }
   
 

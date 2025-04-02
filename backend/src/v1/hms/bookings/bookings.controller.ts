@@ -1,15 +1,15 @@
 
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
-import { AuthGuard } from '../../auth/auth.guard';
+// import { AuthGuard } from '../../auth/auth.guard';
 
-@Controller('api/v1/hms/reservations/bookings')
-@UseGuards(AuthGuard)
+@Controller('hms/hotels/:hotelId')
+// @UseGuards(AuthGuard)
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
-  @Get()
-  async getAllBookings(@Query('hotelId') hotelId: string) {
+  @Get('reservations/bookings')
+  async getAllBookings(@Param('hotelId') hotelId: number) {
     const bookings = await this.bookingsService.getAllBookings(hotelId);
     return { success: true, data: bookings };
   }

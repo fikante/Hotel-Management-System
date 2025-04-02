@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Booking } from 'src/common/entities/booking.entity';
 import { Repository } from 'typeorm';
-import { Booking } from '../entitties/booking.entity';
 
 @Injectable()
 export class BookingsService {
@@ -10,20 +10,24 @@ export class BookingsService {
     private readonly bookingRepository: Repository<Booking>,
   ) {}
 
-  async getAllBookings(hotelId: string) {
-    return this.bookingRepository.find({
+  async getAllBookings(hotelId: number) {
+    const bookings = await this.bookingRepository.find({
       where: { hotel: { id: hotelId } },
-      select: [
-        'id',
-        'guestName',
-        'roomNum',
-        'bookingType',
-        'roomType',
-        'checkIn',
-        'checkOut',
-        'status',
-        'createdAt',
-      ],
+      relations: ['room','guest'],
     });
+    return {
+      success: true,
+      data: bookings.map(booking => ({
+        bookingId: booking.id,
+        guestName: booking.guest.name,
+        roomNum: booking.room.roomNumber,
+        bookingType: 'individual',
+        roomType: booking.room.type,
+        checkIn: booking.checkIn,
+        checkOut: booking.checkOut,
+        status: booking.bookingStatus,
+        createdAt: booking.createdAt,
+      })),
+    };
   }
 }
