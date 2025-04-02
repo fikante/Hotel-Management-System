@@ -1,12 +1,10 @@
 import { useForm } from "react-hook-form";
-import InputField from "../../components/SignUp/InputField";
 import Button from "../../components/SignUp/Button";
-import ProfilePicUpload from "../../components/SignUp/ProfilePicUpload";
 import HotelDropdown from "../../components/SignUp/HotelDropdown";
 import SubmissionStatus from "../../components/SignUp/SubmissionStatus";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserPlus, FaIdBadge, FaEnvelope, FaLock } from "react-icons/fa";
+import { FaUserPlus, FaIdBadge, FaEnvelope, FaLock, FaHotel } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Signup = ({ hotels }) => {
@@ -20,6 +18,29 @@ const Signup = ({ hotels }) => {
   const navigate = useNavigate();
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Sample hotels data with logos
+  const allHotels = useMemo(() => [
+    { id: 1, name: "Skylight Hotel", logo: "/hotel-logos/skylight.png" },
+    { id: 2, name: "Sheraton Grand", logo: "/hotel-logos/sheraton.png" },
+    { id: 3, name: "Intercontinental Addis", logo: "/hotel-logos/intercontinental.png" },
+    { id: 4, name: "Haile Resort Hawassa", logo: "/hotel-logos/haile.png" },
+    { id: 5, name: "Hyatt Regency", logo: "/hotel-logos/hyatt.png" },
+    { id: 6, name: "Hilton Addis Ababa", logo: "/hotel-logos/hilton.png" },
+    { id: 7, name: "Radisson Blu", logo: "/hotel-logos/radisson.png" },
+    { id: 8, name: "Golden Tulip", logo: "/hotel-logos/golden-tulip.png" },
+    { id: 9, name: "Ramada Addis", logo: "/hotel-logos/ramada.png" },
+    { id: 10, name: "Marriott Executive", logo: "/hotel-logos/marriott.png" },
+    { id: 11, name: "Capital Hotel", logo: "/hotel-logos/capital.png" },
+  ], []);
+
+  // Filtered hotels based on search term
+  const filteredHotels = useMemo(() => {
+    return allHotels.filter((hotel) =>
+      hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, allHotels]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -70,51 +91,39 @@ const Signup = ({ hotels }) => {
           <div className="text-white max-w-md">
             <motion.div
               className="mb-4"
-              variants={{
-                animate: {
-                  scale: [1, 1.2, 1, 1.2, 1],
-                  rotate: [0, 10, 0, -10, 0],
-                  transition: { duration: 2, repeat: Infinity },
-                },
+              animate={{
+                scale: [1, 1.2, 1, 1.2, 1],
+                rotate: [0, 10, 0, -10, 0],
+                transition: { duration: 2, repeat: Infinity },
               }}
-              animate="animate"
             >
-              <FaUserPlus className="mx-auto text-5xl text-white" />
+              <FaHotel className="mx-auto text-5xl text-white" />
             </motion.div>
             <motion.h2
               className="text-4xl font-extrabold mb-4 tracking-tight"
-              variants={{
-                animate: {
-                  y: [0, -10, 0],
-                  opacity: 1,
-                  transition: { duration: 1, repeat: Infinity, repeatType: "reverse" },
-                },
+              animate={{
+                y: [0, -10, 0],
+                opacity: 1,
+                transition: { duration: 1, repeat: Infinity, repeatType: "reverse" },
               }}
-              animate="animate"
             >
               "Empower Your Team, Elevate Your Service!"
             </motion.h2>
             <motion.p
               className="text-xl leading-relaxed"
-              variants={{
-                animate: {
-                  opacity: 1,
-                  transition: { duration: 1.5 },
-                },
+              animate={{
+                opacity: 1,
+                transition: { duration: 1.5 },
               }}
-              animate="animate"
             >
               Effortlessly add new staff members and manage your team with ease.
             </motion.p>
             <motion.div
               className="mt-8"
-              variants={{
-                animate: {
-                  opacity: 1,
-                  transition: { duration: 2 },
-                },
+              animate={{
+                opacity: 1,
+                transition: { duration: 2 },
               }}
-              animate="animate"
             >
               <p className="text-gray-200 italic">
                 "The strength of the team is each individual member. The
@@ -127,11 +136,11 @@ const Signup = ({ hotels }) => {
       </div>
 
       {/* Right Side - Signup Form */}
-      <div className="w-full md:w-1/2 bg-white py-12 px-6 flex items-center justify-center">
+      <div className="w-full md:w-1/2  bg-white py-12 px-6 flex items-center justify-center">
         {/* Form Container */}
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md ">
           <motion.h1
-            className="text-center mb-8 text-3xl font-extrabold text-gray-800"
+            className="text-center mb-20 text-3xl font-extrabold text-gray-800"
             variants={fadeInAnimation}
             initial="initial"
             animate="animate"
@@ -140,30 +149,9 @@ const Signup = ({ hotels }) => {
           </motion.h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* Profile Picture Upload */}
-            <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
-              <ProfilePicUpload
-                register={register}
-                errors={errors}
-                watch={watch}
-              />
-            </motion.div>
+         
 
-            {/* Hotel Dropdown */}
-            <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
-              <HotelDropdown
-                register={register}
-                hotels={[
-                  { id: 1, name: "Skylight Hotel" },
-                  { id: 2, name: "Sheraton Hotel" },
-                  { id: 3, name: "Intercontinental Hotel" },
-                  { id: 4, name: "Haile Resort" },
-                ]}
-                errors={errors}
-              />
-            </motion.div>
-
-            {/* First Name and Last Name - Modified Presentation */}
+            {/* First Name and Last Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* First Name */}
               <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
@@ -220,7 +208,7 @@ const Signup = ({ hotels }) => {
               </motion.div>
             </div>
 
-            {/* Email - Moved before password */}
+            {/* Email */}
             <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
               <label
                 htmlFor="email"
@@ -253,7 +241,7 @@ const Signup = ({ hotels }) => {
               )}
             </motion.div>
 
-            {/* Password - Improved UI */}
+            {/* Password */}
             <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
               <label
                 htmlFor="password"
@@ -286,12 +274,12 @@ const Signup = ({ hotels }) => {
               )}
             </motion.div>
 
-            {/* Confirm Password - Improved UI */}
+            {/* Confirm Password */}
             <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
               <label
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-700"
-                >
+              >
                 Confirm Password
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -343,7 +331,7 @@ const Signup = ({ hotels }) => {
                         className="opacity-75"
                         fill="currentColor"
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
+                      ></path>
                     </svg>
                     Creating Account...
                   </>

@@ -2,14 +2,11 @@ import { useForm } from "react-hook-form";
 import InputField from "../../components/SignUp/InputField";
 import Button from "../../components/SignUp/Button";
 import SubmissionStatus from "../../components/SignUp/SubmissionStatus";
-//import { assets } from "@/assets/assets"; // Removed
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaLock, FaEnvelope, FaHome } from "react-icons/fa";
-
-// Replace with a URL to a stock image (from a CDN or similar)
-const BACKGROUND_IMAGE =
-  "https://images.unsplash.com/photo-1566073771259-6a690aa31b78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWwlMjByb29tfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60";
+import { motion } from "framer-motion";
+import ResetPassword from "../../components/login/ResetPassword.jsx";
 
 const Login = () => {
   const {
@@ -41,41 +38,87 @@ const Login = () => {
     }
   };
 
-  return (
-    <div className="flex min-h-screen w-full bg-gray-100">
-      {/* Background Section */}
-      <div
-        className="hidden md:block w-1/2 bg-cover bg-center relative"
-        style={{
-          backgroundImage: `url(${BACKGROUND_IMAGE})`,
-          filter: "brightness(0.85)",
-        }}
-      >
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-teal-500 opacity-70"></div>
+  const fadeInAnimation = {
+    initial: { opacity: 0, y: 40 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: "easeInOut", delay: 0.2 },
+  };
 
+  const slideInLeft = {
+    initial: { x: -100, opacity: 0 },
+    animate: { x: 0, opacity: 1 },
+    transition: { duration: 0.8, ease: "easeInOut" },
+  };
+
+  return (
+    <div className="flex min-h-screen w-full bg-gray-100 overflow-hidden">
+      {/* Left Side - Background Color & Content */}
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-900 to-teal-500 relative">
         {/* Content Over Gradient */}
-        <div className="absolute inset-0 flex items-center justify-center p-10 text-center">
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center p-10 text-center"
+          variants={slideInLeft}
+          initial="initial"
+          animate="animate"
+        >
           <div className="text-white max-w-md">
-            <FaHome className="mx-auto mb-4 text-5xl text-white" />
-            <h2 className="text-4xl font-extrabold mb-4 tracking-tight">
+            <motion.div
+              className="mb-4"
+              variants={{
+                animate: {
+                  scale: [1, 1.2, 1, 1.2, 1],
+                  rotate: [0, 10, 0, -10, 0],
+                  transition: { duration: 2, repeat: Infinity },
+                },
+              }}
+              animate="animate"
+            >
+              <FaHome className="mx-auto text-5xl text-white" />
+            </motion.div>
+            <motion.h2
+              className="text-4xl font-extrabold mb-4 tracking-tight"
+              variants={{
+                animate: {
+                  y: [0, -10, 0],
+                  opacity: 1,
+                  transition: { duration: 1, repeat: Infinity, repeatType: "reverse" },
+                },
+              }}
+              animate="animate"
+            >
               "Effortless Hotel Management Starts Here!"
-            </h2>
-            <p className="text-xl leading-relaxed">
+            </motion.h2>
+            <motion.p
+              className="text-xl leading-relaxed"
+              variants={{
+                animate: {
+                  opacity: 1,
+                  transition: { duration: 1.5 },
+                },
+              }}
+              animate="animate"
+            >
               Simplify your operations, enhance guest experiences, and drive
               profitability with our intuitive dashboard.
-            </p>
-            <div className="mt-8">
+            </motion.p>
+            <motion.div
+              className="mt-8"
+              variants={{
+                animate: {
+                  opacity: 1,
+                  transition: { duration: 2 },
+                },
+              }}
+              animate="animate"
+            >
               <p className="text-gray-200 italic">
                 "The key is not to prioritize what's on your schedule, but to
                 schedule your priorities."
               </p>
-              <span className="block mt-2 text-sm text-gray-300">
-                - Mahder Tesfaye
-              </span>
-            </div>
+              <span className="block mt-2 text-sm text-gray-300">- Mahder Tesfaye</span>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Right Side - Login Form */}
@@ -87,13 +130,18 @@ const Login = () => {
             <img src="/hotelicon.svg" alt="Hotel Logo" className="h-16" />
           </div>
 
-          <h1 className="text-center mb-8 text-3xl font-extrabold text-gray-800">
+          <motion.h1
+            className="text-center mb-8 text-3xl font-extrabold text-gray-800"
+            variants={fadeInAnimation}
+            initial="initial"
+            animate="animate"
+          >
             Welcome Back!
-          </h1>
+          </motion.h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Email Input with Icon */}
-            <div>
+            <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
@@ -123,10 +171,10 @@ const Login = () => {
                   {errors.email.message}
                 </p>
               )}
-            </div>
+            </motion.div>
 
             {/* Password Input with Icon */}
-            <div>
+            <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
@@ -149,67 +197,68 @@ const Login = () => {
                   {errors.password.message}
                 </p>
               )}
-            </div>
+            </motion.div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between">
-              <label className="flex items-center text-sm text-gray-700">
-                <input
-                  type="checkbox"
-                  {...register("remember")}
-                  className="mr-2 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                Remember me
-              </label>
-              <a
-                href="/forgot-password"
-                className="text-sm text-indigo-600 hover:underline"
-              >
-                Forgot password?
-              </a>
-            </div>
+            <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    {...register("remember")}
+                    className="mr-2 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  Remember me
+                </label>
+                <ResetPassword />
+              </div>
+            </motion.div>
 
             {/* Login Button */}
-            <Button
-              type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-md shadow-md transition duration-300 ease-in-out"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Logging in...
-                </>
-              ) : (
-                "Login"
-              )}
-            </Button>
-          </form>
+            <motion.div variants={fadeInAnimation} initial="initial" animate="animate">
+              <Button
+                type="submit"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-md shadow-md transition duration-300 ease-in-out"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Logging in...
+                  </>
+                ) : (
+                  "Login"
+                )}
+              </Button>
+            </motion.div>
 
-          {/* Submission Status Message */}
-          <SubmissionStatus
-            status={submissionStatus}
-            onClose={() => setSubmissionStatus(null)}
-          />
+            {/* Wrap adjacent elements */}
+            <>
+              <SubmissionStatus
+                status={submissionStatus}
+                onClose={() => setSubmissionStatus(null)}
+              />
+            </>
+          </form>
         </div>
       </div>
     </div>

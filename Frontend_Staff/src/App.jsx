@@ -28,6 +28,7 @@ import AddStaff from "./pages/Staff/AddStaff";
 import EditStaff from "./pages/Staff/EditStaff";
 import AssignStaff from "./pages/Staff/AssignStaff";
 import SelectGuestAndBooking from "./pages/Process/ReservationCreation";
+import ResetPassLink from "./pages/Auth/ResetPassLink";
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<Login />} />
+        <Route path="/reset-password/:token" element={<ResetPassLink />} />
         <Route
           path="/reservations/add-booking"
           element={<SelectGuestAndBooking />}
@@ -64,6 +66,7 @@ const App = () => {
           <Route path="/restaurant" element={<Food />} />
           <Route path="/staff" element={<Staff />} />
           <Route path="/setting" element={<Setting />} />
+          
           {/* <Route path="/reports" element={<Reports />} /> */}
         </Route>
 
