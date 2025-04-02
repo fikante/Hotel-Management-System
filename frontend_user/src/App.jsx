@@ -8,6 +8,9 @@ import Billing from "./pages/Billing";
 import NotFound from "./pages/NotFound";
 import "./App.css";
 
+
+import Menu from './pages/restaurant/Menu';
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -19,6 +22,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/billing" element={<Billing />} />
+
+          
+          <Route path="/restaurant/menu" element={<Menu />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
