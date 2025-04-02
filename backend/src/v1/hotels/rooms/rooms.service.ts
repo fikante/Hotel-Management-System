@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { Room } from './entities/room.entity';
 import { CreateRoomDto } from './dto/create-room.dto';
