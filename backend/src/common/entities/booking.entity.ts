@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
 import { Hotel } from './hotel.entity';
 import { Room } from './room.entity';
 import { User } from './user.entity';
@@ -9,11 +9,9 @@ export class Booking {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'enum', enum: ['Group', 'Individual'] })
-  bookingType: 'Group' | 'Individual';
 
-  @Column({ type: 'enum', enum: ['pending', 'confirmed', 'canceled'], nullable: false })
-  bookingStatus: 'pending' | 'confirmed' | 'canceled';
+  @Column({type: 'varchar', length:50, nullable: false, default: 'pending'})
+  bookingStatus: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false, default: 'online' })
   bookingVia: string;
