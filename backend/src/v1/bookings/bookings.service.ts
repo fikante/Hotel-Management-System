@@ -1,53 +1,65 @@
 /* eslint-disable prettier/prettier */
-// bookings/bookings.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Booking } from '../../common/entities/booking.entity';
+import { Booking } from 'src/common/entities/booking.entity';
+import { Room } from 'src/common/entities/room.entity';
+import * as dayjs from 'dayjs';
 
 @Injectable()
-export class BookingsService {
+export class BookingService {
   constructor(
     @InjectRepository(Booking)
     private readonly bookingRepository: Repository<Booking>,
+    @InjectRepository(Room)
+    private readonly roomRepository: Repository<Room>,
   ) {}
 
-  findAll() {
-    return this.bookingRepository.find({
-      relations: ['hotelId', 'roomId', 'guestId'],
-    });
+  async getAllBookings() {
+    const bookings = await this.bookingRepository.find({ relations: ['room', 'hotel'] });
+    return {
+      success: true,
+      data: bookings.map(booking => ({
+        bookingId: booking.id,
+        roomType: booking.room.type,
+        occupancy: booking.room.occupancy,
+        price: booking.room.price,
+        hotel: booking.hotel.name,
+        roomDescription: booking.room.description,
+      })),
+    };
   }
 
-  async cancelBooking(
-    id: string,
-  ): Promise<{ success: boolean; message: string }> {
-    const booking = await this.bookingRepository.findOne({ where: { id } });
-    if (!booking) throw new Error('Booking not found');
+  async cancelBooking(bookingId: string): Promise<boolean> {
+    const booking = await this.bookingRepository.findOne({ where: { id: bookingId } });
+    if (!booking) return false;
 
-    const today = new Date();
-    const checkInDate = new Date(booking.checkIn);
-    if (checkInDate <= today)
-      throw new Error('Cancellation not allowed on check-in day');
+    const today = dayjs();
+    const checkInDate = dayjs(booking.checkIn);
+    if (checkInDate.diff(today, 'day') < 1) return false;
 
     booking.bookingStatus = 'canceled';
     await this.bookingRepository.save(booking);
-    return { success: true, message: 'Booking canceled successfully' };
+    return true;
   }
 
-  async checkIn(id: string): Promise<{ success: boolean; message: string }> {
-    return {
-      success: true,
-      message: 'Check-in requested, pending staff validation',
-    };
+  async requestCheckIn(bookingId: string) {
+    const booking = await this.bookingRepository.findOne({ where: { id: bookingId } });
+    if (!booking) throw new Error('Booking not found');
+    // Logic for handling check-in request
   }
 
-  async checkOut(
-    id: string,
-  ): Promise<{ success: boolean; message: string; totalAmount: number }> {
-    return {
-      success: true,
-      message: 'Check-out successful',
-      totalAmount: 140.0,
-    };
+  async checkOut(bookingId: string): Promise<number> {
+    const booking = await this.bookingRepository.findOne({ where: { id: bookingId }, relations: ['room'] });
+    if (!booking) throw new Error('Booking not found');
+
+    booking.bookingStatus = 'confirmed';
+    await this.bookingRepository.save(booking);
+
+    const room = booking.room;
+    room.status = 'not clean';
+    await this.roomRepository.save(room);
+
+    return booking.room.price;
   }
 }
