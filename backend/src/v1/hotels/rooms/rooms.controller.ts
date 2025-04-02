@@ -1,6 +1,5 @@
 
 import { Controller, Get, Post, Param, Body, UseGuards,Query } from '@nestjs/common';
-import { Room } from './entities/room.entity';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { RoomsService } from './rooms.service';
 
@@ -9,7 +8,7 @@ export class RoomsController {
   constructor(private readonly roomService: RoomsService){}
 
   @Get(':hotelId/rooms')
-  async getRoomsByHotelId(@Param('hotelId') hotelId: string) {
+  async getRoomsByHotelId(@Param('hotelId') hotelId: number) {
     const rooms = await this.roomService.getRoomsByHotelId(hotelId); //Fetches all rooms by hotel id 
     return {
       success: true,
@@ -19,7 +18,7 @@ export class RoomsController {
 
   @Post(':hotelId/rooms')
   async createRoom(
-    @Param('hotelId') hotelId: string,
+    @Param('hotelId') hotelId: number,
     @Body() createRoomDto: CreateRoomDto,
   ) {
     const room = await this.roomService.createRoom(hotelId, createRoomDto); //Create new room info in the database 
@@ -34,7 +33,7 @@ export class RoomsController {
   @Get(':hotelId/rooms')
   //@UseGuards(JwtAuthGuard) // Ensure the user is authenticated
   async getAvailableRooms(
-    @Param('hotelId') hotelId: string,
+    @Param('hotelId') hotelId: number,
     @Query('check_in') checkIn: Date,
     @Query('check_out') checkOut: Date,
     @Query('occupancy') occupancy: number

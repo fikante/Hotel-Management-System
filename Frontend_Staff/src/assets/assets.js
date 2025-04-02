@@ -1,5 +1,8 @@
-import SignUp from "./SignUp.jpg";
+// assets.js
+import SignUp from "./SignUp.jpg"; 
+import LoginBg from "./LogIn.jpg";
 
 export const assets = {
-    SignUp
+  SignUp, 
+  LoginBg
 }

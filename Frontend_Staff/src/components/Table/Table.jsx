@@ -122,13 +122,12 @@ export const CustomTable = ({
                       setSelectedRowId(row.id);
                       onSelectionChange(row.original);
                     }
-
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`py-2 pl-4 truncate max-w-${maxWidth} font-serif`}
+                      className={`py-2 pl-4 truncate max-w-32 font-serif`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Hotel } from './entities/hotel.entity'; 
 import { CreateHotelDto } from './dto/create-hotel.dto'; 
 import { ImageUploadService } from '../../common/services/image-upload.service'; 
 import { NotFoundException } from '@nestjs/common';
+import { Hotel } from 'src/common/entities/hotel.entity';
 
 @Injectable()
 export class HotelService {
@@ -14,6 +14,7 @@ export class HotelService {
     private imageUploadService: ImageUploadService, 
   ) {}
 
+  //only works with hotel image in the web
   async createHotel(createHotelDto: CreateHotelDto): Promise<Hotel> {
     
     if (createHotelDto.image) {  //checks if hotel exists 
