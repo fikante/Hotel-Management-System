@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { Room } from './entities/room.entity';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -92,7 +93,7 @@ export class RoomsService {
       availableRooms.map(async (room) => {
         const overlappingBookings = await this.bookingRepository.count({
           where: {
-            room: { id: room.roomId },
+            // roomId: { id: room.roomId },
             checkIn: LessThan(checkOutDate) ,
             checkOut: MoreThan(checkInDate) ,
           },
