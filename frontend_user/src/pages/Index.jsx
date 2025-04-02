@@ -1,10 +1,10 @@
 
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import TopHotels from "@/components/TopHotels";
-import Testimonials from "@/components/Testimonials";
-import Features from "@/components/Features";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/home/Navbar";
+import Hero from "@/components/home/Hero";
+import TopHotels from "@/components/home/TopHotels";
+import Testimonials from "@/components/home/Testimonials";
+import Features from "@/components/home/Features";
+import Footer from "@/components/home/Footer";
 
 const Index = () => {
   return (
