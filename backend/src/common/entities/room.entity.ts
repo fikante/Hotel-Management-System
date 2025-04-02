@@ -14,6 +14,7 @@ import { Assignment } from './assignments.entity';
 @Entity()
 export class Room {
     @PrimaryGeneratedColumn('uuid')
+    
     id: string;
 
     @Column()
