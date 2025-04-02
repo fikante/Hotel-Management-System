@@ -1,11 +1,16 @@
 import { CustomTable } from "@/components/Table/Table";
 import { reservationDatabase } from "@/TestData/reservationDatabase";
 import { reservationColumns } from "@/components/Reservations/ReservationsColumn";
-import UserProfileAndBooking from "../Process/GuestCreation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
+import SelectGuestAndBooking from "../Process/ReservationCreation";
+import EditBooking from "./EditBooking";
+
+
 const ReservationListPage = () => {
   const [isAddBookOpen, setIsAddBookOpen] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState(null);
+  const [isEditReservationOpen, setIsEditReservationOpen] = useState(false);
 
   return (
     <div>
@@ -15,10 +20,24 @@ const ReservationListPage = () => {
         defaultSort={[{ id: "created_at", desc: false }]}
         addButtonText="Add Reservation"
         onAddClick={() => setIsAddBookOpen(true)}
+        meta={{
+          onEditClick: (reservation) => {
+            setSelectedReservation(reservation);
+            setIsEditReservationOpen(true);
+          },
+        }}
       />
       <Dialog open={isAddBookOpen} onOpenChange={setIsAddBookOpen}>
-        <DialogContent className="">
-          <UserProfileAndBooking onSuccess={() => setIsAddBookOpen(false)} />
+        <DialogContent>
+          <SelectGuestAndBooking onSuccess={() => setIsAddBookOpen(false)} />
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isEditReservationOpen} onOpenChange={setIsEditReservationOpen}>
+        <DialogContent>
+          <EditBooking
+            onSuccess={() => setIsEditReservationOpen(false)}
+            reservationData={selectedReservation}
+          />
         </DialogContent>
       </Dialog>
     </div>

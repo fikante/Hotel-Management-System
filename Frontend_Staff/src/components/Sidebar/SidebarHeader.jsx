@@ -1,7 +1,7 @@
 const SidebarHeader = ({ isOpen, appName, onToggle }) => (
   <div className="p-4 flex items-center justify-center border-b">
     {isOpen ? (
-      <div className="flex items-center flex-row gap-3">
+      <div className="flex items-center flex-row gap-4">
         <img src="hotel.png" alt="hotel" className="w-12 h-12" />
         <div className="flex items-center">
           <h1 className="text-xl font-bold font-serif text-blue-500">
