@@ -9,11 +9,9 @@ export class Booking {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'enum', enum: ['Group', 'Individual'] })
-  bookingType: 'Group' | 'Individual';
 
-  @Column({ type: 'enum', enum: ['pending', 'confirmed', 'canceled'], nullable: false })
-  bookingStatus: 'pending' | 'confirmed' | 'canceled';
+  @Column({type: 'varchar', length:50, nullable: false, default: 'pending'})
+  bookingStatus: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false, default: 'online' })
   bookingVia: string;

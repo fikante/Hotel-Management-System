@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Delete, Patch, Param, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Delete, Patch, Param, UseGuards, HttpException, HttpStatus, Post, Body } from '@nestjs/common';
 import { BookingService } from './bookings.service';
+import { CreateBookingDto } from './dto/create-booking.dto';
 // import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('bookings')
@@ -33,4 +34,13 @@ export class BookingController {
     const totalAmount = await this.bookingService.checkOut(bookingId);
     return { success: true, message: 'Check-out successful', totalAmount };
   }
+
+    @Post('rooms/:roomId/bookings')
+    async createBooking(
+        @Param('hotelId') hotelId : number ,
+        @Param('roomId') roomId : string,
+        @Body() createBookingDto: CreateBookingDto) {
+        const fakeGuestId = "g1h2i3j4-k5l6-7m8n-9o0p-q1r2s3t4u5v6"
+        return await this.bookingService.createBooking(hotelId,roomId,fakeGuestId,createBookingDto);
+    }
 }
