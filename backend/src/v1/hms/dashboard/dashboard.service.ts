@@ -55,7 +55,7 @@ export class DashboardService {
 
   async getTotalBookings(hotelId: number): Promise<number> {
     return this.bookingRepository.count({
-      where: { hotel: { id: hotelId } }, // Updated to use relation
+      where: { hotel: { id: hotelId } }, // Updated to match the relation structure
     });
   }
 }
