@@ -10,6 +10,7 @@ export const guestDatabase = [
     nationality: "American",
     idType: "Passport",
     idNumber: "A12345678",
+    dob : "1990-01-01",
   },
   {
     id: "G002",
@@ -22,6 +23,7 @@ export const guestDatabase = [
     nationality: "Canadian",
     idType: "National ID",
     idNumber: "B98765432",
+    dob : "1992-02-02",
   },
   {
     id: "G003",
@@ -34,6 +36,7 @@ export const guestDatabase = [
     nationality: "British",
     idType: "Driver License",
     idNumber: "C56789012",
+    dob : "1995-03-03",
   },
   {
     id: "G004",
@@ -46,6 +49,7 @@ export const guestDatabase = [
     nationality: "American",
     idType: "Passport",
     idNumber: "D65432189",
+    dob : "1988-04-04",
   },
   {
     id: "G005",
@@ -58,6 +62,7 @@ export const guestDatabase = [
     nationality: "Canadian",
     idType: "National ID",
     idNumber: "E23456789",
+    dob : "1993-05-05",
   },
   {
     id: "G006",
@@ -70,6 +75,7 @@ export const guestDatabase = [
     nationality: "British",
     idType: "Driver License",
     idNumber: "F87654321",
+    dob : "1985-06-06",
   },
   {
     id: "G007",
@@ -82,6 +88,7 @@ export const guestDatabase = [
     nationality: "Spanish",
     idType: "Passport",
     idNumber: "G34567890",
+    dob : "1991-07-07",
   },
   {
     id: "G008",
@@ -94,6 +101,7 @@ export const guestDatabase = [
     nationality: "American",
     idType: "National ID",
     idNumber: "H12398745",
+    dob : "1987-08-08",
   },
   {
     id: "G009",
@@ -106,6 +114,7 @@ export const guestDatabase = [
     nationality: "French",
     idType: "Driver License",
     idNumber: "I90817236",
+    dob : "1994-09-09",
   },
   {
     id: "G010",
@@ -118,6 +127,7 @@ export const guestDatabase = [
     nationality: "Mexican",
     idType: "Passport",
     idNumber: "J74185296",
+    dob : "1986-10-10",
   },
   {
     id: "G011",
@@ -130,6 +140,7 @@ export const guestDatabase = [
     nationality: "Mexican",
     idType: "Passport",
     idNumber: "J74185296",
+    dob : "1986-10-10",
   },
   {
     id: "G012",
@@ -142,5 +153,6 @@ export const guestDatabase = [
     nationality: "Mexican",
     idType: "Passport",
     idNumber: "J74185296",
+    dob : "1986-10-10",
   },
 ];

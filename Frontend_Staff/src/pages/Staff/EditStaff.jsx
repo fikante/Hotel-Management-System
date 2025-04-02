@@ -55,7 +55,6 @@ const EditStaff = ({ staffData, onSuccess }) => {
 
   const onSubmit = (data) => {
     onSuccess();
-    alert("Staff updated successfully!");
   };
 
   return (

@@ -32,7 +32,7 @@ export const reservationColumns = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="flex items-center flex-col">
+      <div className="flex items-start flex-col">
         <div>
           {row.original.first_name} {row.original.last_name}
         </div>
@@ -144,13 +144,16 @@ export const reservationColumns = [
   {
     id: "actions",
     header: "Quick Action",
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <div className="flex space-x-2">
         <Button
           variant="ghost"
           size="sm"
-          onClick={useEditReservation(row.original.id)}
-          className="text-sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            table.options.meta?.onEditClick?.(row.original);
+          }}
+          className="text-sm hover:bg-gray-200"
         >
           <Edit className="h-4 w-4 text-blue-600" />
         </Button>
@@ -166,11 +169,3 @@ export const reservationColumns = [
     size: 100,
   },
 ];
-
-export const useEditReservation = (reservationId) => {
-  const navigate = useNavigate();
-  const handleEditReservation = () => {
-    navigate(`/reservations/edit-booking/${reservationId}`);
-  };
-  return handleEditReservation;
-};

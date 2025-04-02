@@ -33,7 +33,7 @@ const StaffList = () => {
       />
 
       {selectedStaff && (
-        <div className="flex justify-center items-center -mt-10">
+        <div className="flex justify-center items-center -mt-4">
           <Button
             variant="default"
             className="bg-blue-600 hover:bg-blue-700 text-white gap-2"

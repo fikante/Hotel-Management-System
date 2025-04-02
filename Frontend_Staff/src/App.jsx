@@ -11,11 +11,11 @@ import Room from "./pages/Room/Room";
 import Food from "./pages/Food/Food";
 import Staff from "./pages/Staff/Staff";
 import Setting from "./pages/Setting/Setting";
-import EditProfile from "./pages/Profile/profileEdit";
+import ProfileSettings from "./pages/Profile/profileEdit";
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import AddBooking from "./pages/Reservations/AddBooking";
+import RoomSelection from "./pages/Room/RoomSelection";
 import AddGuest from "./pages/Guests/AddGuest";
 import EditBooking from "./pages/Reservations/EditBooking";
 import EditGuest from "./pages/Guests/EditGuest";
@@ -27,6 +27,7 @@ import UserProfileAndBooking from "./pages/Process/GuestCreation";
 import AddStaff from "./pages/Staff/AddStaff";
 import EditStaff from "./pages/Staff/EditStaff";
 import AssignStaff from "./pages/Staff/AssignStaff";
+import SelectGuestAndBooking from "./pages/Process/ReservationCreation";
 
 const App = () => {
   return (
@@ -35,7 +36,10 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<Login />} />
-        <Route path="/reservations/add-booking" element={<UserProfileAndBooking />} />
+        <Route
+          path="/reservations/add-booking"
+          element={<SelectGuestAndBooking />}
+        />
         <Route path="/guests/add-guests" element={<UserProfileAndBooking />} />
         <Route
           path="/reservations/edit-booking/:id"
@@ -48,7 +52,7 @@ const App = () => {
         <Route path="/rooms/edit-room/:id" element={<EditRoom />} />
         <Route path="/process" element={<UserProfileAndBooking />} />
         <Route path="/staff/add-staff" element={<AddStaff />} />
-        <Route path="/staff/edit-staff" element={<EditStaff />} />
+
         <Route path="/staff/assign-staff/:id" element={<AssignStaff />} />
 
         <Route element={<Layout />}>
@@ -56,11 +60,10 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/guests" element={<GuestList />} />
           <Route path="/reservations" element={<ReservationList />} />
-          <Route path="/profile" element={<EditProfile />} />
           <Route path="/rooms" element={<RoomList />} />
           <Route path="/restaurant" element={<Food />} />
           <Route path="/staff" element={<Staff />} />
-          <Route path="/settings" element={<Setting />} />
+          <Route path="/setting" element={<Setting />} />
           {/* <Route path="/reports" element={<Reports />} /> */}
         </Route>
 
