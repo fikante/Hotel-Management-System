@@ -1,5 +1,6 @@
 
 import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { Ingredient } from 'src/common/entities/ingredient.entity';
 
 export class CreateFoodDto {
 
@@ -10,12 +11,14 @@ export class CreateFoodDto {
   price: number;
 
   @IsString()
-  description: string;
-
-  @IsString()
   categories: string;
 
-  @IsNumber()
-  @IsOptional()
-  timeToMake?: number;
+  @IsString()
+  image: string;
+
+  @IsString()
+  timeToMake: string;
+
+  @IsString()
+  ingredients: Ingredient[];
 }

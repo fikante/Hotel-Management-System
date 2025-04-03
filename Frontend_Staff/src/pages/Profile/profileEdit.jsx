@@ -135,7 +135,7 @@ const ProfileSetting = ({ userProfile }) => {
                   message: "Invalid Email",
                 },
               })}
-              className="rounded-xl p-3 border w-3/4"
+              className="rounded-xl p-3 border w-full"
             />
             {errors.email && (
               <p className="text-red-500 text-xs">{errors.email.message}</p>

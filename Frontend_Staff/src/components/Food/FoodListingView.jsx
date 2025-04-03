@@ -6,18 +6,24 @@ import FoodToolbar from "./foodToolBar";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import AddFood from "@/pages/Food/AddFood";
 import OrderedFood from "../Order/OrderedFood";
+import EditFood from "@/pages/Food/EditFood";
 
-export const FoodCardView = () => {
+export const FoodListingView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 12;
   const [addFoodOpen, setAddFoodOpen] = useState(false);
   const [orderFoodOpen, setOrderFoodOpen] = useState(false);
+  const [editFoodOpen, setEditFoodOpen] = useState(false);
+  const [foodItem, setFoodItem] = useState(null);
 
   const filteredFoods = foodData.filter(
     (food) =>
       food.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      food.Ingredients.toLowerCase().includes(searchTerm.toLowerCase())
+      food.Ingredients.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      food.Status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      food.Category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      food.Price.toString().includes(searchTerm.toLowerCase())
   );
 
   const pageCount = Math.ceil(filteredFoods.length / itemsPerPage);
@@ -37,9 +43,14 @@ export const FoodCardView = () => {
           onOrderClick={() => setOrderFoodOpen(true)}
         />
       </div>
-      <div className="flex flex-wrap gap-5">
+      <div className="flex flex-wrap gap-5 justify-center">
         {paginatedFoods.map((food) => (
-          <FoodCard key={food.id} food={food} />
+          <FoodCard key={food.id} food={food} 
+          onEditClick={() => {
+            setEditFoodOpen(true);
+            setFoodItem(food);
+          }}
+          />
         ))}
       </div>
 
@@ -58,6 +69,11 @@ export const FoodCardView = () => {
       <Dialog open={orderFoodOpen} onOpenChange={setOrderFoodOpen}>
         <DialogContent>
           <OrderedFood />
+        </DialogContent>
+      </Dialog>
+      <Dialog open={editFoodOpen} onOpenChange={setEditFoodOpen}>
+        <DialogContent className="sm:max-w-3xl">
+          <EditFood foodItem={foodItem} onSuccess={() => setEditFoodOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

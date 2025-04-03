@@ -18,14 +18,15 @@ export class BookingsService {
     return {
       success: true,
       data: bookings.map(booking => ({
+
         bookingId: booking.id,
+        guestId: booking.guest.id,
         guestName: booking.guest.name,
         roomNum: booking.room.roomNumber,
-        bookingType: 'individual',
         roomType: booking.room.type,
         checkIn: booking.checkIn,
         checkOut: booking.checkOut,
-        status: booking.bookingStatus,
+        bookingStatus: booking.bookingStatus,
         createdAt: booking.createdAt,
       })),
     };

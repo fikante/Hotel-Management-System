@@ -87,7 +87,7 @@ const staffColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    size: 24,
+    size: 20,
   },
   {
     id: "employedDate",
@@ -97,7 +97,7 @@ const staffColumns = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Employed Date
+        Start Date
         <ArrowUpDown className="size-4" />
       </Button>
     ),
@@ -135,6 +135,22 @@ const staffColumns = [
         >
           <Edit className="size-4 text-blue-600" />
         </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hover:bg-gray-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            table.options.meta?.onAssignClick?.(row.original);
+          }}
+        >
+          <img
+            src="/assign.svg"
+            alt="Assign"
+            className="size-4 text-blue-600"
+          />
+        </Button>
         <DeleteButton
           onDelete={
             () => alert(`Delete guest with ID: ${row.original.id}`)
@@ -144,7 +160,7 @@ const staffColumns = [
       </div>
     ),
     enableSorting: false,
-    size: 100,
+    size: 140,
   },
 ];
 

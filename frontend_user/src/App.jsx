@@ -6,7 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Billing from "./pages/Billing";
 import NotFound from "./pages/NotFound";
-import "./App.css";
+import RoomsPage from "./pages/RoomsPage";
+import BookingPage from "./pages/BookingPage";
+import BookingDetails from "./components/Rooms/BookingDetails";
+import { BookingProvider } from "./data/BookingContext";
 
 
 import Menu from './pages/restaurant/Menu';
@@ -19,16 +22,19 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/billing" element={<Billing />} />
+<BookingProvider> {/*Wrap <Routes> with BookingProvider */}
+  <Routes>
+    <Route path="/" element={<Index />} />
+    <Route path="/billing" element={<Billing />} />
+    <Route path="/restaurant/menu" element={<Menu />} />
+    <Route path="/rooms" element={<RoomsPage />} />
+    <Route path="/bookings" element={<BookingPage />} />
+    <Route path="/bookings/:id" element={<BookingDetails />} />
+    {/* Catch-all 404 route */}
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+</BookingProvider>
 
-          
-          <Route path="/restaurant/menu" element={<Menu />} />
-
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

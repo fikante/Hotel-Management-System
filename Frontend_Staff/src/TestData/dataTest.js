@@ -1,8 +1,7 @@
 export const guestDatabase = [
   {
     id: "G001",
-    firstName: "John",
-    lastName: "Doe",
+    fullName: "John Doe",
     email: "john.doe@example.com",
     phone: "+1 234 567 890",
     gender: "Male",
@@ -14,8 +13,7 @@ export const guestDatabase = [
   },
   {
     id: "G002",
-    firstName: "Jane",
-    lastName: "Smith",
+    fullName : "Jane Smith",
     email: "jane.smith@example.com",
     phone: "+1 987 654 321",
     gender: "Female",
@@ -27,8 +25,7 @@ export const guestDatabase = [
   },
   {
     id: "G003",
-    firstName: "Alice",
-    lastName: "Johnson",
+    fullName: "Alice Johnson",
     email: "alice.johnson@example.com",
     phone: "+1 555 678 123",
     gender: "Female",
@@ -40,8 +37,7 @@ export const guestDatabase = [
   },
   {
     id: "G004",
-    firstName: "Michael",
-    lastName: "Brown",
+    fullName: "Michael Brown",
     email: "michael.brown@example.com",
     phone: "+1 111 222 3333",
     gender: "Male",
@@ -53,8 +49,7 @@ export const guestDatabase = [
   },
   {
     id: "G005",
-    firstName: "Emily",
-    lastName: "Davis",
+    fullName: "Emily Davis",
     email: "emily.davis@example.com",
     phone: "+1 444 555 6666",
     gender: "Female",
@@ -66,8 +61,7 @@ export const guestDatabase = [
   },
   {
     id: "G006",
-    firstName: "David",
-    lastName: "Wilson",
+    fullName: "David Wilson",
     email: "david.wilson@example.com",
     phone: "+1 777 888 9999",
     gender: "Male",
@@ -79,8 +73,7 @@ export const guestDatabase = [
   },
   {
     id: "G007",
-    firstName: "Sophia",
-    lastName: "Martinez",
+    fullName: "Sophia Martinez",
     email: "sophia.martinez@example.com",
     phone: "+1 222 333 4444",
     gender: "Female",
@@ -92,8 +85,7 @@ export const guestDatabase = [
   },
   {
     id: "G008",
-    firstName: "James",
-    lastName: "Anderson",
+    fullName: "James Anderson",
     email: "james.anderson@example.com",
     phone: "+1 555 666 7777",
     gender: "Male",
@@ -105,8 +97,7 @@ export const guestDatabase = [
   },
   {
     id: "G009",
-    firstName: "Olivia",
-    lastName: "Thomas",
+    fullName: "Olivia Thomas",
     email: "olivia.thomas@example.com",
     phone: "+1 888 999 0000",
     gender: "Female",
@@ -118,8 +109,7 @@ export const guestDatabase = [
   },
   {
     id: "G010",
-    firstName: "William",
-    lastName: "Garcia",
+    fullName : "William Garcia",
     email: "william.garcia@example.com",
     phone: "+1 666 777 8888",
     gender: "Male",
@@ -131,8 +121,7 @@ export const guestDatabase = [
   },
   {
     id: "G011",
-    firstName: "William",
-    lastName: "Garcia",
+    fullName : "William Garcia",
     email: "william.garcia@example.com",
     phone: "+1 666 777 8888",
     gender: "Male",
@@ -144,8 +133,7 @@ export const guestDatabase = [
   },
   {
     id: "G012",
-    firstName: "William",
-    lastName: "Garcia",
+    fullName : "William Garcia",
     email: "william.garcia@example.com",
     phone: "+1 666 777 8888",
     gender: "Male",
