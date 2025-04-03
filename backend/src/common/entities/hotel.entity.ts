@@ -3,6 +3,8 @@ import { Room } from './room.entity';
 import { Manager } from './manager.entity';
 import { Assignment } from './assignments.entity';
 import { Staff } from './staff.entity';
+import { Food } from './food.entity';
+import { Booking } from './booking.entity';
 
 @Entity('hotels')
 export class Hotel {
@@ -32,7 +34,7 @@ export class Hotel {
 
     @OneToMany(() => Room, (room) => room.hotel)
     rooms: Room[];
-    
+
     @OneToOne(() => Manager, (manager) => manager.hotel, { onDelete: "SET NULL" })
     manager: Manager;
 
@@ -44,4 +46,13 @@ export class Hotel {
 
     @OneToMany(() => Staff, (staff) => staff.hotel)
     staff: Staff[];
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    image: string;
+    
+    @OneToMany(() => Food, food => food.hotel)
+    foods: Food[];
+
+    @OneToMany(() => Booking, (booking) => booking.hotel)
+    bookings: Booking[]; 
 }

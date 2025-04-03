@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, ArrowUpDown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Edit, ArrowUpDown } from "lucide-react";
 import { DeleteButton } from "../Delete/DeleteButton";
 
-export const staffColumns = [
+const staffColumns = [
   {
     id: "picture",
     accessorKey: "picture",
@@ -30,7 +29,7 @@ export const staffColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    
+
     size: 24,
   },
   {
@@ -88,7 +87,7 @@ export const staffColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    size: 24,
+    size: 20,
   },
   {
     id: "employedDate",
@@ -98,7 +97,7 @@ export const staffColumns = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Employed Date
+        Start Date
         <ArrowUpDown className="size-4" />
       </Button>
     ),
@@ -122,15 +121,35 @@ export const staffColumns = [
   {
     id: "actions",
     header: "Quick Action",
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <div className="flex space-x-2">
         <Button
           variant="ghost"
           size="sm"
-          onClick={useEditStaff(row.original.id)}
           className="hover:bg-gray-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            // console.log("Yo",row.original);
+            table.options.meta?.onEditClick?.(row.original);
+          }}
         >
           <Edit className="size-4 text-blue-600" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hover:bg-gray-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            table.options.meta?.onAssignClick?.(row.original);
+          }}
+        >
+          <img
+            src="/assign.svg"
+            alt="Assign"
+            className="size-4 text-blue-600"
+          />
         </Button>
         <DeleteButton
           onDelete={
@@ -141,14 +160,8 @@ export const staffColumns = [
       </div>
     ),
     enableSorting: false,
-    size: 100,
+    size: 140,
   },
 ];
 
-export const useEditStaff = (staffId) => {
-  const navigate = useNavigate();
-  const handleEditStaff = () => {
-    navigate(`/staff/edit-staff/${staffId}`);
-  };
-  return handleEditStaff;
-};
+export default staffColumns;

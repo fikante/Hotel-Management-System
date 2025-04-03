@@ -36,13 +36,6 @@ export const roomColumns = [
   },
 
   {
-    id: "roomDetails",
-    header: "Room Details",
-    cell: ({ row }) => <RoomDetail row={row} />,
-    size: 300,
-    enableSorting: false,
-  },
-  {
     id: "bedType",
     accessorKey: "bedType",
     header: ({ column }) => (
@@ -54,7 +47,14 @@ export const roomColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    size: 90,
+    size: 100,
+  },
+  {
+    id: "roomDetails",
+    header: "Room Details",
+    cell: ({ row }) => <RoomDetail row={row} />,
+    size: 400,
+    enableSorting: false,
   },
   {
     id: "status",
@@ -68,7 +68,21 @@ export const roomColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    cell: ({ row }) => <span>{row.original.status}</span>,
+    cell: ({ row }) => (
+      <div
+        className={`${
+          row.original.status === "occupied"
+            ? "bg-red-100 "
+            : row.original.status === "available"
+            ? "bg-green-100 "
+            : row.original.status === "maintenance"
+            ? "bg-yellow-100 "
+            : "bg-gray-100"
+        } p-1 rounded-full flex items-center justify-center w-full `}
+      >
+        <span>{row.original.status}</span>
+      </div>
+    ),
     size: 100,
   },
   {
@@ -89,12 +103,14 @@ export const roomColumns = [
   {
     id: "actions",
     header: "Quick Action",
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <div className="flex justify-between">
         <Button
           variant="ghost"
           size="sm"
-          onClick={useEditRoom(row.original.roomNumber)}
+          onClick={
+            (e) => {table.options.meta.onEditClick(row.original); e.stopPropagation();}
+          }
           className=" hover:bg-gray-200"
         >
           <Edit className="size-4 text-blue-600" />
@@ -102,7 +118,6 @@ export const roomColumns = [
         <DeleteButton
           onDelete={
             () => alert(`Delete guest with ID: ${row.original.roomNumber}`)
-            // backend team space to implement delete functionality
           }
         />
       </div>
@@ -112,10 +127,3 @@ export const roomColumns = [
   },
 ];
 
-export const useEditRoom = (roomNo) => {
-  const navigate = useNavigate();
-  const handleEditGuest = () => {
-    navigate(`/rooms/edit-room/${roomNo}`);
-  };
-  return handleEditGuest;
-};

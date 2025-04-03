@@ -40,7 +40,7 @@ export const DeleteButton = ({ onDelete }) => {
             </Button>
             <Button
               variant="default"
-              className="bg-gray-700 hover:bg-gray-800 text-white"
+              className="bg-blue-700 hover:bg-blue-800 text-white"
               onClick={() => {
                 onDelete();
                 setIsOpen(false);

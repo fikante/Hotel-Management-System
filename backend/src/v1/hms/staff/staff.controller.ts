@@ -17,21 +17,22 @@ import { CreateStaffDto } from './dto/create-staff.dto';
 import { AssignTaskDto } from './dto/assign-task.dto';
 import { GetStaffDto } from './dto/get-staff.dto';
 
-@Controller('hms/staff')
+@Controller('hms/hotels/:hotelId')
 @UsePipes(new ValidationPipe())
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
 
-  @Post()
+  @Post('staff')
   async addStaff(
     @Headers('authorization') authorization: string,
     @Body() createStaffDto: CreateStaffDto,
+    @Param('hotelId') hotelId: number,
   ) {
     console.log(createStaffDto);
-    return this.staffService.createStaff(createStaffDto);
+    return this.staffService.createStaff(createStaffDto, hotelId);
   }
 
-  @Patch(':id')
+  @Patch('staff/:id')
   async assignStaffToRoom(
     @Headers('authorization') authorization: string,
     @Param('id') id: string,
@@ -40,7 +41,7 @@ export class StaffController {
     return this.staffService.assignTask(id, assignTaskDto);
   }
 
-  @Get('hotel/:hotelId')
+  @Get('staff')
   async getAllStaff(
     @Param('hotelId') hotelId: string,
   ) {

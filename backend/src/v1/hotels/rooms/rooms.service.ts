@@ -1,12 +1,13 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { Room } from './entities/room.entity';
+import { Room } from 'src/common/entities/room.entity';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { ImageUploadService } from '../../../common/services/image-upload.service';
 import { Repository,LessThan,MoreThan } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Hotel } from '../entities/hotel.entity';
 import { Booking } from 'src/common/entities/booking.entity';
+import { Hotel } from 'src/common/entities/hotel.entity';
 
 
 
@@ -15,66 +16,38 @@ export class RoomsService {
   constructor(
     @InjectRepository(Room)
     private roomRepository: Repository<Room>,
-    private imageUploadService: ImageUploadService,
+
     @InjectRepository(Hotel)
     private hotelRepository: Repository<Hotel>,
     @InjectRepository(Booking)
     private readonly bookingRepository: Repository<Booking> 
     
   ) {}
-
-  async getRoomsByHotelId(hotelId: string) {
+  async getRoomsByHotelId(hotelId: number) {
     const hotel = await this.hotelRepository.findOne({
-      where: { hotelId },
-      relations: ['rooms'], 
-    });      // Find the hotel by id and retreives the hotel includes the rooms from the database 
-
-    if (!hotel) {
-      throw new Error('Hotel not found');         
-    }
-
-    return hotel.rooms;  // Fetches all rooms in the hotel 
-  }  
-
-
-  async createRoom(hotelId: string, createRoomDto: CreateRoomDto): Promise<Room> {
-    const hotel = await this.hotelRepository.findOne({ where: { hotelId } }); // Festches the hotel by hotel id 
-
-    if (!hotel) {
-      throw new Error('Hotel not found');
-    }
-    if (createRoomDto.image) {
-    
-        const publicId = `hotel-${Date.now()}`;      //Generate publici id 
-        
-  
-        
-        const imageUrl = await this.imageUploadService.uploadImage(createRoomDto.image, publicId); // Gets the the URL for the image which is stored on Cloudnary 
-  
-        
-        createRoomDto.image = imageUrl; // Swaps the the new url for the original 
-      }
-
-    const room = this.roomRepository.create({
-      ...createRoomDto,
-      hotel, 
+      where: { id: hotelId }, // Fetches the hotel by id
+      relations: ['rooms', 'rooms.amenities'], // Includes rooms and their amenities
     });
 
-
-    return await this.roomRepository.save(room); // Saves the room in the database 
-  } 
-
+    if (!hotel) {
+      throw new NotFoundException('Hotel not found');
+    } 
+    const roomsWithAmenities = hotel.rooms.map(room => ({
+      ...room,
+      amenities: room.amenities.map(amenity => amenity.name),
+    }));
+    return { data: roomsWithAmenities };
+  }
 
 
   async getAvailableRooms(
-    hotelId: string,
+    hotelId: number,
     checkInDate: Date,
     checkOutDate: Date,
-    occupancy: number
   ): Promise<Room[]> {
     // Fetch the hotel with its rooms
     const hotel = await this.hotelRepository.findOne({
-      where: { hotelId },
+      where: { id: hotelId },
       relations: ['rooms'],
     });
   
@@ -84,7 +57,7 @@ export class RoomsService {
   
     // Filter rooms based on occupancy
     let availableRooms = hotel.rooms.filter(
-      (room) => room.occupancy >= occupancy && room.status !== 'occupied'
+      (room) => room.status !== 'occupied'
     );
   
     // Check room availability by filtering out booked rooms
@@ -92,7 +65,7 @@ export class RoomsService {
       availableRooms.map(async (room) => {
         const overlappingBookings = await this.bookingRepository.count({
           where: {
-            roomId: { id: room.roomId },
+            // roomId: { id: room.roomId },
             checkIn: LessThan(checkOutDate) ,
             checkOut: MoreThan(checkInDate) ,
           },
@@ -103,9 +76,9 @@ export class RoomsService {
     );
   
     
-    availableRooms = filteredRooms.filter((room): room is Room => room !== null);  //Filters out the null values 
+    availableRooms = filteredRooms.filter((room): room is Room => room !== null && typeof room === 'object');  // Filters out the null values and ensures room is an object
   
-    return availableRooms;
+    return availableRooms as Room[];
   }
   
 

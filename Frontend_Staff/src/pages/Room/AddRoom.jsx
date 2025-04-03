@@ -1,48 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 
-const AddRoom = ({onSuccess}) => {
-  const [formData, setFormData] = useState({
-    roomNumber: "",
-    roomName: "",
-    roomType: "Standard",
-    description: "",
-    bedType: "Single",
-    size: "",
-    status: "Available",
-    picture: null,
-    price: "",
-    maxOccupancy: "",
-  });
-
-  const [file, setFile] = useState(null);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (e.target.files) {
-      const uploadedFile = e.target.files[0];
-      setFile(uploadedFile);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const uploadedFile = e.dataTransfer.files[0];
-    setFile(uploadedFile);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = new FormData();
-    Object.keys(formData).forEach((key) => {
-      data.append(key, formData[key]);
-    });
-    console.log("Room Data Submitted:", Object.fromEntries(data));
-    onSuccess()
-    alert("Room added successfully!", data);
-    setFormData({
+const AddRoom = ({ onSuccess }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+    watch,
+  } = useForm({
+    defaultValues: {
       roomNumber: "",
-      roomName: "",
       roomType: "Standard",
       description: "",
       bedType: "Single",
@@ -51,20 +20,45 @@ const AddRoom = ({onSuccess}) => {
       picture: null,
       price: "",
       maxOccupancy: "",
-    });
+      amenities: "",
+    },
+  });
+
+  const picture = watch("picture");
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue("picture", file);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setValue("picture", file);
+    }
+  };
+
+  const onSubmit = (data) => {
+    console.log("Room Data Submitted:", data);
+    onSuccess();
+    alert("Room added successfully!");
+    reset();
   };
 
   return (
-    <div className=" space-y-4 rounded-lg p-8 w-full">
+    <div className="space-y-4 rounded-lg p-8 w-full">
       <h2 className="text-2xl font-semibold text-center">Add New Room</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-col md:flex-row gap-x-5">
-          <div className="w-full md:w-48 max-w-md p-6 bg-white rounded-lg ">
-            {file ? (
+          <div className="w-full md:w-48 max-w-md p-6 bg-white rounded-lg">
+            {picture ? (
               <div className="w-full h-32 rounded-lg overflow-hidden border border-gray-300">
                 <img
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
+                  src={URL.createObjectURL(picture)}
+                  alt={picture.name}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -75,11 +69,9 @@ const AddRoom = ({onSuccess}) => {
                 onDrop={handleDrop}
                 onClick={() => document.getElementById("fileInput").click()}
               >
-                {/* Add Room Image Text */}
                 <p className="text-gray-700 text-sm font-medium mb-2">
                   Add Room Image
                 </p>
-                {/* Main circular area with door icon */}
                 <div className="relative w-24 h-24 rounded-full bg-blue-200 flex items-center justify-center">
                   <svg
                     className="w-12 h-12 text-blue-600"
@@ -88,7 +80,6 @@ const AddRoom = ({onSuccess}) => {
                   >
                     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 16H6V5h12v14zm-4-2h2v-2h-2v2z" />
                   </svg>
-                  {/* Smaller circle with pencil icon */}
                   <div className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
                     <svg
                       className="w-4 h-4 text-white"
@@ -104,7 +95,7 @@ const AddRoom = ({onSuccess}) => {
                   id="fileInput"
                   className="hidden"
                   accept="image/*"
-                  onChange={handleChange}
+                  onChange={handleFileChange}
                 />
               </div>
             )}
@@ -121,32 +112,17 @@ const AddRoom = ({onSuccess}) => {
               <input
                 type="text"
                 id="roomNumber"
-                name="roomNumber"
-                value={formData.roomNumber}
-                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Room number"
-                required
+                {...register("roomNumber", {
+                  required: "Room number is required",
+                })}
               />
-            </div>
-
-            <div>
-              <label
-                htmlFor="roomName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Room Name
-              </label>
-              <input
-                type="text"
-                id="roomName"
-                name="roomName"
-                value={formData.roomName}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Room name"
-                required
-              />
+              {errors.roomNumber && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.roomNumber.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -158,10 +134,8 @@ const AddRoom = ({onSuccess}) => {
               </label>
               <select
                 id="roomType"
-                name="roomType"
-                value={formData.roomType}
-                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                {...register("roomType")}
               >
                 <option value="Standard">Standard</option>
                 <option value="Accessible">Accessible</option>
@@ -175,23 +149,6 @@ const AddRoom = ({onSuccess}) => {
 
             <div>
               <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Room Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Room description"
-                style={{ resize: "none" }}
-              />
-            </div>
-            <div>
-              <label
                 htmlFor="bedType"
                 className="block text-sm font-medium text-gray-700"
               >
@@ -199,16 +156,37 @@ const AddRoom = ({onSuccess}) => {
               </label>
               <select
                 id="bedType"
-                name="bedType"
-                value={formData.bedType}
-                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                {...register("bedType")}
               >
                 <option value="Single">Single</option>
                 <option value="Double">Double</option>
                 <option value="Queen">Queen</option>
                 <option value="King">King</option>
               </select>
+            </div>
+            <div>
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Room Description
+              </label>
+              <textarea
+                id="description"
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Room description"
+                style={{ resize: "none" }}
+                rows="5"
+                {...register("description", {
+                  required: "Room description is required",
+                })}
+              />
+              {errors.description && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.description.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -223,14 +201,16 @@ const AddRoom = ({onSuccess}) => {
               <input
                 type="number"
                 id="size"
-                name="size"
-                value={formData.size}
-                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="size (sq ft)"
                 min="0"
-                required
+                {...register("size", { required: "Size is required" })}
               />
+              {errors.size && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.size.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -242,10 +222,8 @@ const AddRoom = ({onSuccess}) => {
               </label>
               <select
                 id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                {...register("status")}
               >
                 <option value="Available">Available</option>
                 <option value="Occupied">Occupied</option>
@@ -263,15 +241,17 @@ const AddRoom = ({onSuccess}) => {
               <input
                 type="number"
                 id="price"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Price per Night ($)"
                 min="0"
                 step="0.1"
-                required
+                {...register("price", { required: "Price is required" })}
               />
+              {errors.price && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.price.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -284,24 +264,52 @@ const AddRoom = ({onSuccess}) => {
               <input
                 type="number"
                 id="maxOccupancy"
-                name="maxOccupancy"
-                value={formData.maxOccupancy}
-                onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Maximum occupancy"
                 min="1"
-                required
+                {...register("maxOccupancy", {
+                  required: "Max occupancy is required",
+                })}
               />
+              {errors.maxOccupancy && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.maxOccupancy.message}
+                </p>
+              )}
             </div>
-            <div className="flex justify-center ">
-              <button
-                type="submit"
-                className="bg-blue-500 mt-14 w-full text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+            <div>
+              <label
+                htmlFor="amenities"
+                className="block text-sm font-medium text-gray-700"
               >
-                Add Room
-              </button>
+                Amenities
+              </label>
+              <textarea
+                type="text"
+                id="amenities"
+                row="2"
+                style={{ resize: "none" }}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="e.g. Wi-Fi, TV and etc"
+                {...register("amenities", {
+                  required: "Amenities are required",
+                })}
+              />
+              {errors.amenities && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.amenities.message}
+                </p>
+              )}
             </div>
           </div>
+        </div>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-500 w-3/4 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+          >
+            Add Room
+          </button>
         </div>
       </form>
     </div>

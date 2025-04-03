@@ -2,7 +2,8 @@
 import { 
   Injectable, 
   NotFoundException,
-  ConflictException
+  ConflictException,
+  InternalServerErrorException 
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,6 +12,8 @@ import { AssignTaskDto } from './dto/assign-task.dto';
 import { GetStaffDto } from './dto/get-staff.dto';
 import { Hotel } from 'src/common/entities/hotel.entity';
 import { Staff } from 'src/common/entities/staff.entity';
+import { EmailService } from '../../../common/services/email.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class StaffService {
@@ -19,38 +22,49 @@ export class StaffService {
     private staffRepository: Repository<Staff>,
     @InjectRepository(Hotel)
     private hotelRepository: Repository<Hotel>,
+    private readonly emailService: EmailService,
   ) {}
 
-  async createStaff(createStaffDto: CreateStaffDto): Promise<{ success: boolean; message: string }> {
+  async createStaff(createStaffDto: CreateStaffDto, hotelId: number): Promise<{ success: boolean; message: string }> {
     // Check if email already exists
-    const existingStaff = await this.staffRepository.findOne({ 
-      where: { email: createStaffDto.email } 
+
+    const targetHotel = await this.hotelRepository.findOne({ where: { id: hotelId } });
+    if (!targetHotel) {
+      throw new NotFoundException('Hotel not found');
+    }
+    const existingStaff = await this.staffRepository.findOne({
+      where: {
+        email: createStaffDto.email,
+        hotel: { id: hotelId }, // Only check the hotel ID
+      },
+      relations: ['hotel'], // Ensure the hotel relation is loaded
     });
-    
     if (existingStaff) {
       throw new ConflictException('Email already in use');
     }
-
-    // Verify hotel exists
-    const hotel = await this.hotelRepository.findOne({ 
-      where: { id: createStaffDto.hotelId } 
-    });
-    
-    if (!hotel) {
-      throw new NotFoundException('Hotel not found');
-    }
+        // 3. Generate and hash password
+        const temporaryPassword = this.emailService.generateRandomPassword(); // Using EmailService
+        const hashedPassword = await bcrypt.hash(temporaryPassword, 10);
 
     const staff = this.staffRepository.create({
       ...createStaffDto,
-      hotel,
+      password: hashedPassword,
+      hotel: targetHotel,
       isTemporaryPassword: true,
     });
 
     await this.staffRepository.save(staff);
 
+    await this.emailService.sendStaffWelcomeEmail(
+      createStaffDto.email,
+      `${createStaffDto.firstname} ${createStaffDto.lastname}`,
+      temporaryPassword
+    );
+
     return {
       success: true,
-      message: 'Staff member invited successfully',
+      message: 'Staff member invited successfully. Temporary password sent via email.',
+
     };
   }
 
