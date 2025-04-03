@@ -40,6 +40,7 @@ const AssignStaff = ({ onSuccess, staff_id }) => {
           <label className="font-medium">Room No.</label>
           <input
             id="roomId"
+            placeholder="Room No."
             {...register("roomId", { required: true })}
             className="border p-2  border-gray-500 rounded-lg"
           />
@@ -49,6 +50,7 @@ const AssignStaff = ({ onSuccess, staff_id }) => {
           <textarea
             id="description"
             {...form.register("description")}
+            placeholder="Service Description"
             className="border p-2  border-gray-500 rounded-lg"
             style={{ resize: "none" }}
           />

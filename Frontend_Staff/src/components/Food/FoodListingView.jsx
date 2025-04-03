@@ -43,7 +43,7 @@ export const FoodListingView = () => {
           onOrderClick={() => setOrderFoodOpen(true)}
         />
       </div>
-      <div className="flex flex-wrap gap-5">
+      <div className="flex flex-wrap gap-5 justify-center">
         {paginatedFoods.map((food) => (
           <FoodCard key={food.id} food={food} 
           onEditClick={() => {
