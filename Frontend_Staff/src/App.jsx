@@ -69,6 +69,7 @@ const App = () => {
         </Route>
 
         <Route element={<AdminDashboardLayout />}>
+          <Route path="/admin" element={<Navigate to="/admin/hotels" />}  />
           <Route path="/admin/hotels" element={<AdminPage />} />
           <Route path="/admin/managers" element={<Managers />} />
           <Route path="/admin/settings" element={<AdminSettingPage />} />
