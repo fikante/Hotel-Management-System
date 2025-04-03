@@ -17,6 +17,9 @@ export class RoomsService {
 
   async createRoom(hotelId: number, createRoomDto: CreateRoomDto) {
     const amenities: Amenity[] = [];
+
+    console.log('Create Room DTO:', createRoomDto);
+    console.log('Hotel ID:', hotelId);
     if (createRoomDto.amenities) {
       for (const amenityDto of createRoomDto.amenities) {
         console.log('Amenity DTO:', amenityDto);

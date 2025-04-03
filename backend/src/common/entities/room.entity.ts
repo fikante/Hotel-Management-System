@@ -11,14 +11,12 @@ import {
 } from "typeorm";
 import { Hotel } from "./hotel.entity";
 import { Assignment } from "./assignments.entity";
+import { Booking } from "./booking.entity";
 
 @Entity()
 export class Room {
     @PrimaryGeneratedColumn("uuid")
     id: string;
-
-    @Column()
-    name: string;
 
     @Column()
     roomNumber: string;
@@ -33,13 +31,10 @@ export class Room {
     occupancy: number;
 
     @Column()
-    bed: number;
+    bedType: string;
 
     @Column()
     image: string;
-
-    @Column({ name: "image_public_id" })
-    imagePublicId: string;
 
     @Column("text")
     description: string;
@@ -60,4 +55,7 @@ export class Room {
 
     @OneToMany(() => Assignment, (assignment) => assignment.room)
     assignments: Assignment[];
+
+    @OneToMany(() => Booking, (booking) => booking.room)
+    bookings: Booking[]; 
 }
