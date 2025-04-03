@@ -10,7 +10,7 @@ export class ImageUploadService {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
   }
-   // note : Provide an URl and a self generated publicID to receive a Secure URl for the image URl 
+  // note : Provide an URl and a self generated publicID to receive a Secure URl for the image URl 
   async uploadImage(imagePathOrUrl: string, publicId: string): Promise<string> {
     try {
       const uploadResult = await cloudinary.uploader.upload(imagePathOrUrl, {
