@@ -53,8 +53,8 @@ import { Assignment } from './assignments.entity';
     @Column('decimal', { precision: 10, scale: 2 })
     salary: number;
   
-    // @Column({ type: 'date' })
-    // employedAt: Date;
+    @Column({ type: 'date' })
+    employedAt: Date;
   
     // @CreateDateColumn({ name: 'created_at' })
     // createdAt: Date;

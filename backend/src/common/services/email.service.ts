@@ -1,7 +1,7 @@
 // email.service.ts
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import * as crypto from 'crypto'; 
+import * as crypto from 'crypto';
 
 @Injectable()
 export class EmailService {
@@ -10,18 +10,12 @@ export class EmailService {
     constructor() {
         // Configure your email transporter (example with Gmail)
         this.transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-        },
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
         });
-    }
-    public generateRandomPassword(length: number = 12): string {
-        const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-        return Array.from(crypto.getRandomValues(new Uint32Array(length)))
-            .map((x) => charset[x % charset.length])
-            .join('');
     }
     async sendStaffWelcomeEmail(
         to: string,
@@ -49,10 +43,10 @@ export class EmailService {
         amount: number,
     ): Promise<void> {
         const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to,
-        subject: 'Payment Confirmation',
-        text: `Your payment for booking ${bookingId} of amount ${amount} was successful.`,
+            from: process.env.EMAIL_USER,
+            to,
+            subject: 'Payment Confirmation',
+            text: `Your payment for booking ${bookingId} of amount ${amount} was successful.`,
         };
 
         await this.transporter.sendMail(mailOptions);
