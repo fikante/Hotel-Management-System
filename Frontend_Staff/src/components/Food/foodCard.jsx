@@ -9,10 +9,10 @@ const FoodCard = ({ food, onEditClick }) => {
   const visibleIngredients = ingredientsList.slice(0, 4);
 
   return (
-    <div className="flex flex-col w-64 gap-1 rounded-lg overflow-hidden shadow-sm ">
+    <div className="flex flex-col w-[245px] gap-1 rounded-lg overflow-hidden shadow-sm">
       <div className="shrink-0 overflow-hidden h-40">
         <img
-          src={"/food.jpg"}
+          src={ "/food.jpg"} //food.picture
           alt={food.Name}
           className="object-cover size-full"
         />
