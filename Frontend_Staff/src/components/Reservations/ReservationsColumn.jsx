@@ -21,7 +21,7 @@ export const reservationColumns = [
   },
   {
     id: "guestName",
-    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
+    accessorKey: "guestName",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -34,7 +34,7 @@ export const reservationColumns = [
     cell: ({ row }) => (
       <div className="flex items-start flex-col">
         <div>
-          {row.original.first_name} {row.original.last_name}
+          {row.original.fullName}
         </div>
         <div className="text-sm text-muted-foreground">
           {row.original.guest_id}
@@ -99,34 +99,34 @@ export const reservationColumns = [
     ),
     size: 100,
   },
-  //   {
-  //     id: "booking_status",
-  //     accessorKey: "booking_status",
-  //     header: ({ column }) => (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Status
-  //         <ArrowUpDown className="size-4" />
-  //       </Button>
-  //     ),
-  //     size: 100,
-  //   },
   {
-    id: "booking_via",
-    accessorKey: "booking_via",
+    id: "booking_status",
+    accessorKey: "booking_status",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Booked Via
+        Status
         <ArrowUpDown className="size-4" />
       </Button>
     ),
     size: 100,
   },
+  // {
+  //   id: "booking_via",
+  //   accessorKey: "booking_via",
+  //   header: ({ column }) => (
+  //     <Button
+  //       variant="ghost"
+  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //     >
+  //       Booked Via
+  //       <ArrowUpDown className="size-4" />
+  //     </Button>
+  //   ),
+  //   size: 100,
+  // },
   {
     id: "created_at",
     accessorKey: "created_at",

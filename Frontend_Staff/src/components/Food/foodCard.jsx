@@ -12,7 +12,7 @@ const FoodCard = ({ food, onEditClick }) => {
     <div className="flex flex-col w-64 gap-1 rounded-lg overflow-hidden shadow-sm ">
       <div className="shrink-0 overflow-hidden h-40">
         <img
-          src={"/food.jpg"}
+          src={ "/food.jpg"}
           alt={food.Name}
           className="object-cover size-full"
         />
