@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 import { Hotel } from './hotel.entity';
 import { Room } from './room.entity';
 import { User } from './user.entity';
+import { Transaction } from './transaction.entity';
 
 @Entity('bookings')
 export class Booking {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
+  
+  @OneToMany(() => Transaction, (transaction) => transaction.booking) // Define the inverse relationship
+  transactions: Transaction[];
 
   @Column({type: 'varchar', length:50, nullable: false, default: 'pending'})
   bookingStatus: string;
