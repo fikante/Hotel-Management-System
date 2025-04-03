@@ -35,7 +35,7 @@ const HotelCard = ({ hotel, onEditClick }) => {
         </div>
 
         <div className="text-sm text-muted-foreground">
-          <p className=" text-gray-600 trancuated">{hotel.description}</p>
+          <p className=" text-gray-600 truncated">{hotel.description}</p>
         </div>
       </div>
     </div>
