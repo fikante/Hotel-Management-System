@@ -3,7 +3,8 @@ import { Controller } from '@nestjs/common';
 import { HotelService } from './hotels.service';
 import {Post, Body, Get, Param } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
-
+import { CreateOrderDto } from './dto/create-order.dto';
+import { create } from 'domain';
 
 
 
@@ -27,5 +28,22 @@ export class HotelsController {
       data : hotel 
      }
   }
+
+  @Get(':hotelId/Menu')
+
+  async getAllFood() {
+   const foods = await this.hotelService.getAllFood();
+   return { 
+      Sucess : true ,
+      data :  foods
+   }
+}
+
+
+@Post(':hotelId/orders')
+async createOrder(@Body() createOrderDto: CreateOrderDto) {
+   console.log('Received createOrderDto:', createOrderDto); // Debug log
+   return this.hotelService.createOrder(createOrderDto);
+ }
 
 }
