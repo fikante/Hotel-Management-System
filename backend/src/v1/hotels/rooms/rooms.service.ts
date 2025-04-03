@@ -16,26 +16,28 @@ export class RoomsService {
   constructor(
     @InjectRepository(Room)
     private roomRepository: Repository<Room>,
-    private imageUploadService: ImageUploadService,
+
     @InjectRepository(Hotel)
     private hotelRepository: Repository<Hotel>,
     @InjectRepository(Booking)
     private readonly bookingRepository: Repository<Booking> 
     
   ) {}
-
   async getRoomsByHotelId(hotelId: number) {
     const hotel = await this.hotelRepository.findOne({
-      where: { id: hotelId },  // Fetches the hotel by id
-      relations: ['rooms'], 
-    });      // Find the hotel by id and retreives the hotel includes the rooms from the database 
+      where: { id: hotelId }, // Fetches the hotel by id
+      relations: ['rooms', 'rooms.amenities'], // Includes rooms and their amenities
+    });
 
     if (!hotel) {
-      throw new Error('Hotel not found');         
-    }
-
-    return hotel.rooms;  // Fetches all rooms in the hotel 
-  }  
+      throw new NotFoundException('Hotel not found');
+    } 
+    const roomsWithAmenities = hotel.rooms.map(room => ({
+      ...room,
+      amenities: room.amenities.map(amenity => amenity.name),
+    }));
+    return { data: roomsWithAmenities };
+  }
 
 
   async getAvailableRooms(

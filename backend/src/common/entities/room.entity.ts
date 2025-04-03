@@ -19,9 +19,6 @@ export class Room {
     id: string;
 
     @Column()
-    name: string;
-
-    @Column()
     roomNumber: string;
 
     @Column()
@@ -34,13 +31,10 @@ export class Room {
     occupancy: number;
 
     @Column()
-    bed: number;
+    bedType: string;
 
     @Column()
     image: string;
-
-    @Column({ name: "image_public_id" })
-    imagePublicId: string;
 
     @Column("text")
     description: string;
