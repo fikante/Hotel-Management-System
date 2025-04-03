@@ -12,7 +12,7 @@ export class RoomsController {
     const rooms = await this.roomService.getRoomsByHotelId(hotelId); //Fetches all rooms by hotel id 
     return {
       success: true,
-      data: rooms,
+      rooms,
     };
   }
 

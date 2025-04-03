@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Booking } from "./booking.entity";
 
 @Entity('user')
 export class User {
@@ -45,4 +46,7 @@ export class User {
     // usefule for payloading the jwt
     @Column()
     role: String;
+
+    @OneToMany(() => Booking, (booking) => booking.guest)
+    bookings: Booking[];
 }
