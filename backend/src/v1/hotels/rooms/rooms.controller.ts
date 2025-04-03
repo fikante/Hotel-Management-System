@@ -3,11 +3,11 @@ import { Controller, Get, Post, Param, Body, UseGuards,Query } from '@nestjs/com
 import { CreateRoomDto } from './dto/create-room.dto';
 import { RoomsService } from './rooms.service';
 
-@Controller('api/v1/hotels')
+@Controller('hotels/:hotelId')
 export class RoomsController {
   constructor(private readonly roomService: RoomsService){}
 
-  @Get(':hotelId/rooms')
+  @Get('rooms')
   async getRoomsByHotelId(@Param('hotelId') hotelId: number) {
     const rooms = await this.roomService.getRoomsByHotelId(hotelId); //Fetches all rooms by hotel id 
     return {
@@ -16,30 +16,17 @@ export class RoomsController {
     };
   }
 
-  @Post(':hotelId/rooms')
-  async createRoom(
-    @Param('hotelId') hotelId: number,
-    @Body() createRoomDto: CreateRoomDto,
-  ) {
-    const room = await this.roomService.createRoom(hotelId, createRoomDto); //Create new room info in the database 
-    return {
-      success: true,
-      data: room,
-    };
-  }
 
-
-
-  @Get(':hotelId/rooms')
+  @Get('rooms')
   //@UseGuards(JwtAuthGuard) // Ensure the user is authenticated
   async getAvailableRooms(
     @Param('hotelId') hotelId: number,
     @Query('check_in') checkIn: Date,
     @Query('check_out') checkOut: Date,
-    @Query('occupancy') occupancy: number
+
   ) {
     // Ensure check-in and check-out dates are provided in the query parameters
-    if (!checkIn || !checkOut || !occupancy) {
+    if (!checkIn || !checkOut) {
       throw new Error('Missing required query parameters');
     }
 
@@ -48,7 +35,6 @@ export class RoomsController {
       hotelId,
       checkIn,
       checkOut,
-      occupancy
     );
 
     return {

@@ -11,6 +11,6 @@ export class BookingsController {
   @Get('reservations/bookings')
   async getAllBookings(@Param('hotelId') hotelId: number) {
     const bookings = await this.bookingsService.getAllBookings(hotelId);
-    return { success: true, data: bookings };
+    return bookings;
   }
 }

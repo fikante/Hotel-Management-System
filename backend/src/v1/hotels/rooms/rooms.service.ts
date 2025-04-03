@@ -38,40 +38,10 @@ export class RoomsService {
   }  
 
 
-  async createRoom(hotelId: number, createRoomDto: CreateRoomDto): Promise<Room> {
-    const hotel = await this.hotelRepository.findOne({ where: { id: hotelId } }); // Festches the hotel by hotel id 
-
-    if (!hotel) {
-      throw new Error('Hotel not found');
-    }
-    if (createRoomDto.image) {
-    
-        const publicId = `hotel-${Date.now()}`;      //Generate publici id 
-        
-  
-        
-        const imageUrl = await this.imageUploadService.uploadImage(createRoomDto.image, publicId); // Gets the the URL for the image which is stored on Cloudnary 
-  
-        
-        createRoomDto.image = imageUrl; // Swaps the the new url for the original 
-      }
-
-    const room = this.roomRepository.create({
-      ...createRoomDto,
-      hotel, 
-    });
-
-
-    return await this.roomRepository.save(room); // Saves the room in the database 
-  } 
-
-
-
   async getAvailableRooms(
     hotelId: number,
     checkInDate: Date,
     checkOutDate: Date,
-    occupancy: number
   ): Promise<Room[]> {
     // Fetch the hotel with its rooms
     const hotel = await this.hotelRepository.findOne({
@@ -85,7 +55,7 @@ export class RoomsService {
   
     // Filter rooms based on occupancy
     let availableRooms = hotel.rooms.filter(
-      (room) => room.occupancy >= occupancy && room.status !== 'occupied'
+      (room) => room.status !== 'occupied'
     );
   
     // Check room availability by filtering out booked rooms
