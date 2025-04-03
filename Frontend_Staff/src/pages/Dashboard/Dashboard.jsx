@@ -87,6 +87,10 @@ const MOCK_DATA = {
   ],
   transactionAvg: { averageTransactionAmount: 250.75 },
   newBookings: { newBookings: 42 },
+  genderDemographics: {
+    Male: 55,
+    Female: 45,
+  },
 };
 
 const API_BASE_URL =
@@ -100,6 +104,7 @@ const Dashboard = () => {
   const [roomTypeBreakdown, setRoomTypeBreakdown] = useState({});
   const [guestDemographics, setGuestDemographics] = useState([]);
   const [assignments, setAssignments] = useState([]);
+  const [genderDemographics, setGenderDemographics] = useState({});
   const [roomAvailability, setRoomAvailability] = useState({});
   const [customerSatisfaction, setCustomerSatisfaction] = useState(0);
   const [revenueTrend, setRevenueTrend] = useState([]);
@@ -153,6 +158,7 @@ const Dashboard = () => {
           revenueTrendData,
           transactionAvgData,
           newBookingsData,
+          genderDemographicsData,
         ] = await Promise.all([
           fetchData("/api/dashboard/revenue", MOCK_DATA.revenue),
           fetchData("/api/dashboard/occupancy", MOCK_DATA.occupancy),
@@ -174,6 +180,10 @@ const Dashboard = () => {
             MOCK_DATA.transactionAvg
           ),
           fetchData("/api/dashboard/bookings/new", MOCK_DATA.newBookings),
+          fetchData(
+            "/api/dashboard/guests/gender-demographics",
+            MOCK_DATA.genderDemographics
+          ),
         ]);
 
         // Update state
@@ -183,6 +193,7 @@ const Dashboard = () => {
         setRoomTypeBreakdown(roomBreakdownData || {});
         setGuestDemographics(demographicsData || []);
         setAssignments(assignmentsData || []);
+        setGenderDemographics(genderDemographicsData || {});
         setRoomAvailability(availabilityData || {});
         setCustomerSatisfaction(satisfactionData.customerSatisfaction || 0);
         setRevenueTrend(revenueTrendData || []);
@@ -290,6 +301,22 @@ const Dashboard = () => {
     ],
   };
 
+  const genderDemographicsChartData = {
+    labels: Object.keys(genderDemographics),
+    datasets: [
+      {
+        label: "Gender Distribution",
+        data: Object.values(genderDemographics),
+        backgroundColor: [
+          "rgba(54, 162, 235, 0.8)", // Blue for Male
+          "rgba(255, 99, 132, 0.8)", // Red for Female
+        ],
+        borderColor: "rgba(255, 255, 255, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
   // Common chart options
   const chartOptions = {
     responsive: true,
@@ -385,6 +412,17 @@ const Dashboard = () => {
       title: {
         ...chartOptions.plugins.title,
         text: "Guest Demographics",
+      },
+    },
+  };
+
+  const genderDemographicsChartOptions = {
+    ...chartOptions,
+    plugins: {
+      ...chartOptions.plugins,
+      title: {
+        ...chartOptions.plugins.title,
+        text: "Gender Demographics",
       },
     },
   };
@@ -558,69 +596,35 @@ const Dashboard = () => {
             </ul>
           </div>
 
-          {/* Room Availability and Assignments */}
+          {/* Gender Demographics and Assignments */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Enhanced Room Availability - Graphical Version */}
+            {/* Gender Demographics */}
             <div className="bg-white shadow-md rounded-2xl p-6 hover:shadow-2xl transition-shadow duration-300">
               <h2 className={`${sectionTitleStyle}`}>
-                Room Availability <FaBed className="text-teal-500 ml-2" />
+                Gender Demographics <FaUser className="text-purple-500 ml-2" />
               </h2>
-
-              {Object.keys(roomAvailability).map((roomType) => {
-                const room = roomAvailability[roomType];
-                const total = room.total;
-                const availablePercent = (room.available / total) * 100;
-                const rentedPercent = (room.rented / total) * 100;
-                const outOfOrderPercent = (room.outOfOrder / total) * 100;
-
-                return (
-                  <div key={roomType} className="mb-6 last:mb-0">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className={`${dataLabelStyle} font-semibold`}>
-                        {roomType}
-                      </h3>
-                      <span className="text-sm text-gray-500">
-                        Total: {total}
+              <div className="mb-4">
+                <Doughnut
+                  data={genderDemographicsChartData}
+                  options={genderDemographicsChartOptions}
+                  height={200} // Reduced height for better fit
+                />
+              </div>
+              <ul className="mt-2">
+                {Object.keys(genderDemographics).map((gender) => (
+                  <li
+                    key={gender}
+                    className="py-2 border-b border-gray-200 last:border-b-0"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className={dataLabelStyle}>{gender}</span>
+                      <span className={dataValueStyle}>
+                        {genderDemographics[gender]}%
                       </span>
                     </div>
-
-                    {/* Stacked Bar Chart */}
-                    <div className="w-full h-6 bg-gray-200 rounded-full overflow-hidden mb-2">
-                      <div
-                        className="h-full bg-green-500 inline-block"
-                        style={{ width: `${availablePercent}%` }}
-                        title={`Available: ${room.available}`}
-                      ></div>
-                      <div
-                        className="h-full bg-red-500 inline-block"
-                        style={{ width: `${rentedPercent}%` }}
-                        title={`Rented: ${room.rented}`}
-                      ></div>
-                      <div
-                        className="h-full bg-yellow-500 inline-block"
-                        style={{ width: `${outOfOrderPercent}%` }}
-                        title={`Out of Order: ${room.outOfOrder}`}
-                      ></div>
-                    </div>
-
-                    {/* Legend */}
-                    <div className="flex flex-wrap gap-4 text-xs">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
-                        <span>Available: {room.available}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-red-500 rounded-full mr-1"></div>
-                        <span>Rented: {room.rented}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full mr-1"></div>
-                        <span>Out of Order: {room.outOfOrder}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Assignments */}
