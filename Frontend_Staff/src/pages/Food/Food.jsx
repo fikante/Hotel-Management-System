@@ -1,12 +1,12 @@
-import { FoodCardView } from '@/components/Food/foodCardView'
-import React from 'react'
+import { FoodListingView } from "@/components/Food/FoodListingView";
+import React from "react";
 
 const Food = () => {
   return (
     <div>
-      <FoodCardView/>
+      <FoodListingView />
     </div>
-  )
-}
+  );
+};
 
-export default Food
+export default Food;

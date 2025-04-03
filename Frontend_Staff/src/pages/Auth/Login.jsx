@@ -155,7 +155,7 @@ const Login = () => {
                 <input
                   type="email"
                   id="email"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-2 sm:text-sm border-gray-300 rounded-md"
                   placeholder="you@example.com"
                   {...register("email", {
                     required: "Email is required",
@@ -188,7 +188,8 @@ const Login = () => {
                 <input
                   type="password"
                   id="password"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  placeholder="********"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-2 sm:text-sm border-gray-300 rounded-md"
                   {...register("password", { required: "Password is required" })}
                 />
               </div>

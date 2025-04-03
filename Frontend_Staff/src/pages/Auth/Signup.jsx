@@ -168,7 +168,7 @@ const Signup = ({ hotels }) => {
                   <input
                     type="text"
                     id="firstName"
-                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                     placeholder="Enter first name"
                     {...register("firstName", { required: "First name is required" })}
                   />
@@ -195,7 +195,7 @@ const Signup = ({ hotels }) => {
                   <input
                     type="text"
                     id="lastName"
-                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                     placeholder="Enter last name"
                     {...register("lastName", { required: "Last name is required" })}
                   />
@@ -223,7 +223,7 @@ const Signup = ({ hotels }) => {
                 <input
                   type="email"
                   id="email"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                   placeholder="you@example.com"
                   {...register("email", {
                     required: "Email is required",
@@ -256,7 +256,7 @@ const Signup = ({ hotels }) => {
                 <input
                   type="password"
                   id="password"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                   placeholder="Enter password (min. 8 characters)"
                   {...register("password", {
                     required: "Password is required",
@@ -289,7 +289,7 @@ const Signup = ({ hotels }) => {
                 <input
                   type="password"
                   id="confirmPassword"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                   placeholder="Confirm password"
                   {...register("confirmPassword", {
                     required: "Please confirm your password",

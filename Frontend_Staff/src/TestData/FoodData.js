@@ -7,7 +7,7 @@ export const foodData = [
       Price: 12.99,
       Status: "Available",
       Ingredients: "Tomato sauce, fresh mozzarella, basil, olive oil",
-      EstimatedPreparationTime: "20 minutes"
+      EstimatedPreparationTime: 20
     },
     {
       id: "2",
@@ -17,7 +17,7 @@ export const foodData = [
       Price: 8.50,
       Status: "Available",
       Ingredients: "Ladyfingers, espresso, mascarpone, cocoa powder",
-      EstimatedPreparationTime: "30 minutes (plus chilling)"
+      EstimatedPreparationTime: 30
     },
     {
       id: "3",
@@ -27,7 +27,7 @@ export const foodData = [
       Price: 18.75,
       Status: "Available",
       Ingredients: "Salmon fillet, lemon, dill, olive oil, salt, pepper",
-      EstimatedPreparationTime: "15 minutes"
+      EstimatedPreparationTime: 15
     },
     {
       id: "4",
@@ -37,7 +37,7 @@ export const foodData = [
       Price: 10.25,
       Status: "Available",
       Ingredients: "Beef patty, cheddar, lettuce, tomato, special sauce",
-      EstimatedPreparationTime: "12 minutes"
+      EstimatedPreparationTime: 12
     },
     {
       id: "5",
@@ -47,7 +47,7 @@ export const foodData = [
       Price: 9.75,
       Status: "Available",
       Ingredients: "Romaine, croutons, parmesan, Caesar dressing",
-      EstimatedPreparationTime: "10 minutes"
+      EstimatedPreparationTime: 10
     },
     {
       id: "6",
@@ -57,7 +57,7 @@ export const foodData = [
       Price: 7.50,
       Status: "Out of Stock",
       Ingredients: "Dark chocolate, butter, eggs, sugar, flour",
-      EstimatedPreparationTime: "15 minutes"
+      EstimatedPreparationTime: 15
     },
     {
       id: "7",
@@ -67,7 +67,7 @@ export const foodData = [
       Price: 4.99,
       Status: "Available",
       Ingredients: "Baguette, garlic butter, parsley",
-      EstimatedPreparationTime: "8 minutes"
+      EstimatedPreparationTime: 8
     },
     {
       id: "8",
@@ -77,7 +77,7 @@ export const foodData = [
       Price: 4.50,
       Status: "Available",
       Ingredients: "Espresso, milk, ice, sugar (optional)",
-      EstimatedPreparationTime: "5 minutes"
+      EstimatedPreparationTime: 5
     },
     {
       id: "9",
@@ -87,7 +87,7 @@ export const foodData = [
       Price: 14.25,
       Status: "Out of Stock",
       Ingredients: "Tomato sauce, mozzarella, pepperoni",
-      EstimatedPreparationTime: "20 minutes"
+      EstimatedPreparationTime: 20
     },
     {
       id: "10",
@@ -97,7 +97,7 @@ export const foodData = [
       Price: 11.99,
       Status: "Available",
       Ingredients: "Crab, avocado, cucumber, rice, nori",
-      EstimatedPreparationTime: "15 minutes"
+      EstimatedPreparationTime: 15
     },
     {
       id: "11",
@@ -107,7 +107,7 @@ export const foodData = [
       Price: 5.99,
       Status: "Out of Stock",
       Ingredients: "Mango, yogurt, milk, honey",
-      EstimatedPreparationTime: "5 minutes"
+      EstimatedPreparationTime: 5
     },
     {
       id: "12",
@@ -117,7 +117,7 @@ export const foodData = [
       Price: 14.50,
       Status: "Out of Stock",
       Ingredients: "Spaghetti, eggs, pancetta, parmesan, black pepper",
-      EstimatedPreparationTime: "25 minutes"
+      EstimatedPreparationTime: 25
     },
     {
       id: "13",
@@ -127,7 +127,7 @@ export const foodData = [
       Price: 16.99,
       Status: "Available",
       Ingredients: "Chicken, yogurt, tomatoes, garam masala",
-      EstimatedPreparationTime: "30 minutes"
+      EstimatedPreparationTime: 30
     },
     {
       id: "14",
@@ -137,7 +137,7 @@ export const foodData = [
       Price: 7.99,
       Status: "Available",
       Ingredients: "Flour dough, cabbage, carrots, onions, spices",
-      EstimatedPreparationTime: "15 minutes"
+      EstimatedPreparationTime: 15
     },
     {
       id: "15",
@@ -147,7 +147,7 @@ export const foodData = [
       Price: 9.50,
       Status: "Out of Stock",
       Ingredients: "Acai berries, banana, granola, honey",
-      EstimatedPreparationTime: "10 minutes"
+      EstimatedPreparationTime: 10
     },
     {
       id: "16",
@@ -157,7 +157,7 @@ export const foodData = [
       Price: 11.25,
       Status: "Available",
       Ingredients: "Corn tortillas, ground beef, lettuce, cheese",
-      EstimatedPreparationTime: "15 minutes"
+      EstimatedPreparationTime: 15
     },
     {
       id: "17",
@@ -167,7 +167,7 @@ export const foodData = [
       Price: 19.99,
       Status: "Available",
       Ingredients: "Shrimp, garlic, butter, white wine, parsley",
-      EstimatedPreparationTime: "20 minutes"
+      EstimatedPreparationTime: 20
     },
     {
       id: "18",
@@ -177,7 +177,7 @@ export const foodData = [
       Price: 8.25,
       Status: "Out of Stock",
       Ingredients: "Cream cheese, graham crackers, sugar, eggs",
-      EstimatedPreparationTime: "40 minutes (plus chilling)"
+      EstimatedPreparationTime: 40
     },
     {
       id: "19",
@@ -187,7 +187,7 @@ export const foodData = [
       Price: 12.99,
       Status: "Available",
       Ingredients: "Noodles, pork broth, egg, scallions, nori",
-      EstimatedPreparationTime: "25 minutes"
+      EstimatedPreparationTime: 25
     },
     {
       id: "20",
@@ -197,6 +197,6 @@ export const foodData = [
       Price: 9.99,
       Status: "Available",
       Ingredients: "Chickpeas, pita, tahini, vegetables",
-      EstimatedPreparationTime: "15 minutes"
+      EstimatedPreparationTime: 15
     }
   ];
