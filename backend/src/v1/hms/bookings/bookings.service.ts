@@ -21,7 +21,8 @@ export class BookingsService {
 
         bookingId: booking.id,
         guestId: booking.guest.id,
-        guestName: booking.guest.name,
+        guestFirstName: booking.guest.firstName,
+        guestLastName: booking.guest.lastName,
         roomNum: booking.room.roomNumber,
         roomType: booking.room.type,
         checkIn: booking.checkIn,
