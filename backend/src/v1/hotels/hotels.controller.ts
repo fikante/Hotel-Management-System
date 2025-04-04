@@ -46,4 +46,10 @@ async createOrder(@Body() createOrderDto: CreateOrderDto) {
    return this.hotelService.createOrder(createOrderDto);
  }
 
+ @Get(':hotelId/orders')
+  async getAllOrders() {
+    return this.hotelService.getAllOrders();
+  }
+
+
 }

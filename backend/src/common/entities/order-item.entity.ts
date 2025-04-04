@@ -18,4 +18,6 @@ export class OrderItem {
 
   @Column({ type: 'double', nullable: false })
   price: number;
+
+ 
 }
