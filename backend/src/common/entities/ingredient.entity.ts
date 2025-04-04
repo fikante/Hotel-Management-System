@@ -6,7 +6,7 @@ export class Ingredient {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type: 'varchar', length: 100, nullable: false })
+    @Column()
     name: string;
 
     @ManyToMany(() => Food, (food) => food.ingredients)
