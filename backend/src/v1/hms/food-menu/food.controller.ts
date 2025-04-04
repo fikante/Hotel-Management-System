@@ -28,7 +28,7 @@ export class FoodController {
     async getAllOrders() {
       const orders =this.foodService.getAllOrders();
       return { 
-        Sucess : true ,
+        Sucess : true,
         data :  orders
     }
   
