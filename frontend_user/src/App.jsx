@@ -19,7 +19,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <BookingProvider> {/* ✅ Wrap <Routes> with BookingProvider */}
+        <BookingProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/billing" element={<Billing />} />
