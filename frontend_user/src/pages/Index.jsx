@@ -6,6 +6,7 @@ import Testimonials from "@/components/home/Testimonials";
 import Features from "@/components/home/Features";
 import Footer from "@/components/home/Footer";
 
+
 const Index = () => {
   return (
     <div className="min-h-screen">
