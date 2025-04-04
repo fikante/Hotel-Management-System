@@ -8,8 +8,7 @@ export class Transaction {
     id: string;
 
     @ManyToOne(() => Booking, (booking) => booking.transactions, { eager: true }) // Define the relationship
-    @JoinColumn({ name: 'bookingId' }) // Explicitly set the foreign key column
-    booking: Booking;
+    bookingId: Booking;
 
     @Column('int')
     amount: number;
