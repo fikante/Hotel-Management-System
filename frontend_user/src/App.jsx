@@ -28,10 +28,10 @@ const App = () => (
         <BookingProvider>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/billing" element={<Billing />} />
-            <Route path="/restaurant/menu" element={<Menu />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/history" element={<ServiceHistory />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/billing" element={<Billing />} />
             <Route path="/rooms" element={<RoomsPage />} />
             <Route path="/bookings" element={<BookingPage />} />
             <Route path="/bookings/:id" element={<BookingDetails />} />
