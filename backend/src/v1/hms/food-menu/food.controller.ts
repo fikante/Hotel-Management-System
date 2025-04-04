@@ -25,8 +25,8 @@ export class FoodController {
   }
   
   @Get('hms/hotels/:hotelId')
-    async getAllOrders() {
-      const orders =this.foodService.getAllOrders();
+    async viewAllOrders() {
+      const orders =this.foodService.viewAllOrders();
       return { 
         Sucess : true,
         data :  orders

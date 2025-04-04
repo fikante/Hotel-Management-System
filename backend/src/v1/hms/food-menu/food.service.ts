@@ -41,7 +41,7 @@ export class FoodService {
     });
     return this.foodRepository.save(food);
   } 
-  async getAllOrders() {
+  async viewAllOrders() {
     const orders = await this.orderRepository.find({
       relations: ['booking', 'items', 'items.food', 'booking.room'],
     });
