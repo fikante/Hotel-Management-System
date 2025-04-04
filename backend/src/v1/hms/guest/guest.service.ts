@@ -55,4 +55,43 @@ export class GuestService {
             throw new InternalServerErrorException(error, 'Unable to load guests');
         }
     }
+
+    async updateGuest(id: string, updateGuestDto: any): Promise<{ success: boolean, message: string }> {
+        try {
+            const guest = await this.guestRepostiory.findOne({ where: { id: id } })
+            if (!guest) {
+                return {
+                    success: false,
+                    message: "guest not found"
+                }
+            }
+            await this.guestRepostiory.update(id, updateGuestDto)
+        } catch (error) {
+            console.log('Error message:', error);
+            throw new InternalServerErrorException(error, 'Unable to update guest');
+        }
+        return {
+            success: true,
+            message: "guest has been updated successfully"
+        }
+    }
+    async deleteGuest(id: string): Promise<{ success: boolean, message: string }> {
+        try {
+            const guest = await this.guestRepostiory.findOne({ where: { id: id } })
+            if (!guest) {
+                return {
+                    success: false,
+                    message: "guest not found"
+                }
+            }
+            await this.guestRepostiory.delete(id)
+        } catch (error) {
+            console.log('Error message:', error);
+            throw new InternalServerErrorException(error, 'Unable to delete guest');
+        }
+        return {
+            success: true,
+            message: "guest has been deleted successfully"
+        }
+    }
 }
