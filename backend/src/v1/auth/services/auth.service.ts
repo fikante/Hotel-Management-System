@@ -25,6 +25,7 @@ export class AuthService {
     // Create a new user entity, merging signup data with the hashed password.
     const user = this.userRepository.create({
       ...signupDto,
+      firstName : signupDto.firstName,
       password: signupDto.password,
     });
 

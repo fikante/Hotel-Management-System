@@ -1,9 +1,9 @@
 import { IsAlpha, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class SignupDto {
+  
   @IsNotEmpty()
   firstName: string;
-
 
   @IsAlpha()
   lastName: string;

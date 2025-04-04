@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
 import { Room } from './room.entity';
-import { Manager } from './manager.entity';
+//import { Manager } from './manager.entity';
 import { Assignment } from './assignments.entity';
 import { Staff } from './staff.entity';
 import { Food } from './food.entity';
@@ -35,8 +35,8 @@ export class Hotel {
     @OneToMany(() => Room, (room) => room.hotel)
     rooms: Room[];
 
-    @OneToOne(() => Manager, (manager) => manager.hotel, { onDelete: "SET NULL" })
-    manager: Manager;
+    // @OneToOne(() => Manager, (manager) => manager.hotel, { onDelete: "SET NULL" })
+    // manager: Manager;
 
     @Column()
     location: string;
