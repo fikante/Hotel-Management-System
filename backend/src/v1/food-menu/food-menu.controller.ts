@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { FoodMenuService } from './food-menu.service';
 
@@ -8,12 +8,10 @@ export class FoodMenuController {
     constructor(private readonly foodMenuService: FoodMenuService) {}
 
     @Get('Menu')
-    async getAllFood() {
-     const foods = await this.foodMenuService.getAllFood();
-     return { 
-        Sucess : true ,
-        data :  foods
-     }
+    async getAllFood(
+        @Param('hotelId') hotelId: number,
+    ) {
+     return await this.foodMenuService.getAllFood(hotelId);
     }
     
     @Post('orders')
