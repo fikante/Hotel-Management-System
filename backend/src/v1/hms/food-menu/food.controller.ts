@@ -23,9 +23,16 @@ export class FoodController {
     await this.foodService.addFoodItem(createFoodDto,hotelId);
     return { success: true, message: 'Food item added successfully' };
   }
+  
   @Get('hms/hotels/:hotelId')
     async getAllOrders() {
-      return this.foodService.getAllOrders();
+      const orders =this.foodService.getAllOrders();
+      return { 
+        Sucess : true ,
+        data :  orders
     }
+  
+   
+   }
   
 }
