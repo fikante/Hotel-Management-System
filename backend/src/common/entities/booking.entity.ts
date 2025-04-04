@@ -1,34 +1,42 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 import { Hotel } from './hotel.entity';
 import { Room } from './room.entity';
 import { User } from './user.entity';
+import { Transaction } from './transaction.entity';
 
 @Entity('bookings')
 export class Booking {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+  
+  @OneToMany(() => Transaction, (transaction) => transaction.booking) // Define the inverse relationship
+  transactions: Transaction[];
 
-    @ManyToOne(() => Hotel, (hotel) => hotel.id, { nullable: false })
-    hotelId: Hotel;
+  @Column({type: 'varchar', length:50, nullable: false, default: 'pending'})
+  bookingStatus: string;
 
-    @ManyToOne(() => Room, (room) => room.id, { nullable: false })
-    roomId: Room;
+  @Column({ type: 'varchar', length: 50, nullable: false, default: 'online' })
+  bookingVia: string;
 
-    @ManyToOne(() => User, (user) => user.id, { nullable: false })
-    guestId: User;
+  @Column({ type: 'date', nullable: false })
+  checkIn: Date;
 
-    @Column({ type: 'enum', enum: ['Group', 'Individual'] })
-    bookingType: 'Group' | 'Individual';
+  @Column({ type: 'date', nullable: false })
+  checkOut: Date;
 
-    @Column({ type: 'enum', enum: ['pending', 'confirmed', 'canceled'], nullable: false })
-    bookingStatus: 'pending' | 'confirmed' | 'canceled';
+  @ManyToOne(() => Hotel, (hotel) => hotel.id, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'hotelId' }) // Explicitly set the foreign key column name
+  hotel: Hotel;
 
-    @Column({ type: 'varchar', length: 50, nullable: false, default: 'online' })
-    bookingVia: string;
+  @ManyToOne(() => Room, (room) => room.id, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'roomId' }) // Explicitly set the foreign key column name
+  room: Room;
 
-    @Column({ type: 'date', nullable: false })
-    checkIn: Date;
+  @ManyToOne(() => User, (user) => user.id, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'guestId' }) // Explicitly set the foreign key column name
+  guest: User;
 
-    @Column({ type: 'date', nullable: false })
-    checkOut: Date;
+  @Column({type: 'date', nullable: false})
+  createdAt: Date;
 }

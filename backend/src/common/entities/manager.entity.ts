@@ -3,10 +3,7 @@ import { User } from "./user.entity";
 import { Hotel } from "./hotel.entity";
 
 @Entity()
-export class Manager extends User {
-    constructor() {
-        super();
-    }
+export class Manager {
 
     @Column()
     managerType: string;

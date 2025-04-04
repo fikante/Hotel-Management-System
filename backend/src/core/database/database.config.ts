@@ -10,6 +10,8 @@ import { Manager } from 'src/common/entities/manager.entity';
 import { Room } from 'src/common/entities/room.entity';
 import { Staff } from 'src/common/entities/staff.entity';
 import { User } from 'src/common/entities/user.entity';
+import mysql2 from 'mysql2';
+import { Transaction } from 'typeorm';
 
 export default registerAs('database', (): TypeOrmModuleOptions => {
   return {
@@ -19,9 +21,12 @@ export default registerAs('database', (): TypeOrmModuleOptions => {
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
-    entities: [User,Room,Hotel,Amenity,Assignment,Booking,Food,Invoice,Manager,Staff,],
+    entities: [User,Staff],
     synchronize: true,
     autoLoadEntities: true,
     logging: true,
+    extra: {
+      driver : mysql2,
+    }
   };
 });

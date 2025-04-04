@@ -18,7 +18,7 @@ export class AuthService {
   //Handles user signup by creating a new user record.
   async signup(
     signupDto: SignupDto,
-  ): Promise<{ userId: number; email: string }> {
+  ): Promise<{ userId: string; email: string }> {
     // Hash the plaintext password from the signup data with a salt factor of 10.
     //const hashedPassword = await bcrypt.hash(signupDto.password, 10);
 

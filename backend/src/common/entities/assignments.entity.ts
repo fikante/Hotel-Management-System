@@ -19,9 +19,9 @@ id: number;
 @JoinColumn({ name: 'hotel_id' })
 hotel: Hotel;
 
-@ManyToOne(() => Staff, (staff) => staff.assignments, { nullable: false })
-@JoinColumn({ name: 'staff_id' })
-staff: Staff;
+// @ManyToOne(() => Staff, (staff) => staff.assignments, { nullable: false })
+// @JoinColumn({ name: 'staff_id' })
+// staff: Staff;
 
 @ManyToOne(() => Room, (room) => room.assignments, { nullable: false })
 @JoinColumn({ name: 'room_id' })

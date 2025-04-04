@@ -1,8 +1,12 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsAlpha, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class SignupDto {
   @IsNotEmpty()
-  fullName: string;
+  firstName: string;
+
+
+  @IsAlpha()
+  lastName: string;
 
   // makes sure the field IS a valid email address
   @IsEmail()
