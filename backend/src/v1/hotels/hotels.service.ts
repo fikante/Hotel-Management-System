@@ -119,27 +119,7 @@ export class HotelService {
       message: 'Food order placed successfully',
     };
   }
-  async getAllOrders() {
-    const orders = await this.orderRepository.find({
-      relations: ['booking', 'items', 'items.food', 'booking.room'],
-    });
-
-    // Mapping the result 
-    return orders.map((order) => ({
-      orderId: order.id,
-      roomNo: order.booking.room.id,
-      foodItems: order.items.map((item) => ({
-        name: item.food.name,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      totalPrice: order.totalPrice,
-      status: order.status,
-      time : order.createdAt,
-      specialRequest: order.specialRequest,
-    }));
-  }
-
+  
 
 
 
