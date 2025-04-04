@@ -7,8 +7,10 @@ import { FoodMenuModule } from './food-menu/food-menu.module';
 import { StaffModule } from './hms/staff/staff.module';
 import { DashboardModule } from './hms/dashboard/dashboard.module';
 import { HmsModule } from './hms/hms.module';
+import { GuestModule } from './hms/guest/guest.module';
+// import { PaymentModule } from './payment/payment.module';
 
 @Module({
-  imports: [AuthModule]
+  imports: [AuthModule, HotelsModule, BookingsModule, FoodMenuModule, HmsModule, GuestModule]
 })
 export class V1Module {}

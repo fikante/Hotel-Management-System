@@ -12,7 +12,7 @@ import {
   } from 'typeorm';
   import * as bcrypt from 'bcrypt';
   import { Hotel } from 'src/common/entities/hotel.entity';
-//import { Assignment } from './assignments.entity';
+import { Assignment } from './assignments.entity';
   
   @Entity()
   export class Staff {
@@ -62,8 +62,8 @@ import {
     // @UpdateDateColumn({ name: 'updated_at' })
     // updatedAt: Date;
   
-    // @ManyToOne(() => Hotel, (hotel) => hotel.staff)
-    // hotel: Hotel;
+    @ManyToOne(() => Hotel, (hotel) => hotel.staff)
+    hotel: Hotel;
   
     @Column({ nullable: true })
     currentTask: string;
@@ -72,8 +72,8 @@ import {
     assignedRoomId: string;
 
 
-    // @OneToMany(() => Assignment, (assignment) => assignment.staff)
-    // assignments: Assignment[]; //currently not being used
+    @OneToMany(() => Assignment, (assignment) => assignment.staff)
+    assignments: Assignment[]; //currently not being used
     
     @BeforeInsert()
     @BeforeUpdate()

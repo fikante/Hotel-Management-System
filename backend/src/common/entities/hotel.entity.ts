@@ -44,8 +44,8 @@ export class Hotel {
     @OneToMany(() => Assignment, (assignment) => assignment.hotel)
     assignments: Assignment[];
 
-    // @OneToMany(() => Staff, (staff) => staff.hotel)
-    // staff: Staff[];
+    @OneToMany(() => Staff, (staff) => staff.hotel)
+    staff: Staff[];
 
     @Column({ type: 'varchar', length: 255, nullable: true })
     image: string;

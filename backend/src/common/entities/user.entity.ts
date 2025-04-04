@@ -1,9 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Booking } from "./booking.entity";
 
 @Entity('user')
 export class User {
-
 
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -14,41 +13,41 @@ export class User {
     @Column()
     lastName: string;
     
-    @Column()
+    @Column({nullable: true})
     picture: string;
 
     @Column()
     email: string;
 
-    @Column()
+    @Column({nullable: true})
     phone: string;
     
     @Column()
     password: string;
 
-    @Column()
+    @Column({nullable: true})
     address: string;
 
     @Column()
     identificationType: string;
 
-    @Column()
+    @Column({nullable: true})
     identificationNumber: string;
     
-    @Column()
+    @CreateDateColumn()
     createdAt: Date;
 
     @Column()
     gender: string;
 
-    @Column()
+    @Column({nullable: true})
     dateOfBirth: Date;
 
     @Column()
     nationality: string;
     
     // usefule for payloading the jwt
-    @Column()
+    @Column({nullable: true})
     role: String;
 
     @OneToMany(() => Booking, (booking) => booking.guest)
