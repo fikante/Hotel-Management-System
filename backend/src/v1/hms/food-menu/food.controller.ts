@@ -35,13 +35,10 @@ export class FoodController {
     return { success: true, message: 'Food item added successfully', image: createFoodDto.image };
   }
   
-  @Get()
+    @Get('orders')
     async viewAllOrders() {
-      const orders =this.foodService.viewAllOrders();
-      return { 
-        Sucess : true,
-        data :  orders
-    }
+    return this.foodService.viewAllOrders();
+    
   
    
    }

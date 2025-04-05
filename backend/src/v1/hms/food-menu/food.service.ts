@@ -97,26 +97,68 @@ export class FoodService {
     return this.foodRepository.save(food);
   } 
   async viewAllOrders() {
-    const orders = await this.orderRepository.find({
-      relations: ['booking', 'items', 'items.food', 'booking.room'],
-    });
-
-    // Mapping the result 
-    return orders.map((order) => ({
-      orderId: order.id,
-      roomNo: order.booking.room.id,
-      foodItems: order.items.map((item) => ({
-        name: item.food.name,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      totalPrice: order.totalPrice,
-      status: order.status,
-      time : order.createdAt,
-      specialRequest: order.specialRequest,
-    }));
-  }
+    try {
+      const rawOrders = await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.items', 'item')
+        .leftJoinAndSelect('item.food', 'food')
+        .leftJoinAndSelect('order.booking', 'booking')
+        .leftJoinAndSelect('booking.room', 'room')
+        .select([
+          'order.id AS orderId',
+          'order.status AS status',
+          'order.createdAt AS time',
+          'order.specialRequest AS specialRequest',
+          'room.roomNumber AS roomNo', // Use room number instead of UUID
+          'food.name AS foodName',      // Food item details
+          'item.quantity AS quantity',
+          'item.price AS price'
+        ])
+        .getRawMany();
   
+      // Group items by orderId
+      const groupedOrders = rawOrders.reduce((acc, row) => {
+        const orderId = row.orderId;
+        
+        // Initialize order if not exists
+        if (!acc[orderId]) {
+          acc[orderId] = {
+            orderId: orderId,
+            status: row.status,
+            time: row.time || 'N/A',
+            specialRequest: row.specialRequest || 'None',
+            roomNo: row.roomNo || 'N/A',
+            foodItems: []
+          };
+        }
+  
+        // Add food item to the order (if exists)
+        if (row.foodName) {
+          acc[orderId].foodItems.push({
+            name: row.foodName,
+            quantity: row.quantity,
+            price: row.price
+          });
+        }
+  
+        return acc;
+      }, {});
+  
+      // Convert to array and handle empty foodItems
+      return Object.values(groupedOrders).map((order: any) => ({
+        ...order,
+        foodItems: order.foodItems.length > 0 ? order.foodItems : [{ 
+          name: 'No items', 
+          quantity: 0, 
+          price: 0 
+        }]
+      }));
+  
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch orders');
+    }
+  }
 
   async deleteFoodItem(id: string, hotelId: number) {
     const foodItem = await this.foodRepository.findOne({ where: { hotel: { id: hotelId }, id: id } });

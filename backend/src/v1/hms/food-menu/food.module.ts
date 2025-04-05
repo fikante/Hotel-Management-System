@@ -8,9 +8,10 @@ import { ImageUploadService } from 'src/common/services/image-upload.service';
 import { Ingredient } from 'src/common/entities/ingredient.entity';
 import { Order } from 'src/common/entities/order.entity';
 import { OrderItem } from 'src/common/entities/order-item.entity';
+import { Booking } from 'src/common/entities/booking.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Food, Hotel, Ingredient, Order, OrderItem])],
+  imports: [TypeOrmModule.forFeature([Food, Hotel, Ingredient, Order, OrderItem,Booking])],
   controllers: [FoodController],
   providers: [FoodService,ImageUploadService],
 })

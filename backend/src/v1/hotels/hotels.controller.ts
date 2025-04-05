@@ -40,11 +40,7 @@ export class HotelsController {
 }
 
 
-@Post(':hotelId/orders')
-async createOrder(@Body() createOrderDto: CreateOrderDto) {
-   console.log('Received createOrderDto:', createOrderDto); // Debug log
-   return this.hotelService.createOrder(createOrderDto);
- }
+
 
 
 
