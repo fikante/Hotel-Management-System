@@ -13,7 +13,7 @@ import RoomsPage from "./pages/RoomsPage";
 import BookingPage from "./pages/BookingPage";
 import BookingDetails from "./components/Rooms/BookingDetails";
 import { BookingProvider } from "./data/BookingContext";
-import UserLogin from "./pages/UserLogin";
+import UserLogin from "./pages/userLogin";
 import BrowseHotels from "./pages/BrowseHotels";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
@@ -33,11 +33,11 @@ const App = () => (
         <BookingProvider>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/history" element={<ServiceHistory />} />
-            <Route path="/menu" element={<Menu />} />
+            <Route path="/services" element={<ServicesPage />} /> {/* Remove */}
+            <Route path="/history" element={<ServiceHistory />} /> {/* Remove */}
+            <Route path="/menu" element={<Menu />} /> {/* Remove */}
             <Route path="/billing" element={<Billing />} />
-            <Route path="/rooms" element={<RoomsPage />} />
+            <Route path="/rooms" element={<RoomsPage />} /> {/* Remove */}
             <Route path="/bookings" element={<BookingPage />} />
             <Route path="/bookings/:id" element={<BookingDetails />} />
             <Route path="/user_login" element={<UserLogin />} />

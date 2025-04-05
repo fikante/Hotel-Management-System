@@ -1,7 +1,8 @@
 // src/components/ServiceHistory.jsx
 import React from 'react';
 import './ServiceHistory.css';
-import Navbar from './Navbar';
+import Navbar from '@/components/Navbar/Navbar';
+;
 
 const ServiceHistory = ({ requests, onStatusUpdate }) => {
   return (
