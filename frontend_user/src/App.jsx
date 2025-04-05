@@ -8,8 +8,9 @@ import Billing from "./pages/Billing";
 import NotFound from "./pages/NotFound";
 import "./App.css";
 
-
 import Menu from './pages/restaurant/Menu';
+import OrderHistory from './pages/restaurant/OrderHistory';
+import OrderForm from './pages/restaurant/OrderForm';
 
 const queryClient = new QueryClient();
 
@@ -23,8 +24,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/billing" element={<Billing />} />
 
-          
+          {/* Restaurant routes */}
           <Route path="/restaurant/menu" element={<Menu />} />
+          <Route path="/restaurant/history" element={<OrderHistory />} />
+          <Route path="/restaurant/order" element={<OrderForm />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
