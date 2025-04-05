@@ -34,7 +34,7 @@ export class StaffAuthService {
     return {
       token: this.jwtService.sign(payload, {
         secret: process.env.STAFF_JWT_SECRET, // The secret key for staff JWT tokens.
-        expiresIn: '1h', // Token expiration is set to 1 hour.
+        expiresIn: process.env.STAFF_JWT_EXPIRATION, // Token expiration is set to 1 hour.
       }),
     };
   }

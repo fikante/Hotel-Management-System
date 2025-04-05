@@ -26,6 +26,7 @@ export class AuthService {
     const user = this.userRepository.create({
       ...signupDto,
       password: signupDto.password,
+      name : signupDto.fullName     
     });
 
     // Save the newly created user entity into the database.
@@ -59,7 +60,7 @@ export class AuthService {
     return {
       token: this.jwtService.sign(payload, {
         secret: process.env.JWT_SECRET, // JWT secret key loaded from the environment.
-        expiresIn: '1h', // Token expiration time set to 1 hour.
+        expiresIn: process.env.JWT_EXPIRATION, // Token expiration time set to 1 hour.
       }),
     };
   }

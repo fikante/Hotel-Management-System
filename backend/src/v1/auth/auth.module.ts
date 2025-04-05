@@ -22,13 +22,12 @@ import { JwtStrategy, StaffJwtStrategy } from './strategies/jwt.strategy';
     // Register JwtModule for regular users using the JWT_SECRET.
     JwtModule.register({
       secret: process.env.JWT_SECRET, // JWT secret key for regular users (loaded from .env)
-      signOptions: { expiresIn: '1h' }, // Token expiration set to 1 hour
+      signOptions: { expiresIn: process.env.JWT_EXPIRATION}, // Token expiration set to 1 hour
     }),
-
     // Register another instance of JwtModule for staff using the STAFF_JWT_SECRET.
     JwtModule.register({
       secret: process.env.STAFF_JWT_SECRET, // JWT secret key for staff members (loaded from .env)
-      signOptions: { expiresIn: '1h' }, // Token expiration set to 1 hour
+      signOptions: { expiresIn: process.env.STAFF_JWT_EXPIRATION }, // Token expiration set to 1 hour
     }),
   ],
   // Define the controllers for authentication-related endpoints.
