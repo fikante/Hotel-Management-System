@@ -116,7 +116,7 @@ export class PaymentService {
       console.log('amount_totla:', session.amount_total);
       // Update your transaction table
       const transaction = this.transactionRepository.create({
-        bookingId: booking,
+        booking,
         amount: session.amount_total ?? 0,
         currency: session.currency ?? 'usd',
         status: 'success',

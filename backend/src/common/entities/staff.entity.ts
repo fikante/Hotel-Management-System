@@ -33,7 +33,11 @@ import { Assignment } from './assignments.entity';
   
     @Column()
     password: string;
-  
+    
+    @Column()
+    dateOfBirth: Date;
+    
+    
     @Column({ default: true })
     isTemporaryPassword: boolean;
   
