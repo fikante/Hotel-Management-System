@@ -1,8 +1,16 @@
+function App() {
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+    </div>
+  );
+}
 import React from 'react';
 import { useBooking } from '@/hooks/useBooking';
+import Navbar from '@/components/Navbar/Navbar';
 import CurrentBooking from '@/components/Rooms/CurrentBooking';
 import BookingHistory from '@/components/Rooms/BookingHistory';
-import Navbar from '@/components/Rooms/Navbar';
+//import Navbar from '@/components/Rooms/Navbar';
 import "./Rooms_Booking.css";
 
 const BookingPage = () => {

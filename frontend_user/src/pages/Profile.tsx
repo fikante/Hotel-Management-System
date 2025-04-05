@@ -1,11 +1,18 @@
-
+function App() {
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+    </div>
+  );
+}
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import Navbar from "@/components/Profile/Navbar";
+import Navbar from '@/components/Navbar/Navbar';
+//import Navbar from "@/components/Profile/Navbar";
 import UserAvatar from "@/components/Profile/UserAvatar";
 import ProfileField from "@/components/Profile/ProfileField";
 import EditProfileForm from "@/components/Profile/EditProfileForm";

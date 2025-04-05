@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Filter } from 'lucide-react';
-import Navbar from './Navbar';
+import Navbar from '@/components/Navbar/Navbar';
 import SearchBar from './SearchBar';
 import FiltersSidebar from './FiltersSidebar';
 import HotelCard from './HotelCard';
