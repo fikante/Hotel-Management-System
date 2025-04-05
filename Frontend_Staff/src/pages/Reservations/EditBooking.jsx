@@ -10,9 +10,10 @@ import { ArrowDownCircle } from "lucide-react";
 const EditBooking = ({ reservationData, onSuccess }) => {
   const form = useForm({
     defaultValues: {
-      checkIn: reservationData.check_in,
-      checkOut: reservationData.check_out,
-      roomNumber: reservationData.roomNumber,
+      checkIn: reservationData.checkIn,
+      checkOut: reservationData.checkOut,
+      roomNumber: reservationData.roomNum,
+      status: reservationData.bookingStatus,
     },
   });
   const [showTable, setShowTable] = useState(false);
@@ -24,14 +25,15 @@ const EditBooking = ({ reservationData, onSuccess }) => {
   useEffect(() => {
     if (reservationData) {
       reset({
-        checkIn: reservationData.check_in,
-        checkOut: reservationData.check_out,
+        checkIn: reservationData.checkIn,
+        checkOut: reservationData.checkOut,
+        status: reservationData.bookingStatus,
       });
     }
   }, [reservationData, reset]);
-
+  
   const onSubmit = (data) => {
-    data.roomNumber = selectedRoom?.roomNumber || reservationData.room_id;
+    data.roomNumber = selectedRoom?.roomNum || reservationData.roomNum;
     console.log(data, selectedRoom);
     onSuccess();
   };
@@ -84,32 +86,55 @@ const EditBooking = ({ reservationData, onSuccess }) => {
             )}
           </div>
         </div>
-        <div className="flex flex-row gap-4">
-          <div className="flex flex-col gap-2 ">
-            <label className="text-[#232323] ">Room Number</label>
-            <input
-              type="text"
-              id="roomNumber"
-              {...register("roomNumber")}
-              disabled={true}
-              value={selectedRoom?.roomNumber || reservationData.room_id}
-              className={`border border-gray-300 rounded-md p-2 w-full ${
-                errors.roomNumber ? "border-red-500" : ""
-              }`}
-            />
-          </div>
-          {!showTable && (
-            <div className="items-end flex">
-              <Button
-                variant="default"
-                className="bg-blue-500 text-white rounded-lg p-5 hover:bg-blue-600"
-                onClick={() => setShowTable(true)}
-              >
-                Select New Room
-                <ArrowDownCircle className="ml-2" size={20} />
-              </Button>
+        <div className="flex flex-row gap-20 items-center">
+          <div className="flex flex-row gap-4">
+            <div className="flex flex-col gap-2 ">
+              <label className="text-[#232323] ">Room Number</label>
+              <input
+                type="text"
+                id="roomNumber"
+                {...register("roomNumber")}
+                disabled={true}
+                value={selectedRoom?.roomNumber || reservationData.roomNum}
+                className={`border border-gray-300 rounded-md p-2 w-full ${
+                  errors.roomNumber ? "border-red-500" : ""
+                }`}
+              />
             </div>
-          )}
+            {!showTable && (
+              <div className="items-end flex">
+                <Button
+                  variant="default"
+                  className="bg-blue-500 text-white rounded-lg p-5 hover:bg-blue-600"
+                  onClick={() => setShowTable(true)}
+                >
+                  Select New Room
+                  <ArrowDownCircle className="ml-2" size={20} />
+                </Button>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-[#232323] ">Status</label>
+            <select
+              {...register("status", {
+                required: {
+                  value: true,
+                  message: "Status is required",
+                },
+              })}
+              className={`border border-gray-300 rounded-md p-2 w-full ${
+                errors.status ? "border-red-500" : ""
+              }`}
+            >
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            {errors.status && (
+              <span className="text-red-500">{errors.status.message}</span>
+            )}
+          </div>
         </div>
         {showTable && (
           <div className="">

@@ -20,7 +20,7 @@ export const guestColumns = [
   },
   {
     id: "fullName",
-    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+    accessorKey: "fullName",
     header: ({ column }) => (
       <Button
         variant="ghost"

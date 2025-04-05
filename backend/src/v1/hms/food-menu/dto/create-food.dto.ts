@@ -1,21 +1,30 @@
-
-import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsString, IsOptional, IsArray } from 'class-validator';
+import { Ingredient } from 'src/common/entities/ingredient.entity';
 
 export class CreateFoodDto {
-
   @IsString()
   name: string;
 
-  @IsNumber()
+  @Transform(({ value }) => Number(value))
   price: number;
 
   @IsString()
-  description: string;
+  category: string;
+
+  @IsOptional()
+  @Transform(({ value }) => (typeof value === 'object' && value.path ? value.path : value)) // Extract file path if it's a file
+  @IsString()
+  image: string;
 
   @IsString()
-  categories: string;
+  status: string;
 
-  @IsNumber()
-  @IsOptional()
-  timeToMake?: number;
+  @Transform(({ value }) => Number(value))
+  timeToMake: string;
+
+  @Transform(({ value }) => Array.isArray(value) ? value : JSON.parse(value))
+  @IsArray()
+  ingredients: Ingredient[];
+
 }

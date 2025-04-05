@@ -10,7 +10,7 @@ export class Order {
   @ManyToOne(() => Booking, (booking) => booking.id, { nullable: false, onDelete: 'CASCADE' })
   booking: Booking;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
+  @OneToMany(() => OrderItem, (item) => item.order, { cascade: true })
   items: OrderItem[];
 
   @Column({ type: 'double', nullable: false })

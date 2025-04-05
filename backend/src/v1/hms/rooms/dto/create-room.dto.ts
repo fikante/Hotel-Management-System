@@ -1,6 +1,6 @@
 
 import { IsString, IsNumber, IsUrl, IsOptional, IsArray, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 class AmenityDto {
   @IsString()
@@ -8,8 +8,6 @@ class AmenityDto {
 }
 
 export class CreateRoomDto {
-  @IsString()
-  hotelId: string;
 
   @IsString()
   roomNumber: string;
@@ -17,14 +15,14 @@ export class CreateRoomDto {
   @IsString()
   type: string;
 
-  @IsNumber()
+  @Transform(({ value }) => Number(value))
   price: number;
 
-  @IsNumber()
+  @Transform(({ value }) => Number(value))
   occupancy: number;
 
-  @IsNumber()
-  bed: number;
+  @IsString()
+  bedType: string;
 
   @IsUrl({ protocols: ['https'], require_protocol: true })
   @IsOptional() 
@@ -33,20 +31,17 @@ export class CreateRoomDto {
   @IsString()
   description: string;
 
-  @IsNumber()
+  @Transform(({ value }) => Number(value))
   size: number;
 
   @IsString()
   @IsOptional()
   status?: string;
 
-  @IsArray()
+  @Transform(({ value }) => JSON.parse(value))
   @ValidateNested({ each: true })
   @Type(() => AmenityDto)
   @IsOptional()
   amenities?: AmenityDto[];
 
-  @IsString()
-  @IsOptional()
-  imagePublicId?: string;
 }

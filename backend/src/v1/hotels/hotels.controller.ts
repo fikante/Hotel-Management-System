@@ -3,7 +3,7 @@ import { Controller } from '@nestjs/common';
 import { HotelService } from './hotels.service';
 import {Post, Body, Get, Param } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDto } from '../food-menu/dto/create-order.dto';
 import { create } from 'domain';
 
 
@@ -46,6 +46,6 @@ async createOrder(@Body() createOrderDto: CreateOrderDto) {
    return this.hotelService.createOrder(createOrderDto);
  }
 
-x
+
 
 }

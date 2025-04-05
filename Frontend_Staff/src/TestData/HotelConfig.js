@@ -1,4 +1,5 @@
 export const hotelName = "Hotel Management System";
+export const Administration = "Administration";
 
 export const navItems = [
   {
@@ -58,3 +59,34 @@ export const userProfile = {
   status: "active",
   picture: "https://randomuser.me/api/portraits/men/9.jpg",
 };
+
+export const AdminProfile = {
+  firstName: "John",
+  lastName: "Wick",
+  email: "john.wick@example.com",
+  phone: "+1 888 999 0001",
+  dob: "1986-06-19",
+  role: "Admin",
+  picture: "https://randomuser.me/api/portraits/men/9.jpg",
+};
+
+export const AdminNavItems = [
+  {
+    id: "hotels",
+    name: "Hotels",
+    icon: "🏨",
+    path: "/admin/hotels",
+  },
+  {
+    id: "managers",
+    name: "Managers",
+    icon: "👥",
+    path: "/admin/managers",
+  },
+  {
+    id: "settings",
+    name: "Settings",
+    icon: "⚙️",
+    path: "/admin/settings",
+  },
+];

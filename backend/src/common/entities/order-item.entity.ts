@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Order } from './order.entity';
 import { Food } from './food.entity';
 
@@ -10,13 +10,13 @@ export class OrderItem {
   @ManyToOne(() => Order, (order) => order.items, { onDelete: 'CASCADE' })
   order: Order;
 
-  @ManyToOne(() => Food, (food) => food.id, { nullable: false })
+  @ManyToOne(() => Food, (food) => food.orderItems, { eager: true })
   food: Food;
 
-  @Column({ type: 'int', nullable: false })
+  @Column()
   quantity: number;
 
-  @Column({ type: 'double', nullable: false })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
  

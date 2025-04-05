@@ -4,10 +4,14 @@ import { FoodController } from './food.controller';
 import { FoodService } from './food.service';
 import { Food } from 'src/common/entities/food.entity';
 import { Hotel } from 'src/common/entities/hotel.entity';
+import { ImageUploadService } from 'src/common/services/image-upload.service';
+import { Ingredient } from 'src/common/entities/ingredient.entity';
+import { Order } from 'src/common/entities/order.entity';
+import { OrderItem } from 'src/common/entities/order-item.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Food, Hotel])],
+  imports: [TypeOrmModule.forFeature([Food, Hotel, Ingredient, Order, OrderItem])],
   controllers: [FoodController],
-  providers: [FoodService],
+  providers: [FoodService,ImageUploadService],
 })
 export class FoodModule {}

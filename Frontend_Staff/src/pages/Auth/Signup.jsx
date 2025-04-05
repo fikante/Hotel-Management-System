@@ -1,13 +1,12 @@
 import { useForm } from "react-hook-form";
 import Button from "../../components/SignUp/Button";
-import HotelDropdown from "../../components/SignUp/HotelDropdown";
 import SubmissionStatus from "../../components/SignUp/SubmissionStatus";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserPlus, FaIdBadge, FaEnvelope, FaLock, FaHotel } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const Signup = ({ hotels }) => {
+const Signup = () => {
   const {
     register,
     handleSubmit,
@@ -18,29 +17,8 @@ const Signup = ({ hotels }) => {
   const navigate = useNavigate();
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
 
-  // Sample hotels data with logos
-  const allHotels = useMemo(() => [
-    { id: 1, name: "Skylight Hotel", logo: "/hotel-logos/skylight.png" },
-    { id: 2, name: "Sheraton Grand", logo: "/hotel-logos/sheraton.png" },
-    { id: 3, name: "Intercontinental Addis", logo: "/hotel-logos/intercontinental.png" },
-    { id: 4, name: "Haile Resort Hawassa", logo: "/hotel-logos/haile.png" },
-    { id: 5, name: "Hyatt Regency", logo: "/hotel-logos/hyatt.png" },
-    { id: 6, name: "Hilton Addis Ababa", logo: "/hotel-logos/hilton.png" },
-    { id: 7, name: "Radisson Blu", logo: "/hotel-logos/radisson.png" },
-    { id: 8, name: "Golden Tulip", logo: "/hotel-logos/golden-tulip.png" },
-    { id: 9, name: "Ramada Addis", logo: "/hotel-logos/ramada.png" },
-    { id: 10, name: "Marriott Executive", logo: "/hotel-logos/marriott.png" },
-    { id: 11, name: "Capital Hotel", logo: "/hotel-logos/capital.png" },
-  ], []);
 
-  // Filtered hotels based on search term
-  const filteredHotels = useMemo(() => {
-    return allHotels.filter((hotel) =>
-      hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm, allHotels]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -50,7 +28,7 @@ const Signup = ({ hotels }) => {
         type: "success",
         message: "Staff account created successfully!",
       });
-      setTimeout(() => navigate("/dashboard/staff"), 3000);
+      setTimeout(() => navigate("/admin"), 3000);
     } catch (error) {
       setSubmissionStatus({
         type: "error",
@@ -145,7 +123,7 @@ const Signup = ({ hotels }) => {
             initial="initial"
             animate="animate"
           >
-            Create Staff Account
+            Create Admin Account
           </motion.h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -168,7 +146,7 @@ const Signup = ({ hotels }) => {
                   <input
                     type="text"
                     id="firstName"
-                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                     placeholder="Enter first name"
                     {...register("firstName", { required: "First name is required" })}
                   />
@@ -195,7 +173,7 @@ const Signup = ({ hotels }) => {
                   <input
                     type="text"
                     id="lastName"
-                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                     placeholder="Enter last name"
                     {...register("lastName", { required: "Last name is required" })}
                   />
@@ -223,7 +201,7 @@ const Signup = ({ hotels }) => {
                 <input
                   type="email"
                   id="email"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                   placeholder="you@example.com"
                   {...register("email", {
                     required: "Email is required",
@@ -256,7 +234,7 @@ const Signup = ({ hotels }) => {
                 <input
                   type="password"
                   id="password"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                   placeholder="Enter password (min. 8 characters)"
                   {...register("password", {
                     required: "Password is required",
@@ -289,7 +267,7 @@ const Signup = ({ hotels }) => {
                 <input
                   type="password"
                   id="confirmPassword"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-3 py-1 sm:text-sm border-gray-300 rounded-md"
                   placeholder="Confirm password"
                   {...register("confirmPassword", {
                     required: "Please confirm your password",

@@ -7,7 +7,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Hotel } from 'src/common/entities/hotel.entity';
 import { Food } from 'src/common/entities/food.entity';
 import { Booking } from 'src/common/entities/booking.entity';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDto } from '../food-menu/dto/create-order.dto';
 import { Order } from 'src/common/entities/order.entity';
 import { OrderItem } from 'src/common/entities/order-item.entity';
 

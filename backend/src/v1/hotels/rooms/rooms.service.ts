@@ -16,62 +16,34 @@ export class RoomsService {
   constructor(
     @InjectRepository(Room)
     private roomRepository: Repository<Room>,
-    private imageUploadService: ImageUploadService,
+
     @InjectRepository(Hotel)
     private hotelRepository: Repository<Hotel>,
     @InjectRepository(Booking)
     private readonly bookingRepository: Repository<Booking> 
     
   ) {}
-
   async getRoomsByHotelId(hotelId: number) {
     const hotel = await this.hotelRepository.findOne({
-      where: { id: hotelId },  // Fetches the hotel by id
-      relations: ['rooms'], 
-    });      // Find the hotel by id and retreives the hotel includes the rooms from the database 
-
-    if (!hotel) {
-      throw new Error('Hotel not found');         
-    }
-
-    return hotel.rooms;  // Fetches all rooms in the hotel 
-  }  
-
-
-  async createRoom(hotelId: number, createRoomDto: CreateRoomDto): Promise<Room> {
-    const hotel = await this.hotelRepository.findOne({ where: { id: hotelId } }); // Festches the hotel by hotel id 
-
-    if (!hotel) {
-      throw new Error('Hotel not found');
-    }
-    if (createRoomDto.image) {
-    
-        const publicId = `hotel-${Date.now()}`;      //Generate publici id 
-        
-  
-        
-        const imageUrl = await this.imageUploadService.uploadImage(createRoomDto.image, publicId); // Gets the the URL for the image which is stored on Cloudnary 
-  
-        
-        createRoomDto.image = imageUrl; // Swaps the the new url for the original 
-      }
-
-    const room = this.roomRepository.create({
-      ...createRoomDto,
-      hotel, 
+      where: { id: hotelId }, // Fetches the hotel by id
+      relations: ['rooms', 'rooms.amenities'], // Includes rooms and their amenities
     });
 
-
-    return await this.roomRepository.save(room); // Saves the room in the database 
-  } 
-
+    if (!hotel) {
+      throw new NotFoundException('Hotel not found');
+    } 
+    const roomsWithAmenities = hotel.rooms.map(room => ({
+      ...room,
+      amenities: room.amenities.map(amenity => amenity.name),
+    }));
+    return { data: roomsWithAmenities };
+  }
 
 
   async getAvailableRooms(
     hotelId: number,
     checkInDate: Date,
     checkOutDate: Date,
-    occupancy: number
   ): Promise<Room[]> {
     // Fetch the hotel with its rooms
     const hotel = await this.hotelRepository.findOne({
@@ -85,7 +57,7 @@ export class RoomsService {
   
     // Filter rooms based on occupancy
     let availableRooms = hotel.rooms.filter(
-      (room) => room.occupancy >= occupancy && room.status !== 'occupied'
+      (room) => room.status !== 'occupied'
     );
   
     // Check room availability by filtering out booked rooms

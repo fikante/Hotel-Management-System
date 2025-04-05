@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 import { Hotel } from './hotel.entity';
 import { Room } from './room.entity';
 import { User } from './user.entity';
+import { Transaction } from './transaction.entity';
 
 @Entity('bookings')
 export class Booking {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-
+  
   @Column({type: 'varchar', length:50, nullable: false, default: 'pending'})
   bookingStatus: string;
 
@@ -33,6 +33,9 @@ export class Booking {
   @ManyToOne(() => User, (user) => user.id, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'guestId' }) // Explicitly set the foreign key column name
   guest: User;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.bookingId) // Define the inverse relationship
+  transactions: Transaction[];
 
   @Column({type: 'date', nullable: false})
   createdAt: Date;
