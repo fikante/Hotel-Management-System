@@ -5,7 +5,7 @@ import path from 'path';
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",   // Allow external access
+    host: "localhost",   // Allow external access
     port: 8080,   // Set the development server port
   },
   plugins: [

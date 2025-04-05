@@ -7,7 +7,7 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 @Controller('hotels/:hotelId')
 // @UseGuards(AuthGuard)
 export class BookingController {
-  constructor(private readonly bookingService: BookingService) {}
+  constructor(private readonly bookingService: BookingService) { }
 
   @Get('bookings')
   async getAllBookings() {
@@ -35,12 +35,12 @@ export class BookingController {
     return { success: true, message: 'Check-out successful', totalAmount };
   }
 
-    @Post('rooms/:roomId/bookings')
-    async createBooking(
-        @Param('hotelId') hotelId : number ,
-        @Param('roomId') roomId : string,
-        @Body() createBookingDto: CreateBookingDto) {
-        const fakeGuestId = "g1h2i3j4-k5l6-7m8n-9o0p-q1r2s3t4u5v6"
-        return await this.bookingService.createBooking(hotelId,roomId,fakeGuestId,createBookingDto);
-    }
+  @Post('rooms/:roomId/bookings')
+  async createBooking(
+    @Param('hotelId') hotelId: number,
+    @Param('roomId') roomId: string,
+    @Body() createBookingDto: CreateBookingDto) {
+    const fakeGuestId = "guest123"
+    return await this.bookingService.createBooking(hotelId, roomId, fakeGuestId, createBookingDto);
+  }
 }

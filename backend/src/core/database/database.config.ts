@@ -6,10 +6,14 @@ import { Assignment } from 'src/common/entities/assignments.entity';
 import { Booking } from 'src/common/entities/booking.entity';
 import { Food } from 'src/common/entities/food.entity';
 import { Hotel } from 'src/common/entities/hotel.entity';
+import { Ingredient } from 'src/common/entities/ingredient.entity';
 import { Invoice } from 'src/common/entities/invoice.entity';
 import { Manager } from 'src/common/entities/manager.entity';
+import { OrderItem } from 'src/common/entities/order-item.entity';
+import { Order } from 'src/common/entities/order.entity';
 import { Room } from 'src/common/entities/room.entity';
 import { Staff } from 'src/common/entities/staff.entity';
+import { Transaction } from 'src/common/entities/transaction.entity';
 import { User } from 'src/common/entities/user.entity';
 
 export default registerAs('database', (): TypeOrmModuleOptions => {
@@ -24,14 +28,19 @@ export default registerAs('database', (): TypeOrmModuleOptions => {
     entities: [
       User,
       Room,
+      Staff,
       Hotel,
       Amenity,
       Assignment,
       Booking,
+      Ingredient,
       Food,
       Invoice,
       Manager,
       Staff,
+      Order,
+      OrderItem,
+      Transaction,
     ],
     synchronize: true,
     autoLoadEntities: true,

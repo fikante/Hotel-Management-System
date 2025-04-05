@@ -5,8 +5,8 @@ import { DeleteButton } from "../Delete/DeleteButton";
 
 export const reservationColumns = [
   {
-    id: "id",
-    accessorKey: "id",
+    id: "bookingId",
+    accessorKey: "bookingId",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -21,7 +21,7 @@ export const reservationColumns = [
   },
   {
     id: "guestName",
-    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
+    accessorKey: "guestName",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -33,19 +33,19 @@ export const reservationColumns = [
     ),
     cell: ({ row }) => (
       <div className="flex items-start flex-col">
-        <div>
-          {row.original.first_name} {row.original.last_name}
+        <div className="">
+          {row.original.guestName}
         </div>
         <div className="text-sm text-muted-foreground">
-          {row.original.guest_id}
+          {row.original.guestId}
         </div>
       </div>
     ),
     size: 150,
   },
   {
-    id: "room_id",
-    accessorKey: "room_id",
+    id: "roomNum",
+    accessorKey: "roomNum",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -58,8 +58,8 @@ export const reservationColumns = [
     size: 100,
   },
   {
-    id: "room_type",
-    accessorKey: "room_type",
+    id: "roomType",
+    accessorKey: "roomType",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -72,8 +72,8 @@ export const reservationColumns = [
     size: 100,
   },
   {
-    id: "check_in",
-    accessorKey: "check_in",
+    id: "checkIn",
+    accessorKey: "checkIn",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -86,8 +86,8 @@ export const reservationColumns = [
     size: 100,
   },
   {
-    id: "check_out",
-    accessorKey: "check_out",
+    id: "checkOut",
+    accessorKey: "checkOut",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -99,37 +99,37 @@ export const reservationColumns = [
     ),
     size: 100,
   },
-  //   {
-  //     id: "booking_status",
-  //     accessorKey: "booking_status",
-  //     header: ({ column }) => (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Status
-  //         <ArrowUpDown className="size-4" />
-  //       </Button>
-  //     ),
-  //     size: 100,
-  //   },
   {
-    id: "booking_via",
-    accessorKey: "booking_via",
+    id: "bookingStatus",
+    accessorKey: "bookingStatus",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Booked Via
+        Status
         <ArrowUpDown className="size-4" />
       </Button>
     ),
     size: 100,
   },
+  // {
+  //   id: "booking_via",
+  //   accessorKey: "booking_via",
+  //   header: ({ column }) => (
+  //     <Button
+  //       variant="ghost"
+  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //     >
+  //       Booked Via
+  //       <ArrowUpDown className="size-4" />
+  //     </Button>
+  //   ),
+  //   size: 100,
+  // },
   {
-    id: "created_at",
-    accessorKey: "created_at",
+    id: "createdAt",
+    accessorKey: "createdAt",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -159,8 +159,7 @@ export const reservationColumns = [
         </Button>
         <DeleteButton
           onDelete={
-            () => alert(`Delete guest with ID: ${row.original.id}`)
-            // backend team space to implement delete functionality
+            () => alert(`Delete guest with ID: ${row.original.bookingId}`)
           }
         />
       </div>

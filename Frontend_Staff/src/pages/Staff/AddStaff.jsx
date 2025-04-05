@@ -235,7 +235,7 @@ const AddStaff = ({ onSuccess }) => {
                 <option value="">Select Status</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
-                <option value="Oneave">On Leave</option>
+                <option value="OnLeave">On Leave</option>
               </select>
             </div>
             <div className="flex w-full justify-end ">
