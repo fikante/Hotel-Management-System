@@ -10,28 +10,39 @@ import {
   UseGuards, 
   UsePipes,
   ValidationPipe,
-  Query
+  Query,
+  UseInterceptors,
+  UploadedFile,
+  Delete
 } from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { AssignTaskDto } from './dto/assign-task.dto';
 import { GetStaffDto } from './dto/get-staff.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateStaffDto } from './dto/update-staff.dto';
 
-@Controller('hms/staff')
+@Controller('hms/hotels/:hotelId')
 @UsePipes(new ValidationPipe())
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
 
-  @Post()
+  @Post('staff')
+  @UseInterceptors(FileInterceptor('image', { dest: './uploads/' }))
   async addStaff(
     @Headers('authorization') authorization: string,
     @Body() createStaffDto: CreateStaffDto,
+    @Param('hotelId') hotelId: number,
+    @UploadedFile('file') file: Express.Multer.File,
   ) {
     console.log(createStaffDto);
-    return this.staffService.createStaff(createStaffDto);
+
+    createStaffDto.profilePic = file.path;
+    console.log('File Path:', file.path); 
+    return this.staffService.createStaff(createStaffDto, hotelId);
   }
 
-  @Patch(':id')
+  @Patch('staff/:id')
   async assignStaffToRoom(
     @Headers('authorization') authorization: string,
     @Param('id') id: string,
@@ -40,10 +51,28 @@ export class StaffController {
     return this.staffService.assignTask(id, assignTaskDto);
   }
 
-  @Get('hotel/:hotelId')
+  @Get('staff')
   async getAllStaff(
     @Param('hotelId') hotelId: string,
   ) {
     return this.staffService.getAllStaff({hotelId});
+  }
+
+  @Delete('staff/:id')
+  async deleteStaff(
+    @Param('hotelId') hotelId: number,
+    @Param('id') id: string,
+  ) {
+    return this.staffService.deleteStaff(id, hotelId);
+  }
+
+  @Patch('staff/update/:id')
+  async updateStaff(
+    @Param('id') id: string,
+    @Param('hotelId') hotelId: number,
+    @Body()updateStafDto: UpdateStaffDto,
+  ){
+
+    return this.staffService.updateStaff(id,hotelId,updateStafDto)
   }
 }

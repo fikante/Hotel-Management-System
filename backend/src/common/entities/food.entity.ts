@@ -1,15 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Hotel } from './hotel.entity';
+import { Ingredient } from './ingredient.entity';
+import { ManyToMany, JoinTable } from 'typeorm';
 
 @Entity('foods')
 export class Food {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type: 'varchar', length: 120, nullable: false })
+    @Column({ nullable: false })
     name: string;
 
-    @Column({ type: 'enum', enum: ['vegetables', 'beverages', 'juice', 'meat'], nullable: false })
-    category: 'vegetables' | 'beverages' | 'juice' | 'meat';
+    @Column({ nullable: false })
+    category: string;
 
     @Column({ type: 'float', precision: 10, nullable: true })
     calories: number;
@@ -17,12 +20,16 @@ export class Food {
     @Column({ type: 'double', precision: 5, scale: 2, nullable: false })
     price: number;
 
-    @Column({ type: 'enum', enum: ['Out of stock', 'Available'], default: 'Available' })
-    status: 'Out of stock' | 'Available';
+    @Column({ nullable: false })
+    status: string;
 
-    @Column({ type: 'time', nullable: false })
-    estimatedTime: string;
+    @ManyToMany(() => Ingredient, ingredient => ingredient.foods)
+    @JoinTable()
+    ingredients: Ingredient[];
 
-    // @OneToMany(() => Ingredient, (ingredient) => ingredient.food, { cascade: true })
-    // ingredients: Ingredient[];
+    @Column({ nullable: true })
+    timeToMake: string;
+
+    @ManyToOne(() => Hotel, hotel => hotel.foods)
+    hotel: Hotel;
 }

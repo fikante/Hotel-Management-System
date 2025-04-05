@@ -46,7 +46,7 @@ export class StaffAuthController {
     @Res() res: Response,
   ) {
     // Extract the staff's unique identifier (sub) from the JWT payload attached to req.user.
-    const staffId = (req.user as { sub: string })?.sub;
+    const staffId = (req.body.user as { sub: string })?.sub;
     // Call the service to change the staff's password using the provided staffId and changePasswordDto.
     await this.staffAuthService.changePassword(staffId, changePasswordDto);
     // Respond with a success message.

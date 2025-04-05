@@ -1,48 +1,63 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Booking } from "./booking.entity";
+import * as bcrypt from 'bcrypt';
 
 @Entity('user')
 export class User {
 
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column()
-    name: string;
+    firstName: string;
     
     @Column()
+    lastName: string;
+    
+    @Column({nullable: true})
     picture: string;
 
     @Column()
     email: string;
 
-    @Column()
+    @Column({nullable: true})
     phone: string;
     
     @Column()
     password: string;
 
-    @Column()
+    @Column({nullable: true})
     address: string;
 
-    @Column()
+    @Column({nullable: true})
     identificationType: string;
 
-    @Column()
+    @Column({nullable: true})
     identificationNumber: string;
     
-    @Column()
+    @CreateDateColumn()
     createdAt: Date;
 
     @Column()
     gender: string;
 
-    @Column()
+    @Column({nullable: true})
     dateOfBirth: Date;
 
     @Column()
     nationality: string;
     
     // usefule for payloading the jwt
-    @Column()
+    @Column({nullable: true})
     role: String;
+
+    @OneToMany(() => Booking, (booking) => booking.guest)
+    bookings: Booking[];
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+        if (this.password) {
+        this.password = await bcrypt.hash(this.password, 10);
+        }
+    }
 }

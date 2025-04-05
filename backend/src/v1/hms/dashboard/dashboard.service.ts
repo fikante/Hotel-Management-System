@@ -16,6 +16,7 @@ export class DashboardService {
   async getCountryBookings(
     hotelId: number, // Changed from string to number to match Hotel entity
   ): Promise<Array<Record<string, number>>> {
+    console.log(hotelId);
     const result = await this.bookingRepository
       .createQueryBuilder('booking')
       .select('user.nationality', 'country')
@@ -55,7 +56,7 @@ export class DashboardService {
 
   async getTotalBookings(hotelId: number): Promise<number> {
     return this.bookingRepository.count({
-      where: { hotelId: { id: hotelId } }, // Updated to use relation
+      where: { hotel: { id: hotelId } }, // Updated to match the relation structure
     });
   }
 }

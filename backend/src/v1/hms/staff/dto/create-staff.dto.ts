@@ -7,8 +7,10 @@ import {
   IsPhoneNumber,
   IsUrl,
   IsDateString,
-  IsEnum
+  IsEnum,
+  IsOptional
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateStaffDto {
   @IsNotEmpty()
@@ -19,6 +21,9 @@ export class CreateStaffDto {
   @IsString()
   lastname: string;
 
+  @IsString()
+  password: string;
+
   @IsNotEmpty()
   @IsString()
   role: string;
@@ -28,10 +33,6 @@ export class CreateStaffDto {
   email: string;
 
   @IsNotEmpty()
-  @IsString()
-  temporaryPassword: string;
-
-  @IsNotEmpty()
   @IsEnum(['available', 'working'])
   status: string;
 
@@ -39,16 +40,12 @@ export class CreateStaffDto {
   @IsPhoneNumber()
   phonenumber: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  hotelId: number;
-
-  @IsUrl()
-  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
   profilePic: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @Transform(({ value }) => Number(value))
   salary: number;
 
   @IsNotEmpty()

@@ -10,6 +10,10 @@ export class CreateHotelDto {
   location: string;
 
   @IsNotEmpty()
+  @IsString()
+  description: string;
+
+  @IsNotEmpty()
   @IsUrl()
   image: string; // Ensures a valid URL is provided
 }

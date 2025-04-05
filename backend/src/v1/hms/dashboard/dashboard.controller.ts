@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import {
   CountryBookingResponse,
@@ -6,13 +6,13 @@ import {
   TotalBookingsResponse,
 } from './dto/dashboard-response.dto';
 
-@Controller('dashboard')
+@Controller('hms/hotels/:hotelId/dashboard')
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('countries')
   async getCountryBookings(
-    @Query('hotelId') hotelId: number, // Changed from string to number
+    @Param('hotelId') hotelId: number, // Changed from string to number
   ): Promise<CountryBookingResponse> {
     const countryStats =
       await this.dashboardService.getCountryBookings(hotelId);
@@ -24,7 +24,7 @@ export class DashboardController {
 
   @Get('demographics')
   async getDemographics(
-    @Query('hotelId') hotelId: number, // Changed from string to number
+    @Param('hotelId') hotelId: number, // Changed from string to number
   ): Promise<DemographicsResponse> {
     const { male, female, other } = // Added 'other' to match service response
       await this.dashboardService.getDemographics(hotelId);
@@ -37,7 +37,7 @@ export class DashboardController {
 
   @Get('bookings')
   async getTotalBookings(
-    @Query('hotelId') hotelId: number, // Changed from string to number
+    @Param('hotelId') hotelId: number, // Changed from string to number
   ): Promise<TotalBookingsResponse> {
     const booked = await this.dashboardService.getTotalBookings(hotelId);
     return {
