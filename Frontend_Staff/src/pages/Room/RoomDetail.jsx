@@ -5,7 +5,7 @@ const RoomDetail = ({ row }) => {
     <div className="flex flex-row items-start gap-3">
       <div className="shrink-0 size-24 rounded-lg overflow-hidden border">
         <img
-          src={row.original.picture}
+          src={row.original.image}
           alt={`Room ${row.original.roomNumber}`}
           className="w-full h-full object-cover"
         />
@@ -24,7 +24,7 @@ const RoomDetail = ({ row }) => {
 
           <div className="flex items-center gap-1">
             <img src="/occupancy.svg" alt="Occupancy" className="size-4" />
-            <span>Max {row.original.maxOccupancy} people</span>
+            <span>Max {row.original.occupancy} people</span>
           </div>
         </div>
 

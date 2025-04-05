@@ -1,5 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import SpinPage from "@/components/Spin/Spin";
+
+export const api = axios.create({
+  baseURL: "http://localhost:3000/api/v1",
+});
 
 const AddRoom = ({ onSuccess }) => {
   const {
@@ -17,19 +24,33 @@ const AddRoom = ({ onSuccess }) => {
       bedType: "Single",
       size: "",
       status: "Available",
-      picture: null,
+      image: null,
       price: "",
       maxOccupancy: "",
       amenities: "",
     },
   });
 
-  const picture = watch("picture");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [room, setRoom] = useState([]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center flex-col items-center p-10">
+        <div className="text-center text-gray-500">Loading reservations...</div>
+        <SpinPage />
+      </div>
+    );
+  }
+
+  const picture = watch("image");
 
   const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files[0];
     if (file) {
-      setValue("picture", file);
+      setValue("image", file);
     }
   };
 
@@ -37,25 +58,66 @@ const AddRoom = ({ onSuccess }) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
-      setValue("picture", file);
+      setValue("image", file);
     }
   };
 
-  const onSubmit = (data) => {
-    console.log("Room Data Submitted:", data);
-    onSuccess();
-    alert("Room added successfully!");
-    reset();
-  };
+  const onSubmit = async (data) => {
+    try {
+      if (!data.image) {
+        setError("Please upload a room image");
+        return;
+      }
+      const amenitiesArray = data.amenities
+        .split(",")
+        .filter((item) => item.trim() !== "")
+        .map((item) => ({ amenityName: item.trim() }));
 
+      const formData = new FormData();
+      formData.append("type", data.roomType);
+      formData.append("price", String(data.price));
+      formData.append("occupancy", String(data.maxOccupancy));
+      formData.append("bedType", data.bedType);
+      formData.append("description", data.description);
+      formData.append("size", String(data.size));
+      formData.append("roomNumber", data.roomNumber);
+      formData.append("amenities", JSON.stringify(amenitiesArray));
+      formData.append("image", data.image);
+
+      setIsLoading(true);
+
+      const response = await api.post("/hms/hotels/1/rooms", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Room added successfully:", response.data);
+      onSuccess?.();
+      reset();
+    } catch (error) {
+      console.error("Error adding room:", error);
+      setError("Failed to add room");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center flex-col items-center p-10">
+        <div className="text-center text-gray-500">Loading reservations...</div>
+        <SpinPage />
+      </div>
+    );
+  }
   return (
-    <div className="space-y-4 rounded-lg p-8 w-full">
+    <div className="space-y-4 rounded-lg p-2 w-full">
       <h2 className="text-2xl font-semibold text-center">Add New Room</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-col md:flex-row gap-x-5">
-          <div className="w-full md:w-48 max-w-md p-6 bg-white rounded-lg">
+          <div className="w-full md:w-48 p-2 bg-white rounded-lg">
             {picture ? (
-              <div className="w-full h-32 rounded-lg overflow-hidden border border-gray-300">
+              <div className="w-full h-40 rounded-lg overflow-hidden border border-gray-300">
                 <img
                   src={URL.createObjectURL(picture)}
                   alt={picture.name}
@@ -311,6 +373,7 @@ const AddRoom = ({ onSuccess }) => {
             Add Room
           </button>
         </div>
+        {error && <p className="text-red-500 text-center">{error}</p>}
       </form>
     </div>
   );

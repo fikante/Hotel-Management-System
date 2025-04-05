@@ -61,9 +61,9 @@ const ReservationListPage = () => {
     );
   }
 
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
+  // if (error) {
+  //   return <div className="text-red-500">{error}</div>;
+  // }
 
   return (
     <div>
