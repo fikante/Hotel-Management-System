@@ -27,7 +27,7 @@ export class AuthService {
       ...signupDto,
       firstName : signupDto.firstName,
       password: signupDto.password,
-      name : signupDto.fullName     
+      lastName : signupDto.lastName     
     });
 
     // Save the newly created user entity into the database.

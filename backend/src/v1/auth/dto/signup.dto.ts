@@ -1,23 +1,36 @@
-import { IsAlpha, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsAlpha, IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class SignupDto {
   
-  @IsNotEmpty()
+  @IsString()
   firstName: string;
 
-  @IsAlpha()
+  @IsString()
   lastName: string;
+  
+  @IsString()
+  phonenumber: string;
 
   // makes sure the field IS a valid email address
+
+  @IsString()
+  addresss: string;
+
+  @IsString()
+  identificationType: string;
+
+  @IsString()
+  identificationNumber: string;
+  
   @IsEmail()
   email: string;
 
   @MinLength(8)
   password: string;
 
-  @IsNotEmpty()
+  @IsString()
   nationality: string;
 
-  @IsNotEmpty()
+  @IsString()
   gender: string;
 }
