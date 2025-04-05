@@ -34,15 +34,11 @@ export class FoodController {
     await this.foodService.addFoodItem(createFoodDto, hotelId);
     return { success: true, message: 'Food item added successfully', image: createFoodDto.image };
   }
-  
-    @Get('orders')
-    async viewAllOrders() {
+
+  @Get('orders')
+  async viewAllOrders() {
     return this.foodService.viewAllOrders();
-    
-  
-   
-   }
-  
+  }
 
   @Delete('food/:id')
   async deleteFoodItem(
