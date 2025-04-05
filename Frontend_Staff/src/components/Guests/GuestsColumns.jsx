@@ -20,7 +20,7 @@ export const guestColumns = [
   },
   {
     id: "fullName",
-    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+    accessorKey: "fullName",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -134,12 +134,15 @@ export const guestColumns = [
   {
     id: "actions",
     header: "Quick Action",
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <div className="flex space-x-2">
         <Button
           variant="ghost"
           size="sm"
-          onClick={useEditGuest(row.original.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            table.options.meta?.onEditClick?.(row.original);
+          }}
           className="text-sm"
         >
           <Edit className="h-4 w-4 text-blue-600" />
@@ -156,10 +159,4 @@ export const guestColumns = [
   },
 ];
 
-export const useEditGuest = (guestId) => {
-  const navigate = useNavigate();
-  const handleEditGuest = () => {
-    navigate(`/guests/edit-guests/${guestId}`);
-  };
-  return handleEditGuest;
-};
+
