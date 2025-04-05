@@ -29,4 +29,19 @@ export class HotelsController {
      }
   }
 
+  @Get(':hotelId/Menu')
+
+  async getAllFood() {
+   const foods = await this.hotelService.getAllFood();
+   return { 
+      Sucess : true ,
+      data :  foods
+   }
+}
+
+
+
+
+
+
 }
