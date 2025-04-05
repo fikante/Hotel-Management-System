@@ -19,7 +19,6 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import TestPaymentModal from "./pages/TestPaymentModals";
-
 import Menu from './pages/restaurant/Menu';
 
 const queryClient = new QueryClient();

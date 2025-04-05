@@ -20,6 +20,11 @@ export class StaffAuthService {
     // Retrieve the staff record by email.
     const staff = await this.staffRepository.findOne({ where: { email } });
     // Compare the provided password with the stored hashed password.
+    
+    console.log("existing pssword", staff ? staff.password : 'null');
+    const hashedPassword = await bcrypt.hash(password, 10)
+    console.log("entered Password",hashedPassword);
+    console.log('password', password)
     if (staff && (await bcrypt.compare(password, staff.password))) {
       return staff;
     }
@@ -48,6 +53,10 @@ export class StaffAuthService {
     const staff = await this.staffRepository.findOne({ where: { id } });
     if (!staff) throw new Error('Staff not found');
 
+    console.log('old password bcrypt', staff.password);
+    console.log('old password', changePasswordDto.oldPassword);
+    bcrypt.hash(
+      changePasswordDto.oldPassword,10)
     // Validate the old password provided by the staff.
     const isOldPasswordValid = await bcrypt.compare(
       changePasswordDto.oldPassword,

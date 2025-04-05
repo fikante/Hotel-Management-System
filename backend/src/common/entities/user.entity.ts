@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Booking } from "./booking.entity";
+import * as bcrypt from 'bcrypt';
 
 @Entity('user')
 export class User {
@@ -22,6 +23,8 @@ export class User {
     @Column()
     phone: string;
     
+
+
     @Column()
     password: string;
 
@@ -52,4 +55,12 @@ export class User {
 
     @OneToMany(() => Booking, (booking) => booking.guest)
     bookings: Booking[];
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+        if(this.password) {
+            this.password = await bcrypt.hash(this.password, 10);
+        }
+    }
 }

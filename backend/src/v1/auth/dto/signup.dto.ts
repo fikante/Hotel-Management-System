@@ -14,14 +14,20 @@ export class SignupDto {
   // makes sure the field IS a valid email address
 
   @IsString()
-  addresss: string;
+  address: string;
 
   @IsString()
   identificationType: string;
 
   @IsString()
   identificationNumber: string;
-  
+
+  @IsString()
+  dateOfBirth: string;
+
+  @IsString()
+  role: string;
+
   @IsEmail()
   email: string;
 
