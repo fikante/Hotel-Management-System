@@ -1,4 +1,6 @@
 
+
+import { HotelService } from 'src/v1/hotels/hotels.service';
 import { Body, Controller, Delete, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { CreateFoodDto } from './dto/create-food.dto';
@@ -32,6 +34,15 @@ export class FoodController {
     await this.foodService.addFoodItem(createFoodDto, hotelId);
     return { success: true, message: 'Food item added successfully', image: createFoodDto.image };
   }
+  
+    @Get('orders')
+    async viewAllOrders() {
+    return this.foodService.viewAllOrders();
+    
+  
+   
+   }
+  
 
   @Delete('food/:id')
   async deleteFoodItem(
@@ -41,10 +52,5 @@ export class FoodController {
     return await this.foodService.deleteFoodItem(id, hotelId);
   }
 
-  // @Get('orders')
-  // async getAllOrders(
-  //   @Param('hotelId') hotelId: number,
-  // ) {
-  //   return await this.foodService.getAllOrders(hotelId);
-  // }
+
 }

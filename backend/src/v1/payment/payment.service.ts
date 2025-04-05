@@ -11,7 +11,6 @@ import { EmailService } from 'src/common/services/email.service';
 export class PaymentService {
   private stripe: Stripe;
   private readonly logger = new Logger(PaymentService.name);
-
   constructor(
     @InjectRepository(Booking)
     private bookingRepository: Repository<Booking>,

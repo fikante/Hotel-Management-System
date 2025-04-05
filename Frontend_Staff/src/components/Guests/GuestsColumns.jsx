@@ -20,7 +20,7 @@ export const guestColumns = [
   },
   {
     id: "fullName",
-    accessorKey: "fullName",
+    accessorfn: (row) => `${row.firstName} ${row.lastName}`,
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -29,6 +29,11 @@ export const guestColumns = [
         Full Name
         <ArrowUpDown className="size-4" />
       </Button>
+    ),
+    cell: ({ row }) => (
+      <div className="flex items-center space-x-2">
+        {row.original.firstName} {row.original.lastName}
+      </div>
     ),
     size: 24,
   },
@@ -148,7 +153,8 @@ export const guestColumns = [
           <Edit className="h-4 w-4 text-blue-600" />
         </Button>
         <DeleteButton
-          onDelete={() => alert(`Delete guest with ID: ${row.original.id}`)
+          onDelete={
+            () => alert(`Delete guest with ID: ${row.original.id}`)
             // backend team space to implement delete functionality
           }
         />
@@ -158,5 +164,3 @@ export const guestColumns = [
     size: 100,
   },
 ];
-
-

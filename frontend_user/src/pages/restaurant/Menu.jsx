@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RestaurantNavbar } from '../../components/restaurant/RestaurantNavbar';
+import Navbar from '@/components/Navbar/Navbar';
 import { FoodCategories } from '../../components/restaurant/FoodCategories';
 import { FoodItems } from '../../components/restaurant/FoodItems';
 import { Cart } from '../../components/restaurant/Cart';
@@ -84,7 +84,7 @@ export default function Menu() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <RestaurantNavbar
+      <Navbar
         cartItemCount={cartItems.reduce((count, item) => count + item.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
       />

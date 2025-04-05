@@ -75,19 +75,19 @@ import { Assignment } from './assignments.entity';
     @OneToMany(() => Assignment, (assignment) => assignment.staff)
     assignments: Assignment[]; //currently not being used
     
-    @BeforeInsert()
-    @BeforeUpdate()
-    async hashPassword() {
-      if (this.password) {
-        this.password = await bcrypt.hash(this.password, 10);
-      }
-    }
+    // @BeforeInsert()
+    // @BeforeUpdate()
+    // async hashPassword() {
+    //   if (this.password) {
+    //     this.password = await bcrypt.hash(this.password, 10);
+    //   }
+    // }
   
-    async validatePassword(password: string): Promise<boolean> {
-      return bcrypt.compare(password, this.password);
-    }
+    // async validatePassword(password: string): Promise<boolean> {
+    //   return bcrypt.compare(password, this.password);
+    // }
   
-    get fullName(): string {
-      return `${this.firstname} ${this.lastname}`;
-    }
+    // get fullName(): string {
+    //   return `${this.firstname} ${this.lastname}`;
+    // }
   }

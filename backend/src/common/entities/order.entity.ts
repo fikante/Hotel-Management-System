@@ -20,5 +20,13 @@ export class Order {
   status: 'pending' | 'completed' | 'canceled';
 
   
+  @Column({ type: 'text', nullable: true })
+  specialRequest?: string;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP', // No (6) here
+  })
+  createdAt: Date;
+
 }
 
