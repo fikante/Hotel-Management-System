@@ -8,7 +8,7 @@ import { NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Booking } from 'src/common/entities/booking.entity';
 import { Hotel } from 'src/common/entities/hotel.entity';
-
+import { RoomTypesResponseDto } from './dto/room-types-response.dto';
 
 
 @Injectable()
@@ -80,40 +80,24 @@ export class RoomsService {
   
     return availableRooms as Room[];
   }
+  //get room types by filtering the database by the hotel id
+  async getRoomTypesWithNumbers(hotelId: number): Promise<RoomTypesResponseDto> {
+    const rooms = await this.roomRepository.find({
+      where: { hotel: { id: hotelId } },
+      select: ['type', 'roomNumber']
+    });
   
-
-
-
+    const result = {};
+    rooms.forEach(room => {
+      if (!result[room.type]) {
+        result[room.type] = [];
+      }
+      result[room.type].push(room.roomNumber);
+    });
   
-  
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
+    return {
+      success: true,
+      data: result
+    };
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
