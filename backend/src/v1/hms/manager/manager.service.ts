@@ -1,21 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { Manager } from 'src/common/entities/manager.entity';
 import { Repository } from 'typeorm';
+import { CreateManagerDto } from './dtos/createManagerDto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ManagerService {
 
     constructor(
+        @InjectRepository(Manager)
         private readonly managerRepository: Repository<Manager>,
     ) { }
 
-    async createManager() {
-        // Logic to create a manager
-        return { message: 'Manager created successfully' };
+    async createManager(createManagerDto: CreateManagerDto) {
+
+        try {
+            const newManager = this.managerRepository.create(createManagerDto);
+            await this.managerRepository.save(newManager);
+            return { message: 'Manager created successfully', managerId: newManager.id };
+        } catch (error) {
+            throw new Error('Error creating manager: ' + error.message);
+        }
     }
 
     async getAllManagers() {
-        // Logic to get all managers
-        return { message: 'All managers retrieved successfully' };
+        try {
+            const managers = await this.managerRepository.find();
+            return {
+                message: 'All managers retrieved successfully',
+                data: managers,
+            };
+        } catch (error) {
+            throw new Error('Error retrieving managers: ' + error.message);
+        }
+
     }
 }
