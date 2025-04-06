@@ -1,16 +1,16 @@
 // transaction.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
 import { Booking } from './booking.entity';
+import { forwardRef } from '@nestjs/common';
 
 @Entity()
 export class Transaction {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @ManyToOne(() => Booking, (booking) => booking.transactions, { eager: true }) // Define the relationship
-    @JoinColumn({ name: 'bookingId' }) // Explicitly set the foreign key column
+    @ManyToOne(() => Booking, (booking) => booking.transactions, { nullable: false })
     booking: Booking;
-
+    
     @Column('int')
     amount: number;
 

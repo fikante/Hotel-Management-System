@@ -10,9 +10,6 @@ export class Booking {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   
-  @OneToMany(() => Transaction, (transaction) => transaction.booking) // Define the inverse relationship
-  transactions: Transaction[];
-
   @Column({type: 'varchar', length:50, nullable: false, default: 'pending'})
   bookingStatus: string;
 
@@ -36,6 +33,9 @@ export class Booking {
   @ManyToOne(() => User, (user) => user.id, { nullable: false, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'guestId' }) // Explicitly set the foreign key column name
   guest: User;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.booking) // Define the inverse relationship
+  transactions: Transaction[];
 
   @Column({type: 'date', nullable: false})
   createdAt: Date;

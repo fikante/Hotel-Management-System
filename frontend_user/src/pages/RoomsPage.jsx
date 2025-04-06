@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useBooking } from '@/hooks/useBooking';
 import RoomList from '@/components/Rooms/RoomList';
 import BookingForm from '@/components/Rooms/BookingForm';
-import Navbar from '@/components/Rooms/Navbar';
+import Navbar from '@/components/Navbar/Navbar';
+
 import "./Rooms_Booking.css";
 
 const RoomsPage = () => {

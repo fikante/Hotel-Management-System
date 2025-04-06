@@ -35,10 +35,7 @@ export class StaffController {
     @Param('hotelId') hotelId: number,
     @UploadedFile('file') file: Express.Multer.File,
   ) {
-    console.log(createStaffDto);
-
     createStaffDto.profilePic = file.path;
-    console.log('File Path:', file.path); 
     return this.staffService.createStaff(createStaffDto, hotelId);
   }
 

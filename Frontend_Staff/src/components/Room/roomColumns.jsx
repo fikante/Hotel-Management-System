@@ -21,8 +21,8 @@ export const roomColumns = [
     size: 100,
   },
   {
-    id: "roomType",
-    accessorKey: "roomType",
+    id: "type",
+    accessorKey: "type",
     header: ({ column }) => (
       <Button
         variant="ghost"

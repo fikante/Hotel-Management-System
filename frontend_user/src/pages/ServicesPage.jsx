@@ -1,6 +1,6 @@
 // src/pages/ServicesPage.jsx
 import React, { useState } from 'react';
-import Navbar from '../components/Service/Navbar';
+import Navbar from '@/components/Navbar/Navbar';
 import ServiceRequestForm from '../components/Service/ServiceRequestForm';
 import GymCard from '../components/Service/GymCard';
 import PoolCard from '../components/Service/PoolCard';

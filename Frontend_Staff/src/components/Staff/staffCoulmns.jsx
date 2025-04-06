@@ -4,12 +4,12 @@ import { DeleteButton } from "../Delete/DeleteButton";
 
 const staffColumns = [
   {
-    id: "picture",
-    accessorKey: "picture",
+    id: "profilePic",
+    accessorKey: "profilePic",
     header: "Picture",
     cell: ({ row }) => (
       <img
-        src={row.original.picture}
+        src={row.original.profilePic}
         alt="Staff"
         className="size-10 rounded-full object-cover"
       />
@@ -18,8 +18,8 @@ const staffColumns = [
     enableSorting: false,
   },
   {
-    id: "name",
-    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+    id: "staffName",
+    accessorKey: "staffName",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -47,8 +47,8 @@ const staffColumns = [
     size: 28,
   },
   {
-    id: "phone",
-    accessorKey: "phone",
+    id: "phonenumber",
+    accessorKey: "phonenumber",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -61,8 +61,8 @@ const staffColumns = [
     size: 24,
   },
   {
-    id: "salary",
-    accessorKey: "salary",
+    id: "staffSalary",
+    accessorKey: "staffSalary",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -72,12 +72,12 @@ const staffColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    cell: ({ row }) => `$${row.original.salary.toLocaleString()}`,
+    cell: ({ row }) => `$${row.original.staffSalary}`,
     size: 24,
   },
   {
-    id: "role",
-    accessorKey: "role",
+    id: "staffRole",
+    accessorKey: "staffRole",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -90,8 +90,8 @@ const staffColumns = [
     size: 20,
   },
   {
-    id: "employedDate",
-    accessorKey: "employedDate",
+    id: "employedAt",
+    accessorKey: "employedAt",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -105,8 +105,8 @@ const staffColumns = [
     size: 20,
   },
   {
-    id: "status",
-    accessorKey: "status",
+    id: "staffStatus",
+    accessorKey: "staffStatus",
     header: ({ column }) => (
       <Button
         variant="ghost"

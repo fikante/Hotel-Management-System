@@ -8,6 +8,7 @@ import {
     HttpCode,
     Req,
     Headers,
+    RawBodyRequest,
   } from '@nestjs/common';
   import { PaymentService } from './payment.service';
   
@@ -29,20 +30,18 @@ import {
         );
         return { success: true, sessionUrl };
       } catch (error) {
-        throw new InternalServerErrorException(
-          'Failed to create payment session',
-        );
+        throw new InternalServerErrorException(error.message);
       }
     }
 
       // Endpoint to handle Stripe webhook events
-    @Post('webhook')
-    @HttpCode(200)
-    async handleStripeWebhook(
-        @Req() request: Request,
-        @Headers('stripe-signature') signature: string,
-    ) {
-        return this.paymentService.handleWebhook(request.body, signature);
-    }
+      @Post('webhook')
+      async handleStripeWebhook(
+        @Req() req: RawBodyRequest<Request>,
+        @Headers('stripe-signature') sig: string
+      ) {
+        const rawBody = req.body ? req.body.toString() : '';
+        return this.paymentService.handleWebhook(rawBody, sig);
+      }
   }
   
