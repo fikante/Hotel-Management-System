@@ -2,11 +2,11 @@ import { Edit } from "lucide-react";
 import { Button } from "../ui/button";
 
 const FoodCard = ({ food, onEditClick }) => {
-  const ingredientsList = food.Ingredients.split(",")
-    .map((ingredient) => ingredient.trim())
-    .filter((ingredient) => ingredient.length > 0);
+  // const ingredientsList = food.Ingredients.split(",")
+  //   .map((ingredient) => ingredient.trim())
+  //   .filter((ingredient) => ingredient.length > 0);
 
-  const visibleIngredients = ingredientsList.slice(0, 4);
+  // const visibleIngredients = ingredientsList.slice(0, 4);
 
   return (
     <div className="flex flex-col w-[245px] gap-1 rounded-lg overflow-hidden shadow-sm">
@@ -33,7 +33,7 @@ const FoodCard = ({ food, onEditClick }) => {
 
         <div className="mb-2">
           <p className="text-sm text-gray-400 truncate">
-            {visibleIngredients.join(" || ")}
+            {/* {visibleIngredients.join(" || ")} */}
           </p>
         </div>
 
