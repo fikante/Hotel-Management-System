@@ -1,16 +1,19 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ManagerService } from './manager.service';
+import { CreateManagerDto } from './dtos/createManagerDto';
 
-@Controller('hotels/:hotelId/manager')
+@Controller('manager')
 export class ManagerController {
 
     constructor(
-        private readonly managerService: ManagerService,
+        private managerService: ManagerService,
     ) { }
 
     @Post()
-    async createManager() {
-        return await this.managerService.createManager();
+    async createManager(
+        @Body() createManagerDto: CreateManagerDto
+    ) {
+        return await this.managerService.createManager(createManagerDto);
     }
 
     @Get()
