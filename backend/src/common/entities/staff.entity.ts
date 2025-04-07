@@ -38,7 +38,11 @@ import { Role } from 'src/common/enums/role.enum';
   
     @Column()
     password: string;
-  
+    
+    @Column()
+    dateOfBirth: Date;
+    
+    
     @Column({ default: true })
     isTemporaryPassword: boolean;
   

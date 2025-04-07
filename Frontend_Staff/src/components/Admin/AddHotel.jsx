@@ -1,6 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import SpinPage from "@/components/Spin/Spin";
+
+export const api = axios.create({
+  baseURL: "http://localhost:3000/api/v1",
+});
 
 const AddHotel = ({ onSuccess }) => {
   const form = useForm({
@@ -13,19 +19,58 @@ const AddHotel = ({ onSuccess }) => {
   });
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
-  const onSubmit = (data) => {
+  const [hotelImage, setHotelImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const onSubmit = async (data) => {
     if (!hotelImage) {
       alert("Please upload a hotel image.");
       return;
     }
+
+    setIsLoading(true);
+    setError(null);
+
     data.picture = hotelImage;
-    console.log(data);
-    onSuccess();
+
+    try {
+      const formData = new FormData();
+      formData.append("name", data.hotelName);
+      formData.append("location", data.location);
+      formData.append("description", data.description);
+      formData.append("image", data.picture);
+
+      // localhost:3000/api/v1/hotels
+
+      const response = await api.post("/hotels", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Hotel added successfully:", response.data);
+
+      onSuccess()
+    } catch (error) {
+      console.error("Submission error:", error);
+      setError(error.message || "An error occurred while adding the hotel");
+      alert(error.message || "Failed to add hotel");
+    } finally {
+      setIsLoading(false);
+    }
   };
-  const [hotelImage, setHotelImage] = useState(null);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center flex-col items-center p-10">
+        <div className="text-center text-gray-500">Adding hotel...</div>
+        <SpinPage />
+      </div>
+    );
+  }
 
   const handleHotelImageChange = (event) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files[0];
 
     if (file) {
       setHotelImage(file);
@@ -47,7 +92,9 @@ const AddHotel = ({ onSuccess }) => {
               className="size-32 rounded-full object-cover"
             />
           ) : (
-            <div className="rounded-full size-32 border items-center justify-center flex bg-gray-100">Choose Image</div>
+            <div className="rounded-full size-32 border items-center justify-center flex bg-gray-100">
+              Choose Image
+            </div>
           )}
           <div className="bg-[#1814F3] h-8 w-8 flex justify-center items-center rounded-full absolute right-0 top-20 hover:brightness-200 transition duration-200">
             <label htmlFor="fileInput" className="cursor-pointer">

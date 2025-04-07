@@ -4,14 +4,27 @@ import { Repository } from 'typeorm';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { Food } from 'src/common/entities/food.entity';
 import { Hotel } from 'src/common/entities/hotel.entity';
+import { Booking } from 'src/common/entities/booking.entity';
+import { Order } from 'src/common/entities/order.entity';
+import { OrderItem } from 'src/common/entities/order-item.entity';
 import { Ingredient } from 'src/common/entities/ingredient.entity';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
-import { Order } from 'src/common/entities/order.entity';
+
 
 
 @Injectable()
 export class FoodService {
   constructor(
+  @InjectRepository(Hotel)
+   private hotelRepository: Repository<Hotel>,
+   @InjectRepository(Booking)
+   private bookingRepository : Repository <Booking>,
+
+
+  @InjectRepository(OrderItem)
+   private orderItemRepository : Repository <OrderItem>,
+  @InjectRepository(Food)
+    
     @InjectRepository(Food)
     private foodRepository: Repository<Food>,
     @InjectRepository(Hotel)
@@ -82,6 +95,69 @@ export class FoodService {
     });
 
     return this.foodRepository.save(food);
+  } 
+  async viewAllOrders() {
+    try {
+      const rawOrders = await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.items', 'item')
+        .leftJoinAndSelect('item.food', 'food')
+        .leftJoinAndSelect('order.booking', 'booking')
+        .leftJoinAndSelect('booking.room', 'room')
+        .select([
+          'order.id AS orderId',
+          'order.status AS status',
+          'order.createdAt AS time',
+          'order.specialRequest AS specialRequest',
+          'room.roomNumber AS roomNo', // Use room number instead of UUID
+          'food.name AS foodName',      // Food item details
+          'item.quantity AS quantity',
+          'item.price AS price'
+        ])
+        .getRawMany();
+  
+      // Group items by orderId
+      const groupedOrders = rawOrders.reduce((acc, row) => {
+        const orderId = row.orderId;
+        
+        // Initialize order if not exists
+        if (!acc[orderId]) {
+          acc[orderId] = {
+            orderId: orderId,
+            status: row.status,
+            time: row.time || 'N/A',
+            specialRequest: row.specialRequest || 'None',
+            roomNo: row.roomNo || 'N/A',
+            foodItems: []
+          };
+        }
+  
+        // Add food item to the order (if exists)
+        if (row.foodName) {
+          acc[orderId].foodItems.push({
+            name: row.foodName,
+            quantity: row.quantity,
+            price: row.price
+          });
+        }
+  
+        return acc;
+      }, {});
+  
+      // Convert to array and handle empty foodItems
+      return Object.values(groupedOrders).map((order: any) => ({
+        ...order,
+        foodItems: order.foodItems.length > 0 ? order.foodItems : [{ 
+          name: 'No items', 
+          quantity: 0, 
+          price: 0 
+        }]
+      }));
+  
+    } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch orders');
+    }
   }
 
   async deleteFoodItem(id: string, hotelId: number) {
@@ -93,11 +169,7 @@ export class FoodService {
     return { success: true, message: 'Food item deleted successfully' };
   }
 
-  // async getAllOrders(hotelId: number) {
-  //   // Fetch orders with related entities
-  //   const orders = await this.orderRepository.find({
-  //     where: { booking: { hotel: { id: hotelId } } },
-  //     relations: ['items', 'items.food', 'booking', 'booking.hotel'],
+
   //   });
 
   //   if (orders.length === 0) {

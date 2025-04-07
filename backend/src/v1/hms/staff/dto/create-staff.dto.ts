@@ -36,6 +36,9 @@ export class CreateStaffDto {
   @IsEnum(['available', 'working'])
   status: string;
 
+  @IsString()
+  dateOfBirth: string;
+
   @IsNotEmpty()
   @IsPhoneNumber()
   phonenumber: string;

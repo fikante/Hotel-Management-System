@@ -13,14 +13,14 @@ const EditRoom = ({ onSuccess, roomData }) => {
   } = useForm({
     defaultValues: {
       roomNumber: "",
-      roomType: "Standard",
+      type: "Standard",
       description: "",
       bedType: "Single",
       size: "",
       status: "Available",
       picture: null,
       price: "",
-      maxOccupancy: "",
+      occupancy: "",
       amenities: "",
     },
   });
@@ -31,13 +31,13 @@ const EditRoom = ({ onSuccess, roomData }) => {
     if (roomData) {
       reset({
         roomNumber: roomData.roomNumber,
-        roomType: roomData.roomType,
+        roomType: roomData.type,
         description: roomData.description,
         bedType: roomData.bedType,
         size: roomData.size,
         status: roomData.status,
         price: roomData.price,
-        maxOccupancy: roomData.maxOccupancy,
+        maxOccupancy: roomData.occupancy,
         picture: roomData.picture || null,
         amenities: roomData.amenities.join(", "),
       });

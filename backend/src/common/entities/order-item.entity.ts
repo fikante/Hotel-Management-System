@@ -18,4 +18,6 @@ export class OrderItem {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
+
+ 
 }

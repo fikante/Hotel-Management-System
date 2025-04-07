@@ -1,6 +1,12 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import SpinPage from "@/components/Spin/Spin";
+
+export const api = axios.create({
+  baseURL: "http://localhost:3000/api/v1",
+});
 
 const AddStaff = ({ onSuccess }) => {
   const form = useForm({
@@ -19,32 +25,63 @@ const AddStaff = ({ onSuccess }) => {
   });
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
-  const onSubmit = (data) => {
-    console.log(data);
-    onSuccess();
-    alert(`
-      First Name: ${data.fname}
-      Last Name: ${data.lname}
-      Email: ${data.email}
-      Date of Birth: ${data.dob}
-      Address: ${data.address}
-      Phone Number: ${data.phone}
-      Salary: ${data.salary}
-      Role: ${data.role}
-      Employed At: ${data.employed_at}
-      Status: ${data.status}
-      `);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      
+
+      console.log(data);
+      const formData = new FormData();
+      formData.append("firstname", data.fname);
+      formData.append("lastname", data.lname);
+      formData.append("email", data.email);
+      formData.append("dateOfBirth", data.dob);
+      // formData.append("address", data.address);
+      formData.append("phonenumber", data.phone);
+      formData.append("salary", data.salary);
+      formData.append("role", data.role);
+      formData.append("employedAt", data.employed_at);
+      formData.append("status", data.status);
+      formData.append("image", profileImage);
+      formData.append("password", "");
+
+      const response = await api.post("/hms/hotels/1/staff", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Response:", response);
+
+      onSuccess();
+      setError(null);
+    } catch (error) {
+      console.error("Error adding staff:", error.message);
+      setError("Failed to add staff");
+    } finally {
+      setIsLoading(false);
+    }
   };
   const [profileImage, setProfileImage] = useState(null);
 
   const handleProfilePictureChange = (event) => {
     const file = event.target.files?.[0];
-    console.log(file);
+    // console.log(file);
 
     if (file) {
       setProfileImage(file);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center flex-col items-center p-10">
+        <div className="text-center text-gray-500">Adding staff...</div>
+        <SpinPage />
+      </div>
+    );
+  }
   return (
     <div className="flex items-center flex-col justify-center font-serif p-4 gap-3">
       <h2 className="text-2xl font-semibold">Add Staff</h2>
@@ -169,7 +206,7 @@ const AddStaff = ({ onSuccess }) => {
                     message: "Phone Number is required",
                   },
                   pattern: {
-                    value: /^\d{10}$/,
+                    value: /^\+?\d{0,3}[- ]?\d{1,4}[- ]?\d{1,4}[- ]?\d{1,9}$/,
                     message: "Invalid Phone Number",
                   },
                 })}
@@ -233,7 +270,7 @@ const AddStaff = ({ onSuccess }) => {
                 className="rounded-xl p-3 border w-full"
               >
                 <option value="">Select Status</option>
-                <option value="active">Active</option>
+                <option value="available">Active</option>
                 <option value="inactive">Inactive</option>
                 <option value="OnLeave">On Leave</option>
               </select>

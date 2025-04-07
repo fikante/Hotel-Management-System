@@ -34,7 +34,7 @@ export class Booking {
   @JoinColumn({ name: 'guestId' }) // Explicitly set the foreign key column name
   guest: User;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.bookingId) // Define the inverse relationship
+  @OneToMany(() => Transaction, (transaction) => transaction.booking) // Define the inverse relationship
   transactions: Transaction[];
 
   @Column({type: 'date', nullable: false})

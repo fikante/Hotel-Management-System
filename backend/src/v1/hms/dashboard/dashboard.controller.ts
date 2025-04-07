@@ -69,4 +69,11 @@ export class DashboardController {
       booked,
     };
   }
+
+  @Get('revenue')
+  async getTotalRevenue(
+    @Param('hotelId') hotelId: number, // Changed from string to number
+  ): Promise<{ success: boolean; revenue: number }> {
+    return await this.dashboardService.getTotalRevenue(hotelId);
+  }
 }

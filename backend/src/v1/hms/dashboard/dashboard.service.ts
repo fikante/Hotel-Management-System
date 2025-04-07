@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Transaction } from '../../../common/entities/transaction.entity'; // Correct path
 import { Booking } from '../../../common/entities/booking.entity';
 import { User } from '../../../common/entities/user.entity';
 
@@ -8,9 +9,9 @@ import { User } from '../../../common/entities/user.entity';
 export class DashboardService {
   constructor(
     @InjectRepository(Booking)
-    private bookingRepository: Repository<Booking>, // Repository for booking data access
-    @InjectRepository(User)
-    private userRepository: Repository<User>,     // Repository for user data access
+    private bookingRepository: Repository<Booking>,
+    @InjectRepository(Transaction)
+    private transactionRepository: Repository<Transaction>,
   ) {}
 
   /**
@@ -74,5 +75,20 @@ export class DashboardService {
     return this.bookingRepository.count({
       where: { hotel: { id: hotelId } }, // Updated to match the relation structure
     });
+  }
+
+  async getTotalRevenue(hotelId: number): Promise<{ success: boolean; revenue: number }> {
+    const result = await this.transactionRepository
+      .createQueryBuilder('transaction')
+      .select('SUM(transaction.amount)', 'totalRevenue')
+      .innerJoin('transaction.booking', 'booking')
+      .where('booking.hotelId = :hotelId', { hotelId })
+      .andWhere('transaction.status = :status', { status: 'success' })
+      .getRawOne();
+
+    return {
+      success: true,
+      revenue: result?.totalRevenue || 0, // Ensure result is not null or undefined
+    };
   }
 }
