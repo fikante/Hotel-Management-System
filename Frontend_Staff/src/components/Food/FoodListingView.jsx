@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import FoodCard from "./foodCard";
-import { foodData } from "@/TestData/FoodData";
 import FoodPagination from "./foodPagination";
 import FoodToolbar from "./foodToolBar";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -31,8 +30,8 @@ export const FoodListingView = () => {
     const fetchFood = async () => {
       try {
         setIsLoading(true);
-        const response = await api.get("hotels/1/menu");
-        const data = response.data?.data;
+        const response = await api.get("/hotels/1/menu");
+        const data = response.data;
         console.log(data)
         const formattedFood = data.map((food) => ({
           id: food.id,
@@ -41,6 +40,7 @@ export const FoodListingView = () => {
           Status: food.status,
           Category: food.category,
           Price: food.price,
+          picture: food.image,
         }));
         setFood(formattedFood);
         setError(null);
@@ -65,9 +65,7 @@ export const FoodListingView = () => {
     );
   }
 
-  console.log(food);
-
-  const filteredFoods = foodData.filter(
+  const filteredFoods = food.filter(
     (food) =>
       food.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       food.Ingredients.toLowerCase().includes(searchTerm.toLowerCase()) ||
