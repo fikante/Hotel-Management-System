@@ -18,11 +18,11 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import TestPaymentModal from "./pages/TestPaymentModals";
+import "./App.css";
+
 import Menu from './pages/restaurant/Menu';
 import OrderHistory from './pages/restaurant/OrderHistory';
 import OrderForm from './pages/restaurant/OrderForm';
-import "./App.css";
-
 
 const queryClient = new QueryClient();
 
@@ -45,7 +45,6 @@ const App = () => (
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/history" element={<ServiceHistory />} />
             <Route path="/rooms" element={<RoomsPage />} />
-
             <Route path="/bookings" element={<BookingPage />} />
             <Route path="/bookings/:id" element={<BookingDetails />} />
             <Route path="/user_login" element={<UserLogin />} />
@@ -72,7 +71,15 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BookingProvider>
+          <Routes>
+          {/* Restaurant routes */}
+          <Route path="/restaurant/menu" element={<Menu />} />
+          <Route path="/restaurant/history" element={<OrderHistory />} />
+          <Route path="/restaurant/order" element={<OrderForm />} />
 
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   // This method is automatically called after successful token verification.
   validate(payload: any) {
-    return { userId: payload.sub, email: payload.email };
+    return { userId: payload.sub, email: payload.email, role: payload.role };
   }
 }
 
@@ -25,18 +25,18 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 export class StaffJwtStrategy extends PassportStrategy(Strategy, 'staff-jwt') {
   constructor() {
     super({
-      // Extract JWT token from the Authorization header ("Bearer <token>")
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      // Secret key for verifying staff tokens; Non-null assertion used because it's assumed to be defined.
-      secretOrKey: process.env.STAFF_JWT_SECRET,
+      ignoreExpiration: false,
+      secretOrKey: process.env.STAFF_JWT_SECRET, // Must match your signing key
     });
   }
 
-  /**
-   * This method is automatically called after successful token verification.
-   * It receives the decoded JWT payload and returns a staff object containing
-   */
-  validate(payload: any) {
-    return { staffId: payload.sub, email: payload.email, role: payload.role };
+  async validate(payload: any) {
+    // This object will become req.user
+    return {
+      id: payload.sub,
+      email: payload.email,
+      role: payload.role // MUST be included
+    };
   }
 }

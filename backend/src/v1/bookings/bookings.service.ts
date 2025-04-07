@@ -118,6 +118,12 @@ export class BookingService {
                 bookingId: savedBooking.id,
                 status: savedBooking.bookingStatus,
             };
+
+            const roomToUpdate = await this.roomRepository.findOne({ where: { id: roomId } });
+            if (roomToUpdate) {
+                roomToUpdate.status = 'occupied';
+                await this.roomRepository.save(roomToUpdate);
+            }
     
             return {
                 success: true,
