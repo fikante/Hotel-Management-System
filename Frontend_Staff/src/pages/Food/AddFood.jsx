@@ -44,17 +44,14 @@ const AddFood = ({ onSuccess }) => {
       alert("Please upload an image before submitting.");
       return;
     }
-
-    const ingredientsArray = foodItem.ingredients
+    const IngredientArray = foodItem.ingredients
       .split(",")
       .map((item) => item.trim());
-    const ingredientsJson = ingredientsArray.map((ingredient) => {
-      return { name: ingredient };
-    });
+    console.log(foodItem);
     const formData = new FormData();
-    formData.append("ingredients", JSON.stringify(ingredientsJson));
+    formData.append("ingredients", JSON.stringify(IngredientArray));
     formData.append("name", foodItem.name);
-    formData.append("categories", foodItem.category);
+    formData.append("category", foodItem.category);
     formData.append("timeToMake", foodItem.preparationTime);
     formData.append("price", foodItem.price);
     formData.append("image", foodItem.image);
@@ -69,6 +66,9 @@ const AddFood = ({ onSuccess }) => {
       });
 
       console.log(response.data);
+      setError(null);
+      onSuccess();
+      alert("Food item added successfully!");
     } catch (error) {
       console.error("Error adding food item:", error);
       setError("Failed to add food item. Please try again.");

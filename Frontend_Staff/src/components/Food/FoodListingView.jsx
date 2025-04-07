@@ -32,7 +32,7 @@ export const FoodListingView = () => {
         setIsLoading(true);
         const response = await api.get("/hotels/1/menu");
         const data = response.data;
-        console.log(data)
+        console.log(data, "data from api");
         const formattedFood = data.map((food) => ({
           id: food.id,
           Name: food.name,
@@ -41,6 +41,7 @@ export const FoodListingView = () => {
           Category: food.category,
           Price: food.price,
           picture: food.image,
+          EstimatedPreparationTime: food.timeToMake,
         }));
         setFood(formattedFood);
         setError(null);
@@ -64,15 +65,20 @@ export const FoodListingView = () => {
       </div>
     );
   }
+  console.log(food);
+  const filteredFoods = food.filter((food) => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
 
-  const filteredFoods = food.filter(
-    (food) =>
-      food.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      food.Ingredients.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      food.Status.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      food.Category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      food.Price.toString().includes(searchTerm.toLowerCase())
-  );
+    return (
+      food.Name.toLowerCase().includes(lowerSearchTerm) ||
+      food.Status.toLowerCase().includes(lowerSearchTerm) ||
+      food.Category.toLowerCase().includes(lowerSearchTerm) ||
+      food.Ingredients.some((ingredient) =>
+        ingredient.toLowerCase().includes(lowerSearchTerm)
+      ) ||
+      String(food.Price).includes(searchTerm) 
+    );
+  });
 
   const pageCount = Math.ceil(filteredFoods.length / itemsPerPage);
   const paginatedFoods = filteredFoods.slice(
