@@ -20,6 +20,7 @@ const RoomList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  // const []
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -65,6 +66,9 @@ const RoomList = () => {
             setSelectedRoom(room);
             console.log(room);
           },
+          onDeleteClick: (room) => {
+            
+          }
         }}
         pageSize={5}
       />
