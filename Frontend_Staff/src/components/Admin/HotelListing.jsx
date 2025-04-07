@@ -21,10 +21,11 @@ export const HotelListing = () => {
   const [editHotelOpen, setEditHotelOpen] = useState(false);
   const [currentHotel, setCurrentHotel] = useState(null);
 
+  const [refresh, setRefresh] = useState(false);
+
   const [hotel, setHotel] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const fetchHotel = async () => {
@@ -47,12 +48,13 @@ export const HotelListing = () => {
         setHotel([]);
       } finally {
         setIsLoading(false);
+        setRefresh(false);
       }
     };
 
     fetchHotel();
-  }, []);
 
+  }, [refresh]);
 
   if (isLoading) {
     return (
@@ -106,7 +108,12 @@ export const HotelListing = () => {
 
       <Dialog open={addHotelOpen} onOpenChange={setAddHotelOpen}>
         <DialogContent className="sm:max-w-3xl">
-          <AddHotel onSuccess={() => setAddHotelOpen(false)} />
+          <AddHotel
+            onSuccess={() => {
+              setAddHotelOpen(false);
+              setRefresh(true);
+            }}
+          />
         </DialogContent>
       </Dialog>
 
@@ -114,11 +121,13 @@ export const HotelListing = () => {
         <DialogContent className="sm:max-w-3xl">
           <EditHotel
             currentHotel={currentHotel}
-            onSuccess={() => setEditHotelOpen(false)}
+            onSuccess={() => {
+              setEditHotelOpen(false);
+              setRefresh(true);
+            }}
           />
         </DialogContent>
       </Dialog>
-
     </div>
   );
 };

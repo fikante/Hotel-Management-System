@@ -58,7 +58,7 @@ const OrderedFood = () => {
   }
 
   return (
-    <div className="p-6 flex flex-col gap-6">
+    <div className="p-2 flex flex-col gap-6">
       <h2 className="text-lg font-semibold font-serif">Ordered Food</h2>
       <CustomTable
         data={foodOrder}
