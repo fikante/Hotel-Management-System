@@ -6,7 +6,6 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import AddFood from "@/pages/Food/AddFood";
 import OrderedFood from "../Order/OrderedFood";
 import EditFood from "@/pages/Food/EditFood";
-
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 import { set } from "react-hook-form";
@@ -14,7 +13,6 @@ import { set } from "react-hook-form";
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
-
 
 export const FoodListingView = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -139,7 +137,6 @@ export const FoodListingView = () => {
       </Dialog>
       <Dialog open={editFoodOpen} onOpenChange={setEditFoodOpen}>
         <DialogContent className="sm:max-w-3xl">
-
           <EditFood
             foodItem={foodItem}
             onSuccess={() => {
@@ -147,7 +144,6 @@ export const FoodListingView = () => {
               setRefresh(true);
             }}
           />
-
         </DialogContent>
       </Dialog>
     </div>
