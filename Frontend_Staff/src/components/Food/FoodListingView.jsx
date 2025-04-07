@@ -8,6 +8,7 @@ import OrderedFood from "../Order/OrderedFood";
 import EditFood from "@/pages/Food/EditFood";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
+import { set } from "react-hook-form";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
@@ -21,6 +22,7 @@ export const FoodListingView = () => {
   const [orderFoodOpen, setOrderFoodOpen] = useState(false);
   const [editFoodOpen, setEditFoodOpen] = useState(false);
   const [foodItem, setFoodItem] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   const [food, setFood] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,11 +53,12 @@ export const FoodListingView = () => {
         setFood([]);
       } finally {
         setIsLoading(false);
+        setRefresh(false);
       }
     };
 
     fetchFood();
-  }, []);
+  }, [refresh]);
 
   if (isLoading) {
     return (
@@ -76,7 +79,7 @@ export const FoodListingView = () => {
       food.Ingredients.some((ingredient) =>
         ingredient.toLowerCase().includes(lowerSearchTerm)
       ) ||
-      String(food.Price).includes(searchTerm) 
+      String(food.Price).includes(searchTerm)
     );
   });
 
@@ -118,7 +121,12 @@ export const FoodListingView = () => {
 
       <Dialog open={addFoodOpen} onOpenChange={setAddFoodOpen}>
         <DialogContent className="sm:max-w-3xl">
-          <AddFood onSuccess={() => setAddFoodOpen(false)} />
+          <AddFood
+            onSuccess={() => {
+              setAddFoodOpen(false);
+              setRefresh(true);
+            }}
+          />
         </DialogContent>
       </Dialog>
 
@@ -131,7 +139,10 @@ export const FoodListingView = () => {
         <DialogContent className="sm:max-w-3xl">
           <EditFood
             foodItem={foodItem}
-            onSuccess={() => setEditFoodOpen(false)}
+            onSuccess={() => {
+              setEditFoodOpen(false);
+              setRefresh(true);
+            }}
           />
         </DialogContent>
       </Dialog>

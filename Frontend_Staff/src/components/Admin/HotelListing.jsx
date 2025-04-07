@@ -16,17 +16,16 @@ export const api = axios.create({
 export const HotelListing = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
   const [addHotelOpen, setAddHotelOpen] = useState(false);
   const [editHotelOpen, setEditHotelOpen] = useState(false);
   const [currentHotel, setCurrentHotel] = useState(null);
 
-
+  const [refresh, setRefresh] = useState(false);
 
   const [hotel, setHotel] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const fetchHotel = async () => {
@@ -37,7 +36,7 @@ export const HotelListing = () => {
         const formattedHotel = data.map((hotel) => ({
           id: hotel.id,
           hotelName: hotel.name,
-          location: hotel.city + ", " + hotel.country,
+          location: hotel.location,
           description: hotel.description,
           image: hotel.image,
         }));
@@ -49,12 +48,13 @@ export const HotelListing = () => {
         setHotel([]);
       } finally {
         setIsLoading(false);
+        setRefresh(false);
       }
     };
 
     fetchHotel();
-  }, []);
 
+  }, [refresh]);
 
   if (isLoading) {
     return (
@@ -108,7 +108,12 @@ export const HotelListing = () => {
 
       <Dialog open={addHotelOpen} onOpenChange={setAddHotelOpen}>
         <DialogContent className="sm:max-w-3xl">
-          <AddHotel onSuccess={() => setAddHotelOpen(false)} />
+          <AddHotel
+            onSuccess={() => {
+              setAddHotelOpen(false);
+              setRefresh(true);
+            }}
+          />
         </DialogContent>
       </Dialog>
 
@@ -116,11 +121,13 @@ export const HotelListing = () => {
         <DialogContent className="sm:max-w-3xl">
           <EditHotel
             currentHotel={currentHotel}
-            onSuccess={() => setEditHotelOpen(false)}
+            onSuccess={() => {
+              setEditHotelOpen(false);
+              setRefresh(true);
+            }}
           />
         </DialogContent>
       </Dialog>
-
     </div>
   );
 };

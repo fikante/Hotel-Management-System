@@ -7,6 +7,7 @@ import UserProfileAndBooking from "../Process/GuestCreation";
 import EditGuest from "./EditGuest";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
+import { set } from "react-hook-form";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
@@ -20,6 +21,8 @@ const GuestListPage = () => {
   const [guest, setGuest] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchGuest = async () => {
@@ -50,11 +53,12 @@ const GuestListPage = () => {
         setGuest([]);
       } finally {
         setIsLoading(false);
+        setRefresh(false);
       }
     };
 
     fetchGuest();
-  }, []);
+  }, [refresh]);
   if (isLoading) {
     return (
       <div className="flex justify-center flex-col items-center p-10">
@@ -82,7 +86,12 @@ const GuestListPage = () => {
 
       <Dialog open={isAddGuestOpen} onOpenChange={setIsAddGuestOpen}>
         <DialogContent>
-          <UserProfileAndBooking onSuccess={() => setIsAddGuestOpen(false)} />
+          <UserProfileAndBooking
+            onSuccess={() => {
+              setIsAddGuestOpen(false);
+              setRefresh(true);
+            }}
+          />
         </DialogContent>
       </Dialog>
 
@@ -91,7 +100,7 @@ const GuestListPage = () => {
           <EditGuest
             onSuccess={() => {
               setIsEditEditOpen(false);
-              console.log("Guest updated successfully", selectedGuest);
+              setRefresh(true);
             }}
             guestData={selectedGuest}
           />

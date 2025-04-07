@@ -6,6 +6,7 @@ import SelectGuestAndBooking from "../Process/ReservationCreation";
 import EditBooking from "./EditBooking";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
+import { set } from "react-hook-form";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
@@ -18,6 +19,8 @@ const ReservationListPage = () => {
   const [reservations, setReservations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -47,11 +50,12 @@ const ReservationListPage = () => {
         setReservations([]);
       } finally {
         setIsLoading(false);
+        setRefresh(false);
       }
     };
 
     fetchReservations();
-  }, []);
+  }, [refresh]);
 
   if (isLoading) {
     return (
@@ -87,6 +91,7 @@ const ReservationListPage = () => {
           <SelectGuestAndBooking
             onSuccess={() => {
               setIsAddBookOpen(false);
+              setRefresh(true);
             }}
           />
         </DialogContent>
@@ -100,6 +105,7 @@ const ReservationListPage = () => {
           <EditBooking
             onSuccess={() => {
               setIsEditReservationOpen(false);
+              setRefresh(true);
             }}
             reservationData={selectedReservation}
           />
