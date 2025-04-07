@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Transaction } from '../../../common/entities/transaction.entity'; // Correct path
 import { Booking } from '../../../common/entities/booking.entity';
 import { User } from '../../../common/entities/user.entity';
+import { RoomTypesResponseDto } from 'src/v1/hms/dashboard/dto/room-types-response.dto';
+import { Room } from 'src/common/entities/room.entity';
 
 @Injectable()
 export class DashboardService {
@@ -12,6 +14,9 @@ export class DashboardService {
     private bookingRepository: Repository<Booking>,
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
+
+    @InjectRepository(Room)
+    private roomRepostiory: Repository<Room>
   ) {}
 
   /**
@@ -89,6 +94,27 @@ export class DashboardService {
     return {
       success: true,
       revenue: result?.totalRevenue || 0, // Ensure result is not null or undefined
+    };
+  }
+
+   //get room types by filtering the database by the hotel id
+   async getRoomTypesWithNumbers(hotelId: number): Promise<RoomTypesResponseDto> {
+    const rooms = await this.roomRepostiory.find({
+      where: { hotel: { id: hotelId } },
+      select: ['type', 'roomNumber']
+    });
+  
+    const result = {};
+    rooms.forEach(room => {
+      if (!result[room.type]) {
+        result[room.type] = [];
+      }
+      result[room.type].push(room.roomNumber);
+    });
+  
+    return {
+      success: true,
+      data: result
     };
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import {
   CountryBookingResponse,
@@ -11,6 +11,7 @@ import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { UseGuards } from '@nestjs/common';
 import { Role } from '../../../common/enums/role.enum';
+import { RoomTypesResponseDto } from 'src/v1/hms/dashboard/dto/room-types-response.dto';
 
 @Controller('hms/hotels/:hotelId/dashboard')
 export class DashboardController {
@@ -76,4 +77,12 @@ export class DashboardController {
   ): Promise<{ success: boolean; revenue: number }> {
     return await this.dashboardService.getTotalRevenue(hotelId);
   }
+
+    // Get room types statistics
+    @Get('room-types')
+    async getRoomTypesWithNumbers(
+      @Param('hotelId', ParseIntPipe) hotelId: number
+    ): Promise<RoomTypesResponseDto> {
+      return this.dashboardService.getRoomTypesWithNumbers(hotelId);
+    }
 }
