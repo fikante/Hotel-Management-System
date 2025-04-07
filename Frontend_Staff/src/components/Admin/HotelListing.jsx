@@ -16,12 +16,10 @@ export const api = axios.create({
 export const HotelListing = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
   const [addHotelOpen, setAddHotelOpen] = useState(false);
   const [editHotelOpen, setEditHotelOpen] = useState(false);
   const [currentHotel, setCurrentHotel] = useState(null);
-
-
 
   const [hotel, setHotel] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +35,7 @@ export const HotelListing = () => {
         const formattedHotel = data.map((hotel) => ({
           id: hotel.id,
           hotelName: hotel.name,
-          location: hotel.city + ", " + hotel.country,
+          location: hotel.location,
           description: hotel.description,
           image: hotel.image,
         }));
