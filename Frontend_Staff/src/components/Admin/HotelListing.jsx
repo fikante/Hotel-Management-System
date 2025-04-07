@@ -21,6 +21,8 @@ export const HotelListing = () => {
   const [editHotelOpen, setEditHotelOpen] = useState(false);
   const [currentHotel, setCurrentHotel] = useState(null);
 
+  const [refresh, setRefresh] = useState(false);
+
   const [hotel, setHotel] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,12 +48,13 @@ export const HotelListing = () => {
         setHotel([]);
       } finally {
         setIsLoading(false);
+        setRefresh(false);
       }
     };
 
     fetchHotel();
-  }, []);
 
+  }, [refresh]);
 
   if (isLoading) {
     return (
