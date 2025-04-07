@@ -5,6 +5,17 @@ import { DashboardService } from './dashboard.service';
 import { Booking } from '../../../common/entities/booking.entity';
 import { Transaction } from '../../../common/entities/transaction.entity';
 
+/**
+ * Dashboard Module - Provides hotel analytics and reporting functionality
+ * 
+ * This module handles:
+ * - Hotel booking statistics
+ * - Guest demographics
+ * - Country-wise booking data
+ * - Other hotel performance metrics
+ * 
+ * Requires TypeORM entities: Booking and User
+ */
 @Module({
   imports: [TypeOrmModule.forFeature([Booking, Transaction])],
   controllers: [DashboardController],

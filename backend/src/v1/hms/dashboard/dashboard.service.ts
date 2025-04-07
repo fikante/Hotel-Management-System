@@ -14,10 +14,16 @@ export class DashboardService {
     private transactionRepository: Repository<Transaction>,
   ) {}
 
+  /**
+   * Retrieves booking statistics grouped by country for a specific hotel
+   * @param hotelId - The ID of the hotel (must be a number)
+   * @returns Promise<Array<Record<string, number>>> - Array of country-count pairs
+   * Example: [{ 'usa': 15 }, { 'uk': 8 }]
+   */
   async getCountryBookings(
     hotelId: number, // Changed from string to number to match Hotel entity
   ): Promise<Array<Record<string, number>>> {
-    console.log(hotelId);
+    console.log(hotelId); // Logging for debugging purposes
     const result = await this.bookingRepository
       .createQueryBuilder('booking')
       .select('user.nationality', 'country')
@@ -32,6 +38,11 @@ export class DashboardService {
     }));
   }
 
+  /**
+   * Retrieves demographic statistics (gender distribution) for a specific hotel
+   * @param hotelId - The ID of the hotel
+   * @returns Promise<{ male: number; female: number; other: number }> - Object with gender counts
+   */
   async getDemographics(
     hotelId: number, // Changed from string to number to match Hotel entity
   ): Promise<{ male: number; female: number; other: number }> {
@@ -55,6 +66,11 @@ export class DashboardService {
     return stats;
   }
 
+  /**
+   * Retrieves the total number of bookings for a specific hotel
+   * @param hotelId - The ID of the hotel
+   * @returns Promise<number> - Total count of bookings
+   */
   async getTotalBookings(hotelId: number): Promise<number> {
     return this.bookingRepository.count({
       where: { hotel: { id: hotelId } }, // Updated to match the relation structure

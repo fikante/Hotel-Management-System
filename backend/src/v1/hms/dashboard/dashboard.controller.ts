@@ -5,11 +5,22 @@ import {
   DemographicsResponse,
   TotalBookingsResponse,
 } from './dto/dashboard-response.dto';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { StaffJwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../common/guards/roles.guard';
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { UseGuards } from '@nestjs/common';
+import { Role } from '../../../common/enums/role.enum';
 
 @Controller('hms/hotels/:hotelId/dashboard')
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
+  /**
+   * Get booking statistics by country for a specific hotel
+   * @param hotelId - The ID of the hotel to get statistics for (must be a number)
+   * @returns Promise<CountryBookingResponse> - Object containing country-wise booking data
+   */
   @Get('countries')
   async getCountryBookings(
     @Param('hotelId') hotelId: number, // Changed from string to number
@@ -22,6 +33,12 @@ export class DashboardController {
     };
   }
 
+  /**
+   * Get demographic statistics (gender distribution) for a specific hotel
+   * @param hotelId - The ID of the hotel to get statistics for
+   * @returns Promise<DemographicsResponse> - Object containing male/female guest distribution
+   * Note: The service returns 'other' gender but it's not included in the response DTO
+   */
   @Get('demographics')
   async getDemographics(
     @Param('hotelId') hotelId: number, // Changed from string to number
@@ -31,10 +48,17 @@ export class DashboardController {
     return {
       success: true,
       male,
-      female, // Added 'other' to response
+      female,
     };
   }
 
+  /**
+   * Get total booking count for a specific hotel
+   * @param hotelId - The ID of the hotel to get booking count for
+   * @returns Promise<TotalBookingsResponse> - Object containing total bookings count
+   * @secured - Requires valid JWT authentication
+   * Note: The @Roles decorator is commented out but would restrict to STAFF and MANAGER roles
+   */
   @Get('bookings')
   async getTotalBookings(
     @Param('hotelId') hotelId: number, // Changed from string to number
