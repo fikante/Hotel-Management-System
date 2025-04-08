@@ -23,6 +23,8 @@ import "./App.css";
 import Menu from './pages/restaurant/Menu';
 import OrderHistory from './pages/restaurant/OrderHistory';
 import OrderForm from './pages/restaurant/OrderForm';
+import PaymentSuccessModal from "@/components/Payment/PaymentSuccessModal";
+import PaymentFailureModal from "@/components/Payment/PaymentFailureModal";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +55,8 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/payment_modal" element={<TestPaymentModal />} />
+            <Route path="/payment_success" element={<PaymentSuccessModal />} />
+            <Route path="/payment_failure" element={<PaymentFailureModal />} />
             {/* These routes would be implemented later as the application grows */}
             <Route path="/user_rooms" element={<NotFound />} />
             <Route path="/user_rooms/:id" element={<NotFound />} />
@@ -61,25 +65,14 @@ const App = () => (
             <Route path="/user_services" element={<NotFound />} />
             <Route path="/offers" element={<NotFound />} />
             <Route path="/offers/:id" element={<NotFound />} />
-            <Route path="/profile" element={<NotFound />} />
             <Route path="/settings" element={<NotFound />} />
             <Route path="/destinations" element={<NotFound />} />
             <Route path="/support" element={<NotFound />} />
             <Route path="/rewards" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
             {/* Catch-all 404 route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BookingProvider>
-          <Routes>
-          {/* Restaurant routes */}
-          <Route path="/restaurant/menu" element={<Menu />} />
-          <Route path="/restaurant/history" element={<OrderHistory />} />
-          <Route path="/restaurant/order" element={<OrderForm />} />
-
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
