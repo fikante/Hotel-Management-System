@@ -26,6 +26,7 @@ export class CreateManagerDto {
     email: string;
     
     @IsString()
+    @IsOptional()
     password: string;
     
     @IsString()

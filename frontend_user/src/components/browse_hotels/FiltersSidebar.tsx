@@ -240,9 +240,6 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ isOpen, onClose, onAppl
           <Button variant="outline" onClick={handleClearFilters}>
             Clear All Filters
           </Button>
-          <Button variant="solid" onClick={onClose}>
-            Done
-          </Button>
         </div>
       </div>
     </div>
