@@ -44,9 +44,12 @@ const PaymentSection = ({ summary, onUpdateSummary }: PaymentSectionProps) => {
 
         const bookingId = "0ee52c99-d74b-4326-ae3d-2e136e2e0baa"; // fallback
         const payload = {
-          price: 10000, // example amount in cents
+          price: (summary.serviceCharge + summary.subtotal + summary.tax) * 100, // example amount in cents
           currency: "usd",
         };
+        console.log('subtotal',summary.subtotal);
+        console.log('total',summary.total);
+
 
         const response = await api.post(`/payments/initiate/${bookingId}`, payload);
         console.log(response);  

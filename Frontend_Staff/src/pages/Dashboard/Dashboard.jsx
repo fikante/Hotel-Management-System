@@ -101,7 +101,7 @@ const Dashboard = () => {
 
         // Process Revenue
         if (revenueData.status === 'fulfilled' && revenueData.value) {
-           setTotalRevenue(parseFloat(revenueData.value.revenue) || 0);
+           setTotalRevenue(parseFloat(revenueData.value.revenue)/100 || 0);
         } else {
             console.error("Failed to fetch Revenue:", revenueData.reason);
             fetchError = fetchError || new Error("Failed to load Revenue data.");
