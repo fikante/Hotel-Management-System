@@ -17,7 +17,6 @@ import BrowseHotels from "./pages/BrowseHotels";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
-import TestPaymentModal from "./pages/TestPaymentModals";
 import "./App.css";
 
 import Menu from './pages/restaurant/Menu';
@@ -53,7 +52,6 @@ const App = () => (
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/payment_modal" element={<TestPaymentModal />} />
             <Route path="/payment_success" element={<PaymentSuccess />} />
             <Route path="/payment_failure" element={<PaymentFailure />} />
             {/* These routes would be implemented later as the application grows */}
