@@ -1,13 +1,17 @@
 import { Transform } from "class-transformer";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateManagerDto {
     @IsNotEmpty()
     @IsString()
     firstName: string;
+
+    @IsString()
+    @IsOptional()
+    profilePic: string;
     
     @IsString()
-    LastName: string;
+    lastName: string;
     
     @IsString()
     address: string;
@@ -25,7 +29,7 @@ export class CreateManagerDto {
     password: string;
     
     @IsString()
-    phone: string;
+    phoneNumber: string;
 
     @Transform(({ value }) => Number(value))
     hotelId: number;
