@@ -25,29 +25,31 @@ const Managers = () => {
         const response = await api.get("/manager");
         console.log(response.data.data, "data from api");
 
-        // "id": "9616f09b-2fb2-4100-9703-638e6c8f3a06",
+        // "id": "dd428858-6baf-4e84-b8aa-2947f8a9aa8f",
         // "firstName": "John",
         // "lastName": "Doeeeee",
         // "email": "johndoe@example.com",
-        // "password": "securepassword123",
         // "phoneNumber": "1234567890",
         // "address": "123 Main Street, Cityville",
         // "dateOfBirth": "1989-12-31T21:00:00.000Z",
-        // "registrationDate": "2025-04-05T21:00:00.000Z"
+        // "registrationDate": "2025-04-05T21:00:00.000Z",
+        // "hotelName": "Mega Start",
+        // "profielPic": null
 
         const formattedManagers = response.data.data.map((manager) => ({
-          id: manager.id,
-          FirstName: manager.firstName,
-          LastName: manager.lastName,
-          Email: manager.email,
-          Password: manager.password,
-          PhoneNumber: manager.phoneNumber,
-          Address: manager.address,
-          DateOfBirth: manager.dateOfBirth,
-          RegistrationDate: manager.registrationDate,
-          hotelName: manager.hotelName || "Hotel",
+          firstName: manager.firstName,
+          lastName: manager.lastName,
+          email: manager.email,
+          phone: manager.phoneNumber,
+          // DateOfBirth: manager.dateOfBirth,
+          registeredAt: manager.registrationDate,
+          
+          address: manager.address,
+          hotel: manager.hotelName || "Hotel",
+          picture: manager?.profielPic || "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
         }));
         setManagers(formattedManagers);
+        console.log(formattedManagers)
         setError(null);
       } catch (error) {
         setError(error.message);
@@ -70,7 +72,7 @@ const Managers = () => {
   return (
     <div className="flex flex-col justify-center gap-4">
       <CustomTable
-        data={managersDatabase}
+        data={managers}
         columns={ManagersColumns}
         onAddClick={() => setAddManagerOpen(true)}
         addButtonText={"Add Manager"}

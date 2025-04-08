@@ -13,7 +13,7 @@ const ManagersColumns = [
         className="size-24 rounded-full object-cover"
       />
     ),
-    size: 110,
+    size: 150,
     enableSorting: false,
   },
   {
@@ -28,7 +28,7 @@ const ManagersColumns = [
         <ArrowUpDown className="ml-2 size-4" />
       </Button>
     ),
-    size: 200,
+    size: 150,
   },
   {
     id: "hotel",
@@ -74,7 +74,21 @@ const ManagersColumns = [
     size: 150,
   },
   {
-    id: "employedDate",
+    id: "address",
+    accessorKey: "address",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Address
+        <ArrowUpDown className="ml-2 size-4" />
+      </Button>
+    ),
+    size: 150,
+  },
+  {
+    id: "registeredAt",
     accessorKey: "registeredAt",
     header: ({ column }) => (
       <Button
