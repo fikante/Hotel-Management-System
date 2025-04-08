@@ -7,7 +7,6 @@ import UserProfileAndBooking from "../Process/GuestCreation";
 import EditGuest from "./EditGuest";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
-import { set } from "react-hook-form";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
@@ -32,8 +31,8 @@ const GuestListPage = () => {
         const data = response.data?.data;
         const formattedGuest = data.map((guest) => ({
           id: guest.id,
-          firstName: guest.firstName || "John",
-          lastName: guest.lastName || "Doe",
+          firstName: guest.firstName,
+          lastName: guest.lastName,
           gender: guest.gender,
           email: guest.email,
           phone: guest.phone,

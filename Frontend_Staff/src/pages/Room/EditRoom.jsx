@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 const EditRoom = ({ onSuccess, roomData }) => {
@@ -84,7 +84,6 @@ const EditRoom = ({ onSuccess, roomData }) => {
     formData.append("description", data.description);
     formData.append("size", String(data.size));
     formData.append("roomNumber", data.roomNumber);
-    formData.append("amenities", JSON.stringify(amenitiesArray));
 
     // formData.append("image", data.image);
     console.log(formData.get("type"));

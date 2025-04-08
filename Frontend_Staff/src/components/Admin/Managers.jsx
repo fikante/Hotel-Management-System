@@ -24,16 +24,16 @@ const Managers = () => {
       try {
         const response = await api.get("/manager");
         console.log(response.data.data, "data from api");
-        // setManagers(response.data.data);
-          // "id": "31499b33-d523-4261-bf70-9c5be71d11de",
-          // "firstName": "",
-          // "lastName": "",
-          // "email": "",
-          // "password": "",
-          // "phoneNumber": "",
-          // "address": "",
-          // "dateOfBirth": null,
-          // "registrationDate": null
+
+        // "id": "9616f09b-2fb2-4100-9703-638e6c8f3a06",
+        // "firstName": "John",
+        // "lastName": "Doeeeee",
+        // "email": "johndoe@example.com",
+        // "password": "securepassword123",
+        // "phoneNumber": "1234567890",
+        // "address": "123 Main Street, Cityville",
+        // "dateOfBirth": "1989-12-31T21:00:00.000Z",
+        // "registrationDate": "2025-04-05T21:00:00.000Z"
 
         const formattedManagers = response.data.data.map((manager) => ({
           id: manager.id,
@@ -45,6 +45,7 @@ const Managers = () => {
           Address: manager.address,
           DateOfBirth: manager.dateOfBirth,
           RegistrationDate: manager.registrationDate,
+          hotelName: manager.hotelName || "Hotel",
         }));
         setManagers(formattedManagers);
         setError(null);

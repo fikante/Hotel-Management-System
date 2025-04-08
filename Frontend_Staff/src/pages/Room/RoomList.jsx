@@ -47,7 +47,7 @@ const RoomList = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center flex-col items-center p-10">
-        <div className="text-center text-gray-500">Loading reservations...</div>
+        <div className="text-center text-gray-500">Loading...</div>
         <SpinPage />
       </div>
     );
@@ -66,9 +66,6 @@ const RoomList = () => {
             setSelectedRoom(room);
             console.log(room);
           },
-          onDeleteClick: (room) => {
-            
-          }
         }}
         pageSize={5}
       />

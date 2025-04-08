@@ -49,7 +49,7 @@ const Login = () => {
     setSubmissionStatus(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      const response = await fetch(`${API_BASE_URL}/auth/staff/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,9 +67,8 @@ const Login = () => {
       }
 
       if (responseData.success) {
-        console.log("API Response:", responseData);
+        console.log(responseData);
         localStorage.setItem('authToken', responseData.token);
-        console.log("Token stored:", responseData.token);
 
         setSubmissionStatus({
           type: "success",
