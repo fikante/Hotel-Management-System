@@ -46,7 +46,6 @@ const AddManager = ({ onSuccess }) => {
       formData.append("hotelId", data.hotel);
       formData.append("registrationDate", data.registeredAt);
       formData.append("profilePic", profileImage);
-      formData.append("password", "");
 
       const response = await api.post("/manager", formData, {
         headers: {

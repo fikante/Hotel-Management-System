@@ -23,18 +23,6 @@ const Managers = () => {
       setIsloading(true);
       try {
         const response = await api.get("/manager");
-        console.log(response.data.data, "data from api");
-
-        // "id": "dd428858-6baf-4e84-b8aa-2947f8a9aa8f",
-        // "firstName": "John",
-        // "lastName": "Doeeeee",
-        // "email": "johndoe@example.com",
-        // "phoneNumber": "1234567890",
-        // "address": "123 Main Street, Cityville",
-        // "dateOfBirth": "1989-12-31T21:00:00.000Z",
-        // "registrationDate": "2025-04-05T21:00:00.000Z",
-        // "hotelName": "Mega Start",
-        // "profielPic": null
 
         const formattedManagers = response.data.data.map((manager) => ({
           firstName: manager.firstName,
@@ -43,13 +31,15 @@ const Managers = () => {
           phone: manager.phoneNumber,
           // DateOfBirth: manager.dateOfBirth,
           registeredAt: manager.registrationDate,
-          
+          id: manager.id,
+
           address: manager.address,
           hotel: manager.hotelName || "Hotel",
-          picture: manager?.profielPic || "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+          picture:
+            manager?.profielPic ||
+            "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
         }));
         setManagers(formattedManagers);
-        console.log(formattedManagers)
         setError(null);
       } catch (error) {
         setError(error.message);

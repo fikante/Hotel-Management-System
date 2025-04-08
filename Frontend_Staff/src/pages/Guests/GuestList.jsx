@@ -61,7 +61,7 @@ const GuestListPage = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center flex-col items-center p-10">
-        <div className="text-center text-gray-500">Loading staff...</div>
+        <div className="text-center text-gray-500">Loading Guest...</div>
         <SpinPage />
       </div>
     );

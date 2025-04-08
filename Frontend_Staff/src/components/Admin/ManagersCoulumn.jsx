@@ -2,6 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Edit, ArrowUpDown } from "lucide-react";
 import { DeleteButton } from "../Delete/DeleteButton";
 
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:3000/api/v1",
+});
+
 const ManagersColumns = [
   {
     id: "picture",
@@ -108,8 +114,9 @@ const ManagersColumns = [
     cell: ({ row }) => (
       <div className="flex space-x-2">
         <DeleteButton
-          onDelete={() => {
-            alert(`Deleted Manager ID ${row.original.id}`);
+          onDelete={async () => {
+            // console.log("Delete button clicked for ID:", row.original.id);
+            await handleDelete(row.original.id);
           }}
         />
       </div>
@@ -120,3 +127,12 @@ const ManagersColumns = [
 ];
 
 export default ManagersColumns;
+
+const handleDelete = async (id) => {
+  try {
+    const response = await api.delete(`/manager/${id}`);
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error deleting manager:", error);
+  }
+};
