@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Manager } from 'src/common/entities/manager.entity';
 import { Repository } from 'typeorm';
 import { CreateManagerDto } from './dtos/createManagerDto';
@@ -34,5 +34,17 @@ export class ManagerService {
             throw new Error('Error retrieving managers: ' + error.message);
         }
 
+    }
+    async deleteManager(id: string) {
+        try {
+            const manager = await this.managerRepository.findOne({ where: { id } });
+            if (!manager) {
+                throw new Error('Manager not found');
+            }
+            await this.managerRepository.remove(manager);
+            return { message: 'Manager deleted successfully' };
+        } catch (error) {
+            throw new NotFoundException('Manager not found');
+        }
     }
 }

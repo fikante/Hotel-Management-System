@@ -7,7 +7,7 @@ export class CreateManagerDto {
     firstName: string;
     
     @IsString()
-    LastName: string;
+    lastName: string;
     
     @IsString()
     address: string;
@@ -25,7 +25,7 @@ export class CreateManagerDto {
     password: string;
     
     @IsString()
-    phone: string;
+    phoneNumber: string;
 
     @Transform(({ value }) => Number(value))
     hotelId: number;

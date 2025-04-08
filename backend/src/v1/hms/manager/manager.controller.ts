@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ManagerService } from './manager.service';
 import { CreateManagerDto } from './dtos/createManagerDto';
 
@@ -19,6 +19,11 @@ export class ManagerController {
     @Get()
     async getAllManagers() {
         return await this.managerService.getAllManagers();
+    }
+
+    @Delete(':id')
+    async deleteManager(@Param('id') id: string) {
+        return await this.managerService.deleteManager(id);
     }
 
 }
