@@ -1,28 +1,28 @@
+// api.ts
 import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 
-// Request Interceptor
-// api.interceptors.request.use((config) => {
-//   const token = localStorage.getItem("token");
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+// Signup function
+export const signup = async (data: any) => {
+  try {
+    const response = await api.post("/auth/signup", data);
+    return response.data; // Return response data for further use (like a token)
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Signup failed");
+  }
+};
 
-// Response Interceptor
-// api.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response?.status === 401) {
-//       console.warn("Unauthorized");
-//       // handle logout or redirect
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+// Login function
+export const login = async (data: any) => {
+  try {
+    const response = await api.post("/auth/login", data);
+    return response.data; // Return response data for further use (like a token)
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Login failed");
+  }
+};
 
 export default api;
