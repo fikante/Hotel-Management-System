@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,6 +7,7 @@ import { CalendarIcon, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Calendar } from "@/components/ui/calendar";
 import {
   Select,
@@ -34,9 +34,10 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import FormStepper from "./FormStepper";
 import { toast } from "@/hooks/use-toast";
+import { signup } from "../../api"; // Import the signup API function
 
-const STEPS = ["Personal Info", "Contact", "Identity", "Security"];
-const NATIONALITIES = ["Ethiopian", "American", "Australian", "British", "Canadian", "Chinese", "French", "German", "Indian", "Italian", "Japanese", "Mexican", "Spanish", "Other"];
+const STEPS = ["Personal Info", "Contact", "Identity", "Security"] as const;
+const NATIONALITIES = ["Ethiopian", "American", "Australian", "British", "Canadian", "Chinese", "French", "German", "Indian", "Italian", "Japanese", "Mexican", "Spanish", "Other"] as const;
 
 // Define a schema for our form
 const formSchema = z.object({
@@ -84,10 +85,12 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const SignupForm: React.FC = () => {
+  const navigate = useNavigate(); 
   const [step, setStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -105,6 +108,48 @@ const SignupForm: React.FC = () => {
     },
   });
 
+  const { control, handleSubmit, formState: { errors }, setValue, trigger, getValues } = form;
+
+  const onSubmit = async (data: FormValues) => {
+    try {
+      setIsLoading(true);
+      
+      // Transform data to match API expectations
+      const apiData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        identificationType: data.idType,
+        identificationNumber: data.idNumber,
+        address: data.address,
+        email: data.email,
+        password: data.password,
+        nationality: data.nationality,
+        dateOfBirth: data.dateOfBirth.toISOString(),
+        gender: data.gender,
+        phone: data.phone, // Make sure this matches your form field name
+        role: "user",
+        picture: "https://example.com/default-avatar.jpg"
+      };
+  
+      const response = await signup(apiData);
+      console.log("Signup successful", response);
+      toast({
+        title: "Account created!",
+        description: "You have successfully created your account.",
+      });
+      navigate('/login');
+    } catch (error) {
+      console.error("Signup error", error);
+      toast({
+        title: "Signup Error",
+        description: error.message || "An error occurred while creating your account. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const nextStep = async () => {
     let fieldsToValidate: (keyof FormValues)[] = [];
     
@@ -121,13 +166,15 @@ const SignupForm: React.FC = () => {
       case 3:
         fieldsToValidate = ["password", "confirmPassword"];
         break;
+      default:
+        break;
     }
 
-    const isValid = await form.trigger(fieldsToValidate);
+    const isValid = await trigger(fieldsToValidate);
     
     if (isValid) {
       if (step === 3) {
-        onSubmit(form.getValues());
+        await onSubmit(getValues());
       } else {
         setStep((prev) => prev + 1);
       }
@@ -138,20 +185,12 @@ const SignupForm: React.FC = () => {
     setStep((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
-  const onSubmit = (data: FormValues) => {
-    toast({
-      title: "Account created!",
-      description: "You have successfully created your account.",
-    });
-    console.log("Form submitted:", data);
-  };
-
   return (
     <div className="w-full animate-fade-in">
       <FormStepper steps={STEPS} currentStep={step} />
       
       <Form {...form}>
-        <form className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {step === 0 && (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -478,6 +517,7 @@ const SignupForm: React.FC = () => {
                 variant="outline"
                 onClick={prevStep}
                 className="rounded-xl px-6"
+                disabled={isLoading}
               >
                 Back
               </Button>
@@ -488,6 +528,7 @@ const SignupForm: React.FC = () => {
               type="button"
               onClick={nextStep}
               className="rounded-xl px-8 py-6 text-base font-medium"
+              disabled={isLoading}
             >
               {step === 3 ? "Create Account" : "Continue"}
             </Button>
