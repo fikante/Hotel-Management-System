@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import HotelCard from "./HotelCard";
-import api from "@/api";
+import { getHotels } from "@/api"; // cleanly importing the API function
 
 const TopHotels = () => {
   const [hotels, setHotels] = useState([]);
@@ -11,37 +11,39 @@ const TopHotels = () => {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const res = await api.get("/hotels");
-
-        // Log the full response to understand its structure
-        console.log("API Response:", res.data);
-
-        // Access the array of hotels inside the 'data' property
-        const rawHotels = res.data.data; // 'data' contains the array of hotels
-
-        // Map over the hotels array to clean and structure it
-        const cleaned = rawHotels.map((hotel) => ({
-          id: hotel.id,
-          name: hotel.name, // Adjust the field name as needed
-          description: hotel.description,
-          address: hotel.address,
-          city: hotel.city,
-          country: hotel.country,
-          pricePerNight: hotel["pricePerNight"], // Adjust this field if necessary
-          isActive: hotel.isActive, // Adjust field names according to the API response
-          location: hotel.location ?? `${hotel.city}, ${hotel.country}`,
-          image: hotel.image,
+        setLoading(true);
+        setError("");
+        
+        const hotelsData = await getHotels();
+        console.log("Processed hotels data:", hotelsData);
+  
+        if (!Array.isArray(hotelsData)) {
+          throw new Error("Expected array of hotels but got different format");
+        }
+  
+        const cleaned = hotelsData.map((hotel) => ({
+          id: hotel.id || "",
+          name: hotel.name || "Unnamed Hotel",
+          description: hotel.description || "No description available",
+          address: hotel.address || "",
+          city: hotel.city || "",
+          country: hotel.country || "",
+          pricePerNight: hotel.pricePerNight || 0,
+          isActive: hotel.isActive !== false,
+          location: hotel.location || [hotel.city, hotel.country].filter(Boolean).join(", "),
+          image: hotel.image || "/default-hotel.jpg",
+          rating: typeof hotel.rating === "number" ? hotel.rating : 4.5,
         }));
-
-        setHotels(cleaned); // Set the cleaned data in state
+  
+        setHotels(cleaned);
       } catch (err) {
-        setError("Failed to load hotels.");
-        console.error(err); // Log any errors for better debugging
+        console.error("Full error:", err);
+        setError(err.message || "Failed to load hotels. Please try again later.");
       } finally {
-        setLoading(false); // Stop the loading spinner or message
+        setLoading(false);
       }
     };
-
+  
     fetchHotels();
   }, []);
 
@@ -67,7 +69,7 @@ const TopHotels = () => {
                 image={hotel.image}
                 name={hotel.name}
                 location={hotel.location}
-                rating={hotel.rating || 4.5} // fallback to 0 if rating is not available
+                rating={hotel.rating}
                 price={hotel.pricePerNight}
                 description={hotel.description}
               />
