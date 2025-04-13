@@ -18,7 +18,7 @@ export class RoomsController {
   }
 
 
-  @Get('rooms')
+  @Get('availablerooms')
   //@UseGuards(JwtAuthGuard) // Ensure the user is authenticated
   async getAvailableRooms(
     @Param('hotelId') hotelId: number,
