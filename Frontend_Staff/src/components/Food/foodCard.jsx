@@ -3,22 +3,22 @@ import { Button } from "../ui/button";
 import axios from "axios";
 
 const FoodCard = ({ food, onEditClick, onDeleteClick, role }) => {
-  const visibleIngredients = food.Ingredients.slice(0, 4);
+  const visibleIngredients = food?.Ingredients?.slice(0, 4); 
 
   return (
     <div className="flex flex-col w-[245px] gap-0 rounded-lg overflow-hidden shadow-sm">
       <div className="shrink-0 overflow-hidden h-40">
         <img
-          src={food.picture}
-          alt={food.Name}
+          src={food?.picture}
+          alt={food?.Name}
           className="object-cover size-full"
         />
       </div>
 
       <div className="p-2">
         <div className="flex justify-between">
-          <h3 className="font-bold text-blue-800  ">{food.Name}</h3>
-          {role !== "staff" && (
+          <h3 className="font-bold text-blue-800  ">{food?.Name}</h3>
+          {role !== "manager" && (
             <div>
               <Button
                 variant="ghost"
@@ -47,16 +47,16 @@ const FoodCard = ({ food, onEditClick, onDeleteClick, role }) => {
         </div>
 
         <div className="flex justify-between items-center mt-3">
-          <span className="font-bold text-blue-600">${food.Price}</span>
+          <span className="font-bold text-blue-600">${food?.Price}</span>
           <span
-            className={`text-sm text-gray-400
-            ${food.Status === "Available" ? "text-green-500" : "text-red-500"}
+            className={`text-sm text-gray-900 py-1 px-2 rounded-3xl
+            ${food?.Status === "available" ? "bg-green-100" : "bg-red-100"}
             `}
           >
-            {food.Status}
+            {food?.Status}
           </span>
           <span className="text-indigo-600 font-semibold text-sm">
-            {food.Category}
+            {food?.Category}
           </span>
         </div>
       </div>

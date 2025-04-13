@@ -89,42 +89,54 @@ export const useGuestStore = create((set, get) => ({
           checkOut: bookingFormData.checkOut,
         }
       );
-    //   console.log(response.data);
+
       const updatedGuestData = {
         ...guestData,
         id: guestId,
       };
-        set((state) => ({
-            guests: [...state.guests, updatedGuestData],
-            isLoading: false,
-            error: null,
-        }));
+
+      set((state) => ({
+        guests: [...state.guests, updatedGuestData],
+        isLoading: false,
+        error: null,
+      }));
     } catch (error) {
       console.error("Error booking room:", error);
     }
   },
 
+  editGuest: async (data, id) => {
+    try {
+      const guestData = {
+        firstName: data.fname,
+        lastName: data.lname,
+        gender: data.gender,
+        email: data.email,
+        phone: data.phone,
+        nationality: data.nationality,
+        identificationType: data.idType,
+        identificationNumber: data.idNumber,
+      };
+      console.log("Guest Data:", guestData);
 
-    editGuest: async (guestData) => {
-        try {
-        const response = await axios.patch(
-            `${API_BASE_URL}/hotels/1/guest/${guestData.id}`,
-            guestData
-        );
-        const updatedGuest = response.data;
-        set((state) => ({
-            guests: state.guests.map((guest) =>
-            guest.id === updatedGuest.id ? updatedGuest : guest
-            ),
-            isLoading: false,
-            error: null,
-        }));
-        } catch (error) {
-        console.error("Error updating guest:", error);
-        set({
-            isLoading: false,
-            error: "Failed to update guest",
-        });
-        }
-    },
+      const response = await axios.patch(
+        `${API_BASE_URL}/hotels/1/guest/${id}`,
+        guestData
+      );
+
+      set((state) => ({
+        guests: state.guests.map((guest) =>
+          guest.id === id ? { ...guest, ...guestData } : guest
+        ),
+        isLoading: false,
+        error: null,
+      }));
+    } catch (error) {
+      console.error("Error updating guest:", error);
+      set({
+        isLoading: false,
+        error: "Failed to update guest",
+      });
+    }
+  },
 }));

@@ -5,7 +5,7 @@ import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 import { useGuestStore } from "@/components/store/useGuestStore";
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 
@@ -43,6 +43,7 @@ const UserProfileAndBooking = ({ onSuccess }) => {
           setActiveButton("book");
         }
         setError(null);
+
       } catch (error) {
         console.error("Error fetching room:", error);
         setError("Failed to load room");
@@ -80,6 +81,7 @@ const UserProfileAndBooking = ({ onSuccess }) => {
     const book = async () => {
       try {
         await addGuest(guestFormData, selectedRoom, bookingFormData);
+        onSuccess();
       } catch (error) {
         console.error("Error booking room:", error);
         setError("Failed to book room");

@@ -163,9 +163,8 @@ export const reservationColumns = [
           <Edit className="h-4 w-4 text-blue-600" />
         </Button>
         <DeleteButton
-          onDelete={async () => {
-            console.log("Delete clicked for ID:", row.original);
-            await handleDelete(row.original.bookingId);
+          onDelete={() => {
+            table.options.meta?.onDeleteClick?.(row.original);
           }}
         />
       </div>

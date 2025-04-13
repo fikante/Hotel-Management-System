@@ -18,6 +18,7 @@ import OrderedFood from "../Order/OrderedFood";
 import EditFood from "@/pages/Food/EditFood";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
+import { useFoodStore } from "../store/useFoodStore";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
@@ -25,6 +26,9 @@ export const api = axios.create({
 
 export const FoodListingView = () => {
   const { user } = useAuthStore();
+  const { fetchFood, foodItems, isLoading, initialized, deleteFood } =
+    useFoodStore();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 12;
@@ -32,60 +36,27 @@ export const FoodListingView = () => {
   const [orderFoodOpen, setOrderFoodOpen] = useState(false);
   const [editFoodOpen, setEditFoodOpen] = useState(false);
   const [foodItem, setFoodItem] = useState(null);
-  const [refresh, setRefresh] = useState(false);
 
   const [deleteFoodOpen, setDeleteFoodOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const [food, setFood] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchFood = async () => {
-      try {
-        setIsLoading(true);
-        const response = await api.get("/hotels/1/menu");
-        const data = response.data;
-        console.log(data, "data from api");
-        const formattedFood = data.map((food) => ({
-          id: food.id,
-          Name: food.name,
-          Ingredients: food.ingredients,
-          Status: food.status,
-          Category: food.category,
-          Price: food.price,
-          picture: food.image,
-          EstimatedPreparationTime: food.timeToMake,
-        }));
-        setFood(formattedFood);
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching food:", error);
-        setError("Failed to load food");
-        setFood([]);
-      } finally {
-        setIsLoading(false);
-        setRefresh(false);
-      }
-    };
-
-    fetchFood();
-  }, [refresh]);
+    if (!initialized) {
+      fetchFood();
+    }
+  }, [initialized]);
 
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      console.log("Deleting food item:", foodItem);
-      const response = await api.delete(`/hms/hotels/1/food/${foodItem.id}`);
-      console.log("Delete Response:", response.data);
+      await deleteFood(foodItem.id);
       setDeleteFoodOpen(false);
-      setRefresh(true);
-      setError(null);
+      alert("Food item deleted successfully!");
     } catch (error) {
-      console.error("Error deleting food:", error);
-      setError("Failed to delete food item");
-      setDeleteFoodOpen(false);
+      console.error("Error deleting food item:", error);
+      setError("Failed to delete food item. Please try again.");
     } finally {
       setIsDeleting(false);
     }
@@ -99,18 +70,16 @@ export const FoodListingView = () => {
       </div>
     );
   }
-  console.log(food);
-  const filteredFoods = food.filter((food) => {
-    const lowerSearchTerm = searchTerm.toLowerCase();
-
+  console.log("foodItems", foodItems);
+  const filteredFoods = foodItems.filter((food) => {
     return (
-      food.Name.toLowerCase().includes(lowerSearchTerm) ||
-      food.Status.toLowerCase().includes(lowerSearchTerm) ||
-      food.Category.toLowerCase().includes(lowerSearchTerm) ||
-      food.Ingredients.some((ingredient) =>
-        ingredient.toLowerCase().includes(lowerSearchTerm)
+      food?.Name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      food?.Status?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      food?.Category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      food?.Ingredients?.some((ingredient) =>
+        ingredient.toLowerCase().includes(searchTerm.toLowerCase())
       ) ||
-      String(food.Price).includes(searchTerm)
+      String(food?.Price)?.includes(searchTerm)
     );
   });
 
@@ -119,9 +88,6 @@ export const FoodListingView = () => {
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
-  // if user.role is staff then hide the add food button, edit food button and delete food button
-  const isStaff = user?.role === "staff";
-  // How can i do that?
 
   return (
     <div className="flex flex-col gap-6 p-4 rounded-lg bg-white">
@@ -132,7 +98,7 @@ export const FoodListingView = () => {
           buttonText="Add Food"
           onAddClick={() => setAddFoodOpen(true)}
           onOrderClick={() => setOrderFoodOpen(true)}
-          role = {user?.role}
+          role={user?.role}
         />
       </div>
       <div className="flex flex-wrap gap-5 justify-center">
@@ -164,7 +130,6 @@ export const FoodListingView = () => {
           <AddFood
             onSuccess={() => {
               setAddFoodOpen(false);
-              setRefresh(true);
             }}
           />
         </DialogContent>
@@ -181,7 +146,6 @@ export const FoodListingView = () => {
             foodItem={foodItem}
             onSuccess={() => {
               setEditFoodOpen(false);
-              setRefresh(true);
             }}
           />
         </DialogContent>
