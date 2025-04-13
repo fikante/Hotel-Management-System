@@ -8,7 +8,7 @@ import EditRoom from "./EditRoom";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 
@@ -27,12 +27,10 @@ const RoomList = () => {
       try {
         setIsLoading(true);
         const response = await api.get("/hotels/1/rooms");
-        console.log("Fetched Rooms:", response?.data?.rooms?.data);
 
         setRoom(response?.data?.rooms?.data);
         setError(null);
       } catch (error) {
-        console.error("Error fetching reservations:", error);
         setError("Failed to load rooms");
         setRoom([]);
       } finally {
@@ -64,7 +62,6 @@ const RoomList = () => {
           onEditClick: (room) => {
             setIsEditRoomOpen(true);
             setSelectedRoom(room);
-            console.log(room);
           },
         }}
         pageSize={5}

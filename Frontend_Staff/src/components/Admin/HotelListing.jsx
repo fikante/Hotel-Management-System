@@ -65,7 +65,6 @@ export const HotelListing = () => {
     );
   }
 
-  console.log(hotel);
 
   const filteredHotels = hotel.filter(
     (hotel) =>

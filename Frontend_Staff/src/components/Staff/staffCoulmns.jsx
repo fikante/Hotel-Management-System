@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Edit, ArrowUpDown } from "lucide-react";
-import { DeleteButton } from "../Delete/DeleteButton";
+import { DeleteButton } from "../Confirmation/DeleteButton";
 import axios from "axios";
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 

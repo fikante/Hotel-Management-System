@@ -3,7 +3,7 @@ import FoodCard from "./foodCard";
 import FoodPagination from "./foodPagination";
 import FoodToolbar from "./foodToolBar";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { useAuthStore } from "../Auth/authStore";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +24,7 @@ export const api = axios.create({
 });
 
 export const FoodListingView = () => {
+  const { user } = useAuthStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 12;
@@ -118,6 +119,9 @@ export const FoodListingView = () => {
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
+  // if user.role is staff then hide the add food button, edit food button and delete food button
+  const isStaff = user?.role === "staff";
+  // How can i do that?
 
   return (
     <div className="flex flex-col gap-6 p-4 rounded-lg bg-white">
@@ -128,6 +132,7 @@ export const FoodListingView = () => {
           buttonText="Add Food"
           onAddClick={() => setAddFoodOpen(true)}
           onOrderClick={() => setOrderFoodOpen(true)}
+          role = {user?.role}
         />
       </div>
       <div className="flex flex-wrap gap-5 justify-center">
@@ -143,6 +148,7 @@ export const FoodListingView = () => {
               setDeleteFoodOpen(true);
               setFoodItem(food);
             }}
+            role={user?.role}
           />
         ))}
       </div>

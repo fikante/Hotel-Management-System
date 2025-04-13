@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ProfileSettings from "../Profile/profileEdit";
-import { userProfile } from "@/TestData/HotelConfig";
 import Security from "@/components/Security/Security";
 
-const Setting = () => {
-  const [activeButton, setActiveButton] = React.useState("profile");
+const Setting = ({user}) => {
+  const [activeButton, setActiveButton] = useState("profile");
 
   return (
     <div className="flex flex-col flex-1 p-6 bg-white  rounded-lg">
@@ -31,7 +30,7 @@ const Setting = () => {
         </button>
       </div>
       {activeButton === "profile" && (
-        <ProfileSettings userProfile={userProfile} />
+        <ProfileSettings userProfile={user} />
       )}
       {activeButton === "security" && <Security/>}
     </div>

@@ -65,7 +65,7 @@ export class StaffService {
       ...createStaffDto,
       hotel: targetHotel,
       isTemporaryPassword: true,
-      role: { name: createStaffDto.role } as any, // Adjust role to match the expected type
+      role : createStaffDto.role
     });
     try {
       await this.staffRepository.save(staff);

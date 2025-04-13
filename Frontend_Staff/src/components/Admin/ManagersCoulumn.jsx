@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Edit, ArrowUpDown } from "lucide-react";
-import { DeleteButton } from "../Delete/DeleteButton";
+import { DeleteButton } from "../Confirmation/DeleteButton";
 
 import axios from "axios";
 

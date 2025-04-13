@@ -37,7 +37,7 @@ export class User {
     @Column()
     identificationNumber: string;
     
-    @Column()
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
     @Column()

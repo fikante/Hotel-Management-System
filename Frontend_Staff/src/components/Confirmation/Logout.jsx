@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { MdLogout } from "react-icons/md";
 import {
   Dialog,
   DialogContent,
@@ -12,46 +12,44 @@ import {
 
 import SpinPage from "../Spin/Spin";
 
-export const DeleteButton = ({ onDelete }) => {
+export const LogoutConfirmation = ({ onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleDelete = async () => {
+  const handleLogout = async () => {
     setIsLoading(true);
     try {
-      await onDelete();
+      await onLogout();
       setIsOpen(false);
       setError(null);
     } catch (err) {
-      console.error("Error deleting item:", err);
-      setError("Failed to delete item");
+      console.error("Error logging out:", err);
+      setError("Failed to log out");
     } finally {
       setIsLoading(false);
     }
   };
 
-
-
   return (
     <div>
       <Button
-        variant="ghost"
-        size="sm"
+        variant="outline"
+        className="bg-blue-500 text-white hover:bg-blue-600 flex flex-col gap-0"
         onClick={() => setIsOpen(true)}
-        className="hover:bg-gray-200"
       >
-        <Trash2 className="h-4 w-4 text-red-600" />
+        <MdLogout className="items-center" size={20} />
       </Button>
+
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className={"sm:max-w-xl p-6"}>
           <DialogHeader>
             <DialogTitle className={"font-bold font-serif"}>
-              Confirm Deletion
+              Confirm Logout
             </DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this item?
+              Are you sure you want to log out?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -60,11 +58,16 @@ export const DeleteButton = ({ onDelete }) => {
             </Button>
             <Button
               variant="default"
-              className="bg-blue-700 hover:bg-blue-800 text-white"
-              onClick={handleDelete}
+              className="bg-blue-700 hover:bg-blue-800 text-white flex flex-row gap-2"
+              onClick={handleLogout}
               disabled={isLoading}
             >
-              Delete
+              Logout
+              {isLoading && (
+                <div>
+                  <SpinPage size={4} color="white" />
+                </div>
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

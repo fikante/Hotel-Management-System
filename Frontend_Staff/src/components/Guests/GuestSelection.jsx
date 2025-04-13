@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, ArrowUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { DeleteButton } from "../Delete/DeleteButton";
+import { DeleteButton } from "../Confirmation/DeleteButton";
 
 export const guestSelection = [
   {
