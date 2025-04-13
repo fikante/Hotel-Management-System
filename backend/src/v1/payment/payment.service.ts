@@ -1,11 +1,11 @@
 // payment.service.ts
-import { HttpException, HttpStatus, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import {Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import Stripe from 'stripe';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Booking } from 'src/common/entities/booking.entity';
-import { Transaction } from 'src/common/entities/transaction.entity';
-import { EmailService } from 'src/common/services/email.service';
+import { Booking } from '../../common/entities/booking.entity';
+import { Transaction } from '../../common/entities/transaction.entity';
+import { EmailService } from '../../common/services/email.service';
 
 @Injectable()
 export class PaymentService {
