@@ -36,9 +36,6 @@ export class User {
 
     @Column()
     identificationNumber: string;
-    
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt: Date;
 
     @Column()
     gender: string;
@@ -48,7 +45,10 @@ export class User {
 
     @Column()
     nationality: string;
-    
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    createdAt: Date;
+
     // usefule for payloading the jwt
     @Column()
     role: String;

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/common/entities/user.entity';
 import { Repository } from 'typeorm';
 import { resourceLimits } from 'worker_threads';
+import { UserProfileDto } from './dto/guest-profile.dto';
 
 @Injectable()
 export class GuestService {
@@ -63,6 +64,28 @@ export class GuestService {
         }
     }
 
+    
+    async getUserProfile(userId: string): Promise<UserProfileDto> {
+        const user = await this.guestRepostiory.findOne({ where: { id: userId } });
+        
+        if (!user) {
+          throw new Error('User not found');
+        }
+    
+        return {
+          fullName: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          phoneNumber: user.phone,
+          address: user.address,
+          dateOfBirth: user.dateOfBirth.toISOString().split('T')[0], // Format as YYYY-MM-DD
+          identificationNumber: user.identificationNumber,
+          gender: user.gender,
+          nationality: user.nationality,
+          identificationType: user.identificationType,
+          image: user.picture,
+        };
+      }
+      
     async updateGuest(id: string, updateGuestDto: any): Promise<{ success: boolean, message: string }> {
         try {
             const guest = await this.guestRepostiory.findOne({ where: { id: id } })
