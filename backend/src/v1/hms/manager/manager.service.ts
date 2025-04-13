@@ -1,10 +1,10 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { Manager } from 'src/common/entities/manager.entity';
+import { Manager } from '../../../common/entities/manager.entity';
 import { Repository } from 'typeorm';
 import { CreateManagerDto } from './dtos/createManagerDto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Hotel } from 'src/common/entities/hotel.entity';
-import { ImageUploadService } from 'src/common/services/image-upload.service';
+import { Hotel } from '../../../common/entities/hotel.entity';
+import { ImageUploadService } from '../../../common/services/image-upload.service';
 
 @Injectable()
 export class ManagerService {
