@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import ProfileSettings from "../Profile/profileEdit";
 import Security from "@/components/Security/Security";
+import { useAuthStore } from "@/components/Auth/authStore";
 
-const Setting = ({user}) => {
+const Setting = () => {
   const [activeButton, setActiveButton] = useState("profile");
+  const { user } = useAuthStore();
 
   return (
     <div className="flex flex-col flex-1 p-6 bg-white  rounded-lg">

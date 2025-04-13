@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
+import { useRoomStore } from "@/components/store/useRoomStore";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 const EditRoom = ({ onSuccess, roomData }) => {
-  console.log(roomData);
+  const {editRoom} = useRoomStore();
   const {
     register,
     handleSubmit,
@@ -34,7 +35,6 @@ const EditRoom = ({ onSuccess, roomData }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     if (roomData) {
@@ -69,45 +69,16 @@ const EditRoom = ({ onSuccess, roomData }) => {
   };
 
   const onSubmit = async (data) => {
-    // console.log("Room Data Submitted:", data);
     setLoading(true);
-    const amenitiesArray = data.amenities
-      .split(",")
-      .filter((item) => item.trim() !== "")
-      .map((item) => ({ amenityName: item.trim() }));
-
-    const formData = new FormData();
-    // only if the file is edited
-    formData.append("price", String(data.price));
-    formData.append("occupancy", String(data.maxOccupancy));
-    formData.append("bedType", data.bedType);
-    formData.append("description", data.description);
-    formData.append("size", String(data.size));
-    formData.append("roomNumber", data.roomNumber);
-
-    // formData.append("image", data.image);
-    console.log(formData.get("type"));
 
     try {
-      // localhost:3000/api/v1/hms/hotels/1/rooms/:roomId
-      const response = await api.patch(
-        `/hms/hotels/1/rooms/${roomData.id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Room updated successfully:", response.data);
-
+      const res = await editRoom(data, roomData.id);
       onSuccess();
       alert("Room updated successfully!");
     } catch (error) {
       console.error("Error updating room:", error);
       setError("Failed to update room. Please try again.");
     } finally {
-      setRefresh(true);
       setLoading(false);
     }
   };

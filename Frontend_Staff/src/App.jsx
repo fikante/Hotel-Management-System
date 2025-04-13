@@ -51,7 +51,6 @@ const App = () => {
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
-  
 
   if (loading && user === null && isCheckingAuth) {
     return (
@@ -111,7 +110,7 @@ const App = () => {
           <Route path="/reservations" element={<ReservationList />} />
           <Route path="/rooms" element={<RoomList />} />
           <Route path="/restaurant" element={<Food />} />
-          <Route path="/setting" element={<Setting user={user} />} />
+          <Route path="/setting" element={<Setting />} />
         </Route>
 
         {/* Manager-only route with layout */}
@@ -135,7 +134,10 @@ const App = () => {
         >
           <Route path="/admin/hotels" element={<AdminPage />} />
           <Route path="/admin/managers" element={<Managers />} />
-          <Route path="/admin/settings" element={<AdminSettingPage AdminProfile={user} />} />
+          <Route
+            path="/admin/settings"
+            element={<AdminSettingPage AdminProfile={user} />}
+          />
         </Route>
         <Route
           path="/unauthorized"
@@ -150,7 +152,6 @@ const App = () => {
           }
         />
 
-
         <Route
           path="*"
           element={
@@ -159,7 +160,6 @@ const App = () => {
                 <h1 className="text-4xl font-bold text-gray-700">404</h1>
                 <p className="text-lg text-gray-500">Page Not Found</p>
               </div>
-
             </div>
           }
         />

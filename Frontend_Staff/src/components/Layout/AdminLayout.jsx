@@ -6,7 +6,6 @@ import {
 } from "@/TestData/HotelConfig";
 import { useState } from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
-import { useAuthStore } from "../Auth/authStore";
 
 const AdminDashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -17,7 +16,6 @@ const AdminDashboardLayout = () => {
     AdminNavItems.find((item) => {
       item.path === location.pathname.split("/admin/")[1];
     }) || AdminNavItems[0];
-  const { user } = useAuthStore();
 
   return (
     <div className="flex w-full h-screen bg-gray-100">
@@ -30,7 +28,7 @@ const AdminDashboardLayout = () => {
       />
 
       <div className="flex flex-col flex-1 overflow-hidden border-l border-gray-200">
-        <Topbar user={user} currentNavItem={activeNavItem.name} />
+        <Topbar currentNavItem={activeNavItem.name} />
 
         <main className="flex-1 overflow-y-auto p-6 bg-gray-100">
           <Outlet />

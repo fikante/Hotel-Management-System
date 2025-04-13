@@ -1,63 +1,36 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { CustomTable } from "@/components/Table/Table";
 import { guestColumns } from "@/components/Guests/GuestsColumns";
-import { guestDatabase } from "@/TestData/dataTest";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import UserProfileAndBooking from "../Process/GuestCreation";
 import EditGuest from "./EditGuest";
-import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
+import { useGuestStore } from "@/components/store/useGuestStore";
+import { useState } from "react";
+import { handleDelete } from "@/components/Staff/staffCoulmns";
 
 const GuestListPage = () => {
+  const { guests, isLoading, deleteGuest, fetchGuests, initialized } =
+    useGuestStore();
   const [isAddGuestOpen, setIsAddGuestOpen] = useState(false);
   const [isEditGuestOpen, setIsEditEditOpen] = useState(false);
   const [selectedGuest, setSelectedGuest] = useState(null);
 
-  const [guest, setGuest] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const [refresh, setRefresh] = useState(false);
-
   useEffect(() => {
-    const fetchGuest = async () => {
-      try {
-        setIsLoading(true);
-        const response = await api.get("/hotels/1/guests");
-        const data = response.data?.data;
-        const formattedGuest = data.map((guest) => ({
-          id: guest.id,
-          firstName: guest.firstName,
-          lastName: guest.lastName,
-          gender: guest.gender,
-          email: guest.email,
-          phone: guest.phone,
-          address: guest.address,
-          nationality: guest.nationality,
-          idType: guest.idType,
-          idNumber: guest.idNumber,
-        }));
+    if (!initialized) {
+      fetchGuests();
+    }
+  }, [initialized]);
 
-        console.log("Fetched guests:", formattedGuest);
+  const handleDelete = async (id) => {
+    try {
+      await deleteGuest(id);
+      alert("Guest deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting guest:", error);
+    }
+  };
 
-        setGuest(formattedGuest);
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching guests:", error);
-        setError("Failed to load guests");
-        setGuest([]);
-      } finally {
-        setIsLoading(false);
-        setRefresh(false);
-      }
-    };
-
-    fetchGuest();
-  }, [refresh]);
   if (isLoading) {
     return (
       <div className="flex justify-center flex-col items-center p-10">
@@ -70,7 +43,7 @@ const GuestListPage = () => {
   return (
     <div>
       <CustomTable
-        data={guest}
+        data={guests}
         columns={guestColumns}
         addButtonText="Add Guest"
         onAddClick={() => setIsAddGuestOpen(true)}
@@ -78,7 +51,9 @@ const GuestListPage = () => {
           onEditClick: (guest) => {
             setSelectedGuest(guest);
             setIsEditEditOpen(true);
-            console.log(guest);
+          },
+          onDeleteClick: (guest) => {
+            handleDelete(guest.id);
           },
         }}
       />
@@ -88,7 +63,6 @@ const GuestListPage = () => {
           <UserProfileAndBooking
             onSuccess={() => {
               setIsAddGuestOpen(false);
-              setRefresh(true);
             }}
           />
         </DialogContent>
@@ -99,7 +73,6 @@ const GuestListPage = () => {
           <EditGuest
             onSuccess={() => {
               setIsEditEditOpen(false);
-              setRefresh(true);
             }}
             guestData={selectedGuest}
           />

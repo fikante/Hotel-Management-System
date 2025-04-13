@@ -26,7 +26,7 @@ export const reservationColumns = [
   },
   {
     id: "guestName",
-    accessorfn: (row) => `${row.guestFirstName} ${row.guestLastName}`,
+    accessorFn: (row) => `${row.guestFirstName} ${row.guestLastName}`,
     header: ({ column }) => (
       <Button
         variant="ghost"

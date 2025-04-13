@@ -14,9 +14,9 @@ export const DeleteButton = ({ onDelete , role}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log(role, "iieee")
 
-  const handleDelete = async () => {
+  const handleDelete = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     try {
       await onDelete();
@@ -61,7 +61,7 @@ export const DeleteButton = ({ onDelete , role}) => {
               onClick={handleDelete}
               disabled={isLoading}
             >
-              Delete
+              {isLoading ? "Deleting..." : "Delete"}
             </Button>
           </DialogFooter>
         </DialogContent>

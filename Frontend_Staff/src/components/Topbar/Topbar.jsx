@@ -6,8 +6,8 @@ import { useAuthStore } from "../Auth/authStore";
 import { LogoutConfirmation } from "../Confirmation/Logout";
 import { PlusCircle } from "lucide-react";
 
-const Topbar = ({ user, currentNavItem }) => {
-  const { logout } = useAuthStore();
+const Topbar = ({ currentNavItem }) => {
+  const { user, logout } = useAuthStore();
   const Navigate = useNavigate();
   return (
     <header className="bg-white shadow-sm py-3 px-6 flex items-center justify-between">

@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
 import Button from "../../components/SignUp/Button";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaLock, FaEnvelope, FaHome } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import ResetPassword from "../../components/login/ResetPassword.jsx";
 import { useAuthStore } from "@/components/Auth/authStore";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const SimpleSubmissionStatus = ({ status, onClose }) => {
   if (!status) return null;
@@ -44,9 +45,11 @@ const Login = () => {
   const navigate = useNavigate();
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const { loading, login, user, isAuthenticated } = useAuthStore();
+  const [userType, setUserType] = useState("staff");
 
   const onSubmit = async (data) => {
     setSubmissionStatus(null);
+    console.log(userType, "user type");
     try {
       const { email, password } = data;
       const res = await login(email, password);
@@ -160,7 +163,11 @@ const Login = () => {
       <div className="w-full md:w-1/2 bg-white py-12 px-6 flex items-center justify-center">
         <div className="w-full max-w-md">
           <div className="flex justify-center">
-            <img src="/hotelicon.svg" alt="Hotel Logo" className="h-32 w-full" />
+            <img
+              src="/hotelicon.svg"
+              alt="Hotel Logo"
+              className="h-32 w-full"
+            />
           </div>
 
           <motion.h1
@@ -245,6 +252,35 @@ const Login = () => {
                   {errors.password.message}
                 </p>
               )}
+            </motion.div>
+
+            <motion.div
+              variants={fadeInAnimation}
+              initial="initial"
+              animate="animate"
+              className="flex flex-row gap-2 items-center"
+            >
+              <label className=" text-sm font-medium text-gray-700 w-full">
+                User Type
+              </label>
+              <RadioGroup
+                defaultValue="staff"
+                onValueChange={setUserType}
+                className="flex space-x-4 "
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="admin" id="admin"/>
+                  <label className="cursor-pointer">Admin</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="manager" id="manager" />
+                  <label className="cursor-pointer">Manager</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="staff" id="staff" />
+                  <label className="cursor-pointer">Staff</label>
+                </div>
+              </RadioGroup>
             </motion.div>
 
             <motion.div
