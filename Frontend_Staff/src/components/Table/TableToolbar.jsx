@@ -99,7 +99,7 @@ export const TableToolbar = ({ table, addButtonText, onAddClick, role }) => {
       </div>
       {addButtonText &&
         !(
-          role === "manager" &&
+          role === "staff" &&
           (addButtonText === "Add Room" || addButtonText === "Add Food")
         ) && (
           <Button

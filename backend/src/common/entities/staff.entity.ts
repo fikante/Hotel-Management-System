@@ -21,7 +21,7 @@ import { Role } from '../../common/enums/role.enum';
     @Column()
     lastname: string;
     
-    @Column({ default: Role.STAFF})
+    @Column()
     role: string;
   
     @Column({ unique: true })

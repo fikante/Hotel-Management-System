@@ -254,7 +254,7 @@ const Login = () => {
               )}
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
               variants={fadeInAnimation}
               initial="initial"
               animate="animate"
@@ -281,7 +281,7 @@ const Login = () => {
                   <label className="cursor-pointer">Staff</label>
                 </div>
               </RadioGroup>
-            </motion.div>
+            </motion.div> */}
 
             <motion.div
               variants={fadeInAnimation}

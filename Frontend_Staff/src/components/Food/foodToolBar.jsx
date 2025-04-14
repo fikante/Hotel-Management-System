@@ -26,7 +26,7 @@ const FoodToolbar = ({
         >
           Orders
         </Button>
-        {role === "staff" && (
+        {role === "manager" && (
           <Button
             variant="default"
             className="bg-blue-600 hover:bg-blue-700 text-white gap-2"

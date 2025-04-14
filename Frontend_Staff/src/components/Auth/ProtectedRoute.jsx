@@ -8,7 +8,7 @@ export const ProtectedRoute = ({ children, requiredRole }) => {
 
   const location = useLocation();
 
-  useEffect(() => {s
+  useEffect(() => {
     if (!isAuthenticated && !loading && !isCheckingAuth) {
       navigate("/login");
     }

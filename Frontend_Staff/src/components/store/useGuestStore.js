@@ -90,9 +90,21 @@ export const useGuestStore = create((set, get) => ({
         }
       );
 
-      const updatedGuestData = {
-        ...guestData,
+      const newGuestData = {
         id: guestId,
+        firstName: guestFormData.firstName,
+        lastName: guestFormData.lastName,
+        gender: guestFormData.gender,
+        email: guestFormData.email,
+        phone: guestFormData.phone,
+        address: guestFormData.address,
+        nationality: guestFormData.nationality,
+        idType: guestFormData.idType,
+        idNumber: guestFormData.idNumber,
+      };
+
+      const updatedGuestData = {
+        ...newGuestData,
       };
 
       set((state) => ({
@@ -114,8 +126,8 @@ export const useGuestStore = create((set, get) => ({
         email: data.email,
         phone: data.phone,
         nationality: data.nationality,
-        identificationType: data.idType,
-        identificationNumber: data.idNumber,
+        idType: data.idType,
+        idNumber: data.idNumber,
       };
       console.log("Guest Data:", guestData);
 

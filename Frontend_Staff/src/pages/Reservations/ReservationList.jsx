@@ -18,6 +18,7 @@ const ReservationListPage = () => {
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isEditReservationOpen, setIsEditReservationOpen] = useState(false);
   const [error, setError] = useState(null);
+  console.log(reservations);
 
 
   useEffect(() => {

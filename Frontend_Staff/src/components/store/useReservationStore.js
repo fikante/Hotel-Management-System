@@ -69,7 +69,7 @@ export const useReservationStore = create((set, get) => ({
       const response = await axios.post(
         `${API_BASE_URL}/hotels/1/rooms/${selectedRoom.id}/bookings`,
         {
-          guestId: selectedGuest,
+          guestId: selectedGuest.id,
           checkIn: bookingFormData.checkIn,
           checkOut: bookingFormData.checkOut,
         }

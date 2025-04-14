@@ -18,7 +18,7 @@ const FoodCard = ({ food, onEditClick, onDeleteClick, role }) => {
       <div className="p-2">
         <div className="flex justify-between">
           <h3 className="font-bold text-blue-800  ">{food?.Name}</h3>
-          {role !== "manager" && (
+          {role === "manager" && (
             <div>
               <Button
                 variant="ghost"
