@@ -64,23 +64,24 @@ export class GuestService {
     }
 
     
-    async getUserProfile(userId: string): Promise<UserProfileDto> {
-        const user = await this.guestRepostiory.findOne({ where: { id: userId } });
+    async getUserProfile(identificationNumber: string): Promise<UserProfileDto> {
+        const user = await this.guestRepostiory.findOne({ where: { id: identificationNumber } });
         
         if (!user) {
           throw new Error('User not found');
         }
     
         return {
-          fullName: `${user.firstName} ${user.lastName}`,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
-          phoneNumber: user.phone,
+          phone: user.phone,
           address: user.address,
           dateOfBirth: user.dateOfBirth.toISOString().split('T')[0], // Format as YYYY-MM-DD
           identificationNumber: user.identificationNumber,
           gender: user.gender,
           nationality: user.nationality,
-          identificationType: user.identificationType,
+          idType: user.identificationType,
           image: user.picture,
         };
       }
