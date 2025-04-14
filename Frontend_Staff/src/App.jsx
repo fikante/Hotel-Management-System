@@ -34,11 +34,12 @@ const AuthRedirect = ({ children }) => {
   useEffect(() => {
     console.log(isAuthenticated, user, "in auth redirect");
     if (isAuthenticated && user) {
-      if (user?.role === "admin") {
         navigate("/admin/hotels");
-      } else {
-        navigate("/dashboard");
-      }
+      // if (user?.role === "admin") {
+        //   navigate("/admin/hotels");
+      // } else {
+      //   navigate("/dashboard");
+      // }
     }
   }, [isAuthenticated, user, navigate]);
 
@@ -127,7 +128,7 @@ const App = () => {
         {/* Admin-only routes */}
         <Route
           element={
-            <ProtectedRoute requiredRole={["admin"]}>
+            <ProtectedRoute requiredRole={["staff"]}>
               <AdminDashboardLayout />
             </ProtectedRoute>
           }
