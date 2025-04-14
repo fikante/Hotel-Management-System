@@ -1,9 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateGuestDto } from './dto/create-guest.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/common/entities/user.entity';
+import { User } from '../../../common/entities/user.entity';
 import { Repository } from 'typeorm';
-import { resourceLimits } from 'worker_threads';
 import { UserProfileDto } from './dto/guest-profile.dto';
 
 @Injectable()
