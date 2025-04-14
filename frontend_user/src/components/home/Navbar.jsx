@@ -51,7 +51,7 @@ const Navbar = () => {
 
             {/* Auth Buttons */}
             <div className="flex space-x-2">
-              <Button variant="outline" className={`rounded-full ${isScrolled ? 'border-primary text-primary' : 'border-white text-white'}`}>
+              <Button variant="outline" className="rounded-full border-primary text-primary">
                 Login
               </Button>
               <Button className="rounded-full bg-primary hover:bg-primary/90">
