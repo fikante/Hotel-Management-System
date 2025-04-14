@@ -7,9 +7,9 @@ export class UserProfileDto {
   address: string;
   nationality: string;
   dateOfBirth: string;
-  idType: string;
+  identificationType: string;
   identificationNumber: string;
-  image: string;
+  picture: string;
   }
   
   export class UserProfileResponseDto {

@@ -7,6 +7,7 @@ export interface ProfileData {
   address: string;
   nationality: string;
   dateOfBirth: string;
-  idType: string;
+  identificationType: string;
   identificationNumber: string;
+  picture: string;
   }
