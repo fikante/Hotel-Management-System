@@ -25,4 +25,25 @@ export const login = async (data: any) => {
   }
 };
 
+// Fetch all hotels
+export const getHotels = async () => {
+  try {
+    const response = await api.get("/hotels");
+    console.log("API Response:", response.data);
+    
+    // Return the data array from the response
+    if (response.data && response.data.Success && Array.isArray(response.data.data)) {
+      return response.data.data;
+    }
+    throw new Error("Invalid hotels data format");
+  } catch (error: any) {
+    console.error("API Error:", error);
+    throw new Error(
+      error.response?.data?.message || 
+      error.message || 
+      "Failed to fetch hotels"
+    );
+  }
+};
+
 export default api;

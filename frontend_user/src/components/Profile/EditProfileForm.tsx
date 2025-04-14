@@ -53,7 +53,7 @@ const EditProfileForm = ({ isOpen, onClose, profileData, onSave }: EditProfileFo
               <Input
                 id="fullName"
                 name="fullName"
-                value={formData.fullName}
+                value={`${formData.firstName} ${formData.lastName}`}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -169,7 +169,7 @@ const EditProfileForm = ({ isOpen, onClose, profileData, onSave }: EditProfileFo
               <Input
                 id="idNumber"
                 name="idNumber"
-                value={formData.idNumber}
+                value={formData.identificationNumber}
                 onChange={handleChange}
                 className="col-span-3"
               />
