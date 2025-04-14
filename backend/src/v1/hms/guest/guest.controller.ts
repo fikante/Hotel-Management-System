@@ -28,7 +28,8 @@ export class GuestController {
     @Get('me')
     @UseGuards(JwtAuthGuard)
     async getProfile(@Req() req: any): Promise<UserProfileResponseDto> {
-        const profile = await this.guestService.getUserProfile(req.user.id);
+        console.log('Guest ID from JWT:', req.user.userId); //
+        const profile = await this.guestService.getUserProfile(req.user.userId);
         
         return {
             success: true,

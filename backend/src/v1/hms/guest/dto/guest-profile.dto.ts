@@ -1,14 +1,15 @@
 export class UserProfileDto {
-    fullName: string;
-    email: string;
-    phoneNumber: string;
-    address: string;
-    dateOfBirth: string;
-    identificationNumber: string;
-    gender: string;
-    nationality: string;
-    identificationType: string;
-    image: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  gender: string;
+  address: string;
+  nationality: string;
+  dateOfBirth: string;
+  idType: string;
+  identificationNumber: string;
+  image: string;
   }
   
   export class UserProfileResponseDto {
