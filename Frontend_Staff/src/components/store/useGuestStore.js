@@ -23,7 +23,7 @@ export const useGuestStore = create((set, get) => ({
         phone: guest.phone,
         address: guest.address,
         nationality: guest.nationality,
-        idType: guest.idType,
+        idType: guest.identificationType,
         idNumber: guest.idNumber,
       }));
 
