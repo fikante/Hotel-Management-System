@@ -3,16 +3,22 @@ import { Doughnut } from "react-chartjs-2";
 import ChartCard from "./ChartCard";
 import { FaGlobe } from "react-icons/fa";
 
-// Define common chart options here or import from a utils file
 const commonChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
       position: "bottom",
-      labels: { font: { size: 14 }, color: "#555" },
+      align: "start",
+      labels: {
+        font: { size: 14 },
+        color: "#555",
+        boxWidth: 12, 
+        useBorderRadius: true,
+        borderRadius: 5
+      },
     },
-    title: { display: false }, // Title is handled by ChartCard
+    title: { display: false },
     tooltip: {
       callbacks: {
         label: function (context) {
@@ -32,18 +38,22 @@ const GuestCountryChart = ({ guestCountries }) => {
   const dataLabelStyle = "font-medium text-gray-700";
   const dataValueStyle = "text-gray-700";
 
+  const hasData = Array.isArray(guestCountries) && guestCountries.length > 0;
+
+  const chartColors = [
+    "#F48FB1", // Pink - Belgium
+    "#90CAF9", // Light Blue - Ethiopian
+    "#FFE082", // Light Yellow - Canada
+    "#80CBC4", // Light Teal - Switzerland
+  ];
+
   const guestCountriesChartData = {
-    labels: guestCountries.map((country) => country.name),
+    labels: hasData ? guestCountries.map((country) => country.name) : [],
     datasets: [
       {
         label: "Guests",
-        data: guestCountries.map((country) => country.value),
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.8)", "rgba(54, 162, 235, 0.8)",
-          "rgba(255, 206, 86, 0.8)", "rgba(75, 192, 192, 0.8)",
-          "rgba(153, 102, 255, 0.8)", "rgba(255, 159, 64, 0.8)",
-          "rgba(199, 199, 199, 0.8)", "rgba(83, 102, 255, 0.8)",
-        ],
+        data: hasData ? guestCountries.map((country) => country.value) : [],
+        backgroundColor: chartColors,
         borderColor: "rgba(255, 255, 255, 1)",
         borderWidth: 1,
       },
@@ -52,10 +62,8 @@ const GuestCountryChart = ({ guestCountries }) => {
 
   const guestCountriesChartOptions = {
     ...commonChartOptions,
-    // Specific overrides if needed
+    cutout: "60%", 
   };
-
-  const hasData = guestCountries.length > 0;
 
   return (
     <ChartCard
@@ -65,21 +73,33 @@ const GuestCountryChart = ({ guestCountries }) => {
       noDataMessage="No country data available."
       hasData={hasData}
     >
-       {/* Chart Container */}
-       <div className="mb-4 h-80">
-         <Doughnut data={guestCountriesChartData} options={guestCountriesChartOptions} />
-       </div>
-       {/* List Container */}
-       <ul className="max-h-48 overflow-y-auto mt-4 border-t pt-2 flex-shrink-0"> {/* Prevent list from growing indefinitely */}
-         {guestCountries.map((country) => (
-           <li key={country.name} className="py-2 border-b border-gray-100 last:border-b-0">
-             <div className="flex justify-between items-center">
-               <span className={dataLabelStyle}>{country.name}</span>
-               <span className={dataValueStyle}>{country.value} Guest{country.value !== 1 ? 's' : ''}</span>
-             </div>
-           </li>
-         ))}
-       </ul>
+      <div className="mb-4 h-80 relative">
+        <Doughnut
+          data={guestCountriesChartData}
+          options={guestCountriesChartOptions}
+        />
+      </div>
+      {hasData && (
+        <ul className="mt-4 flex-grow flex-shrink-0">
+          {guestCountries.map((country, index) => (
+            <li
+              key={country.name}
+              className="flex items-center justify-between py-2"
+            >
+              <div className="flex items-center">
+                <span
+                  className="inline-block w-3 h-3 mr-2 rounded-full"
+                  style={{ backgroundColor: chartColors[index % chartColors.length] }}
+                ></span>
+                <span className={dataLabelStyle}>{country.name}</span>
+              </div>
+              <span className={dataValueStyle}>
+                {country.value} Guest{country.value !== 1 ? "s" : ""}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
     </ChartCard>
   );
 };

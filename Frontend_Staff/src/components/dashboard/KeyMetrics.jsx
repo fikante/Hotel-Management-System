@@ -3,14 +3,18 @@ import MetricCard from "./MetricCard";
 import { FaChartLine, FaCalendarCheck } from "react-icons/fa";
 
 const KeyMetrics = ({ totalRevenue, totalBookings }) => {
+
+  const formattedRevenue = (totalRevenue / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
       <MetricCard
         title="Total Revenue"
-        value={totalRevenue.toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-        })}
+        value={formattedRevenue} 
         icon={FaChartLine}
         label="All Time"
         valueClassName="text-blue-600"

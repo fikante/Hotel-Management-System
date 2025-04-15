@@ -9,11 +9,11 @@ const ChartCard = ({ title, icon: Icon, iconClassName, children, noDataMessage, 
         {title}
         {Icon && <Icon className={`${iconClassName} ml-2`} />}
       </h2>
-      <div className="flex-grow flex flex-col"> {/* Allow content to grow */}
+      <div className="flex-grow flex flex-col"> 
         {hasData ? (
-          children // Render chart and list passed as children
+          children 
         ) : (
-          <div className="flex-grow flex items-center justify-center"> {/* Center no data message */}
+          <div className="flex-grow flex items-center justify-center"> 
             <p className="text-center text-gray-500">{noDataMessage}</p>
           </div>
         )}
