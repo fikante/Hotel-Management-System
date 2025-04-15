@@ -37,11 +37,11 @@ export const foodOrderColumns = [
     cell: ({ row }) => (
       <div className="flex flex-col">
         {row.original.Item.split(", ")
-          .slice(0, 3)
+          .slice(0, 1)
           .map((item, index) => (
             <div key={index}>
               {item}
-              {index === 2 && row.original.Item.split(", ").length > 3 && (
+              {index === 0 && row.original.Item.split(", ").length > 3 && (
                 <span className="text-gray-500 text-xs ml-2">
                   +{row.original.Item.split(", ").length - 3} more
                 </span>
@@ -60,7 +60,7 @@ export const foodOrderColumns = [
     cell: ({ row }) => (
       <div className="flex flex-col">
         {row.original.Qty.split(", ")
-          .slice(0, 3)
+          .slice(0, 1)
           .map((qty, index) => (
             <div key={index}>
               {qty}
@@ -82,7 +82,7 @@ export const foodOrderColumns = [
     cell: ({ row }) => (
       <div className="flex flex-col">
         {row.original.Price.split(", ")
-          .slice(0, 3) // Match the same 3 items
+          .slice(0, 1) // Match the same 3 items
           .map((price, index) => (
             <div key={index}>
               {price} $

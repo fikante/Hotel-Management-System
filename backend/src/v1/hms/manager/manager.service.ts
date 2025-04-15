@@ -1,10 +1,12 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Manager } from '../../../common/entities/manager.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { CreateManagerDto } from './dtos/createManagerDto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Hotel } from '../../../common/entities/hotel.entity';
 import { ImageUploadService } from '../../../common/services/image-upload.service';
+import { EmailService } from '../../../common/services/email.service';
 
 @Injectable()
 export class ManagerService {
@@ -14,8 +16,8 @@ export class ManagerService {
         private readonly managerRepository: Repository<Manager>,
         @InjectRepository(Hotel)
         private hotelRepository: Repository<Hotel>,
-
-        private readonly imageUploadService: ImageUploadService,
+        private imageUploadService: ImageUploadService,
+        private readonly emailService: EmailService,
     ) { }
 
     async createManager(createManagerDto: CreateManagerDto) {
@@ -29,14 +31,44 @@ export class ManagerService {
                 throw new NotFoundException('Hotel not found');
             }
 
+            // check if the manager already exists
+            const existingManager = await this.managerRepository.findOne({ where: { email: managerData.email } });
+            if (existingManager) {
+                throw new InternalServerErrorException('Manager with this email already exists');
+            }
+
+            // Generate and hash password
+            const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+            const temporaryPassword = Array.from(crypto.getRandomValues(new Uint32Array(12)))
+                .map((x) => charset[x % charset.length])
+                .join('');
+            const hashedPassword = await bcrypt.hash(temporaryPassword, 10);
+            managerData.password = hashedPassword; 
+            
+
+
+
             // upload image to cloudinary
             const publicId = `manager/${hotelId}/${Date.now()}`;
             const imageUrl = await this.imageUploadService.uploadImage(createManagerDto.profilePic, publicId);
             managerData.profilePic = imageUrl;
 
             // Create the manager entity and assign the hotel
-            const newManager = this.managerRepository.create({ ...managerData, hotel });
+            const newManager = this.managerRepository.create(
+                { ...managerData, hotel: hotel });
+                  
             await this.managerRepository.save(newManager);
+
+            try {
+                const emailResponse = await this.emailService.sendStaffWelcomeEmail(
+                  createManagerDto.email,
+                  `${createManagerDto.firstName} ${createManagerDto.lastName}`,
+                  temporaryPassword
+                );
+                console.log('Email sent successfully:', emailResponse);
+              } catch (error) {
+                console.error('Error sending email:', error);
+              }
 
             return { message: 'Manager created successfully', managerId: newManager.id };
         } catch (error) {

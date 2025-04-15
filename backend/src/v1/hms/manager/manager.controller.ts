@@ -8,7 +8,7 @@ import { create } from 'domain';
 export class ManagerController {
 
     constructor(
-        private managerService: ManagerService,
+        private readonly managerService: ManagerService,
     ) { }
 
     @Post()
