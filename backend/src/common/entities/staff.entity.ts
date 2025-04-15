@@ -20,13 +20,9 @@ import { Role } from '../../common/enums/role.enum';
   
     @Column()
     lastname: string;
-  
-    @Column({
-      type: 'enum',
-      enum: Role,
-      default: Role.USER,
-    })
-    role: Role;
+    
+    @Column({default: Role.MANAGER})
+    role: string;
   
     @Column({ unique: true })
     email: string;

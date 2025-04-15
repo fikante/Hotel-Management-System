@@ -1,12 +1,9 @@
 import { Button } from "@/components/ui/button";
 import RoomDetail from "@/pages/Room/RoomDetail";
-import { Edit, Trash2, ArrowUpDown } from "lucide-react";
-import { DeleteButton } from "../Delete/DeleteButton";
+import { Edit, ArrowUpDown } from "lucide-react";
+import { DeleteButton } from "../Confirmation/DeleteButton";
 import axios from "axios";
-
-export const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
+import { useRoomStore } from "../store/useRoomStore";
 
 export const roomColumns = [
   {
@@ -117,16 +114,15 @@ export const roomColumns = [
             e.stopPropagation();
           }}
           className=" hover:bg-gray-200"
+          // disabled={user.role !== "manager"}
         >
           <Edit className="size-4 text-blue-600" />
         </Button>
         <DeleteButton
-          onDelete={
-            async () => {
-              console.log(row.original);
-              await handleDelete(row.original.id);
-            }
-          }
+          onDelete={ () => {
+            table.options.meta.onDeleteClick(row.original);
+          }}
+          role="staff"
         />
       </div>
     ),
@@ -134,13 +130,3 @@ export const roomColumns = [
     size: 80,
   },
 ];
-
-const handleDelete = async (room_id) => {
-  try {
-    console.log(`/hms/hotels/1/rooms/${room_id}`)
-    const response = await api.delete(`/hms/hotels/1/rooms/${room_id}`);
-    console.log("Room deleted:", response.data);
-  } catch (error) {
-    console.error("Error deleting room:", error);
-  }
-};

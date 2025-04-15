@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
+import { useGuestStore } from "@/components/store/useGuestStore";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 
 const EditGuest = ({ guestData, onSuccess }) => {
+  const { editGuest } = useGuestStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const form = useForm({
@@ -20,8 +22,9 @@ const EditGuest = ({ guestData, onSuccess }) => {
       email: guestData.email,
       phone: guestData.phone,
       nationality: guestData.nationality,
-      idType: guestData.idType,
+      idType: guestData.idType.toLowerCase(),
       idNumber: guestData.idNumber,
+      id: guestData.id,
     },
   });
 
@@ -37,8 +40,9 @@ const EditGuest = ({ guestData, onSuccess }) => {
         email: guestData.email,
         phone: guestData.phone,
         nationality: guestData.nationality,
-        idType: guestData.idType,
+        idType: guestData.idType.toLowerCase(),
         idNumber: guestData.idNumber,
+        id: guestData.id,
       });
     }
   }, [guestData, reset]);
@@ -47,21 +51,8 @@ const EditGuest = ({ guestData, onSuccess }) => {
     setIsLoading(true);
 
     try {
-      const guest = {
-        firstName: data.fname,
-        lastName: data.lname,
-        gender: data.gender,
-        email: data.email,
-        phone: data.phone,
-        nationality: data.nationality,
-        identificationType: data.idType,
-        identificationNumber: data.idNumber,
-      };
-
-      const response = await api.patch(`/hotels/1/guest/${guestData.id}`, {
-        ... guest,
-      });
-      console.log("Guest updated successfully:", response.data);
+      await editGuest(data, guestData.id);
+      onSuccess();
     } catch (error) {
       console.error("Error updating guest:", error);
       setError("Failed to update guest");
@@ -207,7 +198,7 @@ const EditGuest = ({ guestData, onSuccess }) => {
             >
               <option value="">Select ID Type</option>
               <option value="Passport">Passport</option>
-              <option value="Driver's License">Driving License</option>
+              <option value="Driver License">Driving License</option>
               <option value="National ID">National ID</option>
             </select>
           </div>

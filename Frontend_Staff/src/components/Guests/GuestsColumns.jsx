@@ -1,12 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, ArrowUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { DeleteButton } from "../Delete/DeleteButton";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
+import { DeleteButton } from "../Confirmation/DeleteButton";
 
 export const guestColumns = [
   {
@@ -25,7 +20,7 @@ export const guestColumns = [
   },
   {
     id: "fullName",
-    accessorfn: (row) => `${row.firstName} ${row.lastName}`,
+    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -34,11 +29,6 @@ export const guestColumns = [
         Full Name
         <ArrowUpDown className="size-4" />
       </Button>
-    ),
-    cell: ({ row }) => (
-      <div className="flex items-center space-x-2">
-        {row.original.firstName} {row.original.lastName}
-      </div>
     ),
     size: 24,
   },
@@ -158,9 +148,7 @@ export const guestColumns = [
           <Edit className="h-4 w-4 text-blue-600" />
         </Button>
         <DeleteButton
-          onDelete={async () => {
-            await handleDelete(row.original.id);
-          }}
+          onDelete={() => table.options.meta?.onDeleteClick?.(row.original)}
         />
       </div>
     ),
@@ -168,15 +156,3 @@ export const guestColumns = [
     size: 100,
   },
 ];
-
-const handleDelete = async (id) => {
-  try {
-    const response = await api.delete(`/hotels/1/guest/${id}`);
-    console.log("Delete Response:", response.data);
-    alert("Guest deleted successfully!");
-    // Handle success (e.g., show a success message, refresh the table, etc.)
-  } catch (error) {
-    console.error("Error deleting guest:", error);
-    // Handle error (e.g., show an error message)
-  }
-};

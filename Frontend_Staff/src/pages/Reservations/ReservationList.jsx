@@ -6,56 +6,35 @@ import SelectGuestAndBooking from "../Process/ReservationCreation";
 import EditBooking from "./EditBooking";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
-import { set } from "react-hook-form";
+import { useReservationStore } from "@/components/store/useReservationStore";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 
 const ReservationListPage = () => {
+  const { fetchReservations, reservations, deleteReservation, isLoading, initialized } = useReservationStore();
   const [isAddBookOpen, setIsAddBookOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isEditReservationOpen, setIsEditReservationOpen] = useState(false);
-  const [reservations, setReservations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log(reservations);
 
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        setIsLoading(true);
-        const response = await api.get("/hms/hotels/1/reservations/bookings");
-        console.log("Fetched reservations:", response.data.data);
+    if (!initialized) {
+      fetchReservations();
+    }
+  }, [initialized]);
 
-        const formattedReservations = response.data.data.map((reservation) => ({
-          bookingId: reservation.bookingId,
-          guestId: reservation.guestId,
-          guestFirstName: reservation.guestFirstName,
-          guestLastName: reservation.guestLastName,
-          roomNum: reservation.roomNum,
-          roomType: reservation.roomType,
-          checkIn: reservation.checkIn,
-          checkOut: reservation.checkOut,
-          bookingStatus: reservation.bookingStatus,
-          createdAt: reservation.createdAt,
-        }));
-
-        setReservations(formattedReservations);
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching reservations:", error);
-        setError("Failed to load reservations");
-        setReservations([]);
-      } finally {
-        setIsLoading(false);
-        setRefresh(false);
-      }
-    };
-
-    fetchReservations();
-  }, [refresh]);
+  const handleDelete = async (id) => {
+    try {
+      await deleteReservation(id);
+      alert("Reservation deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting reservation:", error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -65,10 +44,6 @@ const ReservationListPage = () => {
       </div>
     );
   }
-
-  // if (error) {
-  //   return <div className="text-red-500">{error}</div>;
-  // }
 
   return (
     <div>
@@ -83,6 +58,9 @@ const ReservationListPage = () => {
             setSelectedReservation(reservation);
             setIsEditReservationOpen(true);
           },
+          onDeleteClick: (reservation) => {
+            handleDelete(reservation.bookingId);
+          },
         }}
       />
 
@@ -91,7 +69,6 @@ const ReservationListPage = () => {
           <SelectGuestAndBooking
             onSuccess={() => {
               setIsAddBookOpen(false);
-              setRefresh(true);
             }}
           />
         </DialogContent>
@@ -105,7 +82,6 @@ const ReservationListPage = () => {
           <EditBooking
             onSuccess={() => {
               setIsEditReservationOpen(false);
-              setRefresh(true);
             }}
             reservationData={selectedReservation}
           />

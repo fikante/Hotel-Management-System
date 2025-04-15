@@ -1,48 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CustomTable } from "@/components/Table/Table";
 import { roomColumns } from "@/components/Room/roomColumns";
-import { roomDatabase } from "@/TestData/roomDataTest.js";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import AddRoom from "./AddRoom";
 import EditRoom from "./EditRoom";
-import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
-
-export const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
+import { useRoomStore } from "@/components/store/useRoomStore";
+import { handleDelete } from "@/components/Staff/staffCoulmns";
 
 const RoomList = () => {
+  const { rooms, isLoading, error, fetchRooms, initialized, deleteRoom } =
+    useRoomStore();
+
   const [isAddRoomOpen, setIsAddRoomOpen] = useState(false);
   const [isEditRoomOpen, setIsEditRoomOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [room, setRoom] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [refresh, setRefresh] = useState(false);
-  // const []
+
+  const handleDelete = async (roomId) => {
+    console.log(roomId, "roomId");
+    try {
+      await deleteRoom(roomId);
+    } catch (error) {
+      console.error("Error deleting room:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        setIsLoading(true);
-        const response = await api.get("/hotels/1/rooms");
-        console.log("Fetched Rooms:", response?.data?.rooms?.data);
-
-        setRoom(response?.data?.rooms?.data);
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching reservations:", error);
-        setError("Failed to load rooms");
-        setRoom([]);
-      } finally {
-        setIsLoading(false);
-        setRefresh(false);
-      }
-    };
-
-    fetchRooms();
-  }, [refresh]);
+    if (!initialized) {
+      fetchRooms();
+    }
+  }, [initialized]);
 
   if (isLoading) {
     return (
@@ -52,10 +39,11 @@ const RoomList = () => {
       </div>
     );
   }
+
   return (
     <div>
       <CustomTable
-        data={room}
+        data={rooms}
         columns={roomColumns}
         addButtonText="Add Room"
         maxWidth="48"
@@ -64,18 +52,18 @@ const RoomList = () => {
           onEditClick: (room) => {
             setIsEditRoomOpen(true);
             setSelectedRoom(room);
-            console.log(room);
+          },
+          onDeleteClick: (room) => {
+            handleDelete(room.id);
           },
         }}
         pageSize={5}
       />
-      {console.log(selectedRoom)}
       <Dialog open={isAddRoomOpen} onOpenChange={setIsAddRoomOpen}>
         <DialogContent>
           <AddRoom
             onSuccess={() => {
               setIsAddRoomOpen(false);
-              setRefresh(true);
             }}
           />
         </DialogContent>
@@ -85,7 +73,6 @@ const RoomList = () => {
           <EditRoom
             onSuccess={() => {
               setIsEditRoomOpen(false);
-              setRefresh(true);
             }}
             roomData={selectedRoom}
           />
