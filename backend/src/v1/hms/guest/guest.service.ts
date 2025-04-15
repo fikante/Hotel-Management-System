@@ -49,7 +49,7 @@ export class GuestService {
                 phone: guest.phone,
                 address: guest.address,
                 nationality: guest.nationality,
-                idType: guest.identificationType,
+                identificationType: guest.identificationType,
                 idNumber: guest.identificationNumber,
             }));
 
@@ -81,8 +81,8 @@ export class GuestService {
           identificationNumber: user.identificationNumber,
           gender: user.gender,
           nationality: user.nationality,
-          idType: user.identificationType,
-          image: user.picture,
+          identificationType: user.identificationType,
+          picture: user.picture,
         };
       }
       

@@ -21,19 +21,46 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 // Utility functions
-const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
+const formatDate = (dateString: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
 
-const displayGender = (gender: string) =>
-  gender === "M" ? "Male" : gender === "F" ? "Female" : "Other";
+const displayGender = (gender: string) => {
+  switch (gender) {
+    case "male":
+      return "Male";
+    case "female":
+      return "Female";
+    case "other":
+      return "Other";
+    case "prefer-not-to-say":
+      return "Prefer not to say";
+    case "M":
+      return "Male";
+    case "F":
+      return "Female";
+    default:
+      return gender;
+  }
+};
 
 const displayIdType = (type: string) => {
   switch (type) {
     case "passport":
       return "Passport";
+    case "national-id":
+      return "National ID";
     case "driver_license":
+    case "drivers-license":
       return "Driver's License";
     default:
-      return "Other";
+      return type;
   }
 };
 
@@ -46,8 +73,9 @@ interface ProfileData {
   address: string;
   nationality: string;
   dateOfBirth: string;
-  idType: string;
+  identificationType: string;
   identificationNumber: string;
+  picture: string;
   fullName?: string;
 }
 
@@ -59,6 +87,7 @@ const Profile = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [guestId, setGuestId] = useState<string>("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,18 +99,16 @@ const Profile = () => {
     try {
       const decoded: { sub: string } = jwtDecode(token);
       const guestId = decoded.sub;
+      console.log(guestId)
+      setGuestId(guestId);
     
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
     
-      console.log("Sending request to /me endpoint with config:", config);
-    
       axios
         .get("http://localhost:3000/api/v1/hotels/1/me", config)
         .then((res) => {
-          console.log("Response from /me endpoint:", res);
-    
           const data = res.data.data;
           const fullName = `${data.firstName} ${data.lastName}`;
           setProfileData({ ...data, fullName });
@@ -109,40 +136,76 @@ const Profile = () => {
 
   const handleSaveProfile = async (updatedFields: Partial<ProfileData>) => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    
+    if (!token || !guestId) {
+      console.error("Missing token or guestId");
       navigate("/login");
       return;
     }
-
+  
     try {
-      const cleanedData: Record<string, any> = {};
+      const requestData: Record<string, any> = {};
+  
+      if (updatedFields.fullName) {
+        const [firstName, ...lastNameParts] = updatedFields.fullName.split(" ");
+        requestData.firstName = firstName;
+        requestData.lastName = lastNameParts.join(" ");
+      }
+  
       for (const key in updatedFields) {
-        const value = updatedFields[key as keyof ProfileData];
-        if (value !== undefined && value !== null) {
-          cleanedData[key] = value;
+        if (key !== "fullName" && updatedFields[key as keyof ProfileData] !== undefined) {
+          requestData[key] = updatedFields[key as keyof ProfileData];
         }
       }
-
-      await axios.patch("http://localhost:3000/api/v1/hotels/1/me", cleanedData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  
+      console.log("Sending PATCH request to:", 
+        `http://localhost:3000/api/v1/hotels/1/guest/${guestId}`
+      );
+      console.log("Request payload:", requestData);
+  
+      const response = await axios.patch(
+        `http://localhost:3000/api/v1/hotels/1/guest/${guestId}`,
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      console.log("Update successful - response:", response);
+  
+      // Update local state
+      const updatedProfile = {
+        ...profileData,
+        ...requestData,
+        fullName: requestData.firstName && requestData.lastName 
+          ? `${requestData.firstName} ${requestData.lastName}`
+          : profileData?.fullName || "",
+      };
+  
+      setProfileData(updatedProfile as ProfileData);
+      setIsEditDialogOpen(false);
+  
+      toast({
+        title: "Profile updated",
+        description: "Your changes have been saved successfully.",
       });
-
-      toast({ title: "Profile updated successfully" });
-
-      // Update fullName if firstName or lastName changes
-      setProfileData((prev) => {
-        if (!prev) return null;
-        const updated = { ...prev, ...cleanedData };
-        updated.fullName = `${updated.firstName} ${updated.lastName}`;
-        return updated;
-      });
-    } catch (error) {
-      console.error("Failed to update profile:", error);
+  
+    } catch (err: any) {
+      console.error("Update failed - full error:", err);
+      console.error("Error response:", err.response);
+      
+      let errorMessage = "Failed to update profile. Please try again.";
+      if (err.response?.data) {
+        console.error("Backend error details:", err.response.data);
+        errorMessage = err.response.data.message || JSON.stringify(err.response.data);
+      }
+  
       toast({
         title: "Error",
-        description: "Failed to update profile",
+        description: errorMessage,
         variant: "destructive",
       });
     }
@@ -150,24 +213,30 @@ const Profile = () => {
 
   const handleDeleteAccount = async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token || !guestId) {
       navigate("/login");
       return;
     }
 
     try {
-      await axios.delete("http://localhost:3000/api/v1/hotels/1/me", {
-        headers: { Authorization: `Bearer ${token}` },
+      await axios.delete(`http://localhost:3000/api/v1/hotels/1/guest/${guestId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-
-      toast({ title: "Account deleted successfully" });
+  
+      toast({
+        title: "Account deleted",
+        description: "Your account has been permanently deleted.",
+      });
+  
       localStorage.removeItem("token");
-      navigate("/signup");
-    } catch (error) {
-      console.error("Failed to delete account:", error);
+      window.location.href = "/";
+    } catch (err) {
+      console.error("Failed to delete account:", err);
       toast({
         title: "Error",
-        description: "Failed to delete account",
+        description: "Failed to delete account. Please try again.",
         variant: "destructive",
       });
     }
@@ -216,7 +285,7 @@ const Profile = () => {
                 <ProfileField label="Address" value={profileData.address} />
                 <ProfileField label="Nationality" value={profileData.nationality} />
                 <ProfileField label="Date of Birth" value={formatDate(profileData.dateOfBirth)} />
-                <ProfileField label="Identification Type" value={displayIdType(profileData.idType)} />
+                <ProfileField label="Identification Type" value={displayIdType(profileData.identificationType)} />
                 <ProfileField label="Identification Number" value={profileData.identificationNumber} />
               </div>
 
