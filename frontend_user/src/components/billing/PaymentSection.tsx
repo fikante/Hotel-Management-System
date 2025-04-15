@@ -42,7 +42,7 @@ const PaymentSection = ({ summary, onUpdateSummary }: PaymentSectionProps) => {
           description: "Taking you to the payment gateway.",
         });
 
-        const bookingId = "0ee52c99-d74b-4326-ae3d-2e136e2e0baa"; // fallback
+        const bookingId = "011f0ff1-4298-47c8-9933-3bf71c68ae68"; // fallback
         const payload = {
           price: (summary.serviceCharge + summary.subtotal + summary.tax) * 100, // example amount in cents
           currency: "usd",
