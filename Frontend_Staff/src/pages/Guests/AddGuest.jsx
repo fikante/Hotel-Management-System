@@ -34,12 +34,12 @@ const AddGuest = ({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="firstName">
               First Name
             </label>
             <input
               type="text"
-              name="firstName"
+              id="firstName"
               value={formData.firstName}
               onChange={handleChange}
               required
@@ -48,10 +48,10 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">Last Name</label>
+            <label className="block font-medium text-gray-700" htmlFor="lastName">Last Name</label>
             <input
               type="text"
-              name="lastName"
+              id="lastName"
               value={formData.lastName}
               onChange={handleChange}
               required
@@ -60,12 +60,12 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="dob">
               Date of Birth
             </label>
             <input
               type="date"
-              name="dob"
+              id="dob"
               value={formData.dob}
               required
               onChange={handleChange}
@@ -73,9 +73,10 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">Gender</label>
+            <label className="block font-medium text-gray-700" htmlFor="gender">
+              Gender</label>
             <select
-              name="gender"
+              id="gender"
               value={formData.gender}
               onChange={handleChange}
               required
@@ -88,10 +89,11 @@ const AddGuest = ({
             </select>
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">Email</label>
+            <label className="block font-medium text-gray-700" htmlFor="email">
+              Email</label>
             <input
               type="email"
-              name="email"
+              id="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="natan1995@gmail.com"
@@ -99,10 +101,10 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700 ">Phone</label>
+            <label className="block font-medium text-gray-700 " htmlFor="phone">Phone</label>
             <input
               type="tel"
-              name="phone"
+              id="phone"
               value={formData.phone}
               required
               onChange={handleChange}
@@ -111,10 +113,11 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700 ">Address</label>
+            <label className="block font-medium text-gray-700 " htmlFor="address">
+              Address</label>
             <input
               type="text"
-              name="address"
+              id="address"
               value={formData.address}
               onChange={handleChange}
               required
@@ -123,20 +126,21 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700 mb-1">
+            <label className="block font-medium text-gray-700 mb-1" htmlFor="nationality">
               Nationality
             </label>
             <CountrySelect
+              id = "nationality"
               value={formData.nationality}
               onChange={handleChange}
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="idType">
               Identification Type
             </label>
             <select
-              name="idType"
+              id="idType"
               value={formData.idType}
               onChange={handleChange}
               required
@@ -149,12 +153,12 @@ const AddGuest = ({
             </select>
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="idNumber">
               Identification Number
             </label>
             <input
               type="text"
-              name="idNumber"
+              id="idNumber"
               value={formData.idNumber}
               onChange={handleChange}
               placeholder="123456789"
@@ -171,12 +175,12 @@ const AddGuest = ({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="checkIn">
               Check-In Date
             </label>
             <input
               type="date"
-              name="checkIn"
+              id="checkIn"
               value={bookingFormData.checkIn}
               onChange={handleBookingChange}
               required
@@ -185,12 +189,12 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="checkOut">
               Check-Out Date
             </label>
             <input
               type="date"
-              name="checkOut"
+              id="checkOut"
               value={bookingFormData.checkOut}
               onChange={handleBookingChange}
               required
