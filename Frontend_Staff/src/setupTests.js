@@ -6,3 +6,4 @@ global.TextDecoder = TextDecoder;
 fetchMock.enableMocks();
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom";
+import 'jest-canvas-mock';

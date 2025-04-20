@@ -49,9 +49,10 @@ const Dashboard = () => {
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`);
       if (!response.ok) {
-        const errorBody = await response.text();
+        let errorBodyText = '';
+        try { errorBodyText = await response.text(); } catch (textError) {}
         throw new Error(
-          `API request failed for ${endpoint}: ${response.status} - ${response.statusText}. Body: ${errorBody}`
+          `API request failed for ${endpoint}: ${response.status} - ${response.statusText}. Body: ${errorBodyText}`
         );
       }
       const data = await response.json();
@@ -60,7 +61,7 @@ const Dashboard = () => {
       }
       return data;
     } catch (err) {
-      console.error(`Error fetching ${endpoint}:`, err);
+      console.error(`Error fetching or processing ${endpoint}:`, err);
       throw err;
     }
   };
@@ -88,79 +89,71 @@ const Dashboard = () => {
           console.error("All dashboard fetches failed. First reason:", results[0]?.reason || "Unknown reason");
           setError("Failed to load dashboard data. Please check the connection or try again later.");
           setAllFetchesFailed(true);
-          setTotalRevenue(0);
-          setTotalBookings(0);
-          setGenderDemographics({});
-          setGuestCountries([]);
-          setRoomTypeData([]);
-          setAssignments([]);
+          setTotalRevenue(0); setTotalBookings(0); setGenderDemographics({});
+          setGuestCountries([]); setRoomTypeData([]); setAssignments([]);
         } else {
           const [
-            revenueData,
-            bookingsData,
-            demographicsData,
-            countriesData,
-            roomTypesData,
-            assignmentsData,
+            revenueData, bookingsData, demographicsData, countriesData,
+            roomTypesData, assignmentsData,
           ] = results;
 
           if (revenueData.status === 'fulfilled' && revenueData.value?.revenue !== undefined) {
              setTotalRevenue(parseFloat(revenueData.value.revenue) / 100 || 0);
           } else {
             console.error("Failed to fetch Revenue:", revenueData.reason || "Missing revenue data");
-            fetchErrors.push("Revenue");
-            setTotalRevenue(0);
+            fetchErrors.push("Revenue"); setTotalRevenue(0);
           }
 
           if (bookingsData.status === 'fulfilled' && bookingsData.value?.booked !== undefined) {
             setTotalBookings(bookingsData.value.booked || 0);
           } else {
             console.error("Failed to fetch Bookings:", bookingsData.reason || "Missing booked data");
-            fetchErrors.push("Bookings");
-            setTotalBookings(0);
+            fetchErrors.push("Bookings"); setTotalBookings(0);
           }
 
           if (demographicsData.status === 'fulfilled' && demographicsData.value) {
-            setGenderDemographics({
-              Male: demographicsData.value.male || 0,
-              Female: demographicsData.value.female || 0,
-            });
+            setGenderDemographics({ Male: demographicsData.value.male || 0, Female: demographicsData.value.female || 0 });
           } else {
             console.error("Failed to fetch Demographics:", demographicsData.reason || "Invalid demographics data");
-            fetchErrors.push("Demographics");
-            setGenderDemographics({});
+            fetchErrors.push("Demographics"); setGenderDemographics({});
           }
 
           if (countriesData.status === 'fulfilled' && Array.isArray(countriesData.value?.country)) {
-              const transformedCountries = countriesData.value.country.map(item => {
-                  const entry = Object.entries(item)[0];
-                  if (!entry) return null;
-                  const [name, value] = entry;
-                  const capitalizedName = name ? name.charAt(0).toUpperCase() + name.slice(1) : "Unknown";
-                  return { name: capitalizedName, value: value || 0 };
-              }).filter(Boolean)
-                .sort((a, b) => b.value - a.value);
+              const transformedCountries = countriesData.value.country
+                  .filter(item => item && typeof item === 'object')
+                  .map(item => {
+                      const entry = Object.entries(item)[0];
+                      if (!entry) return null;
+                      const [name, value] = entry;
+                      if (!name || typeof name !== 'string' || name.trim() === '' || typeof value !== 'number' || value <= 0) {
+                          return null;
+                      }
+                      const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+                      return { name: capitalizedName, value: value };
+                  })
+                  .filter(Boolean)
+                  .sort((a, b) => b.value - a.value);
               setGuestCountries(transformedCountries);
           } else {
               console.error("Failed to fetch or process Countries:", countriesData.reason || "Missing or invalid 'country' array");
-              fetchErrors.push("Country");
-              setGuestCountries([]);
+              fetchErrors.push("Country"); setGuestCountries([]);
           }
 
           if (roomTypesData.status === 'fulfilled' && roomTypesData.value?.data && typeof roomTypesData.value.data === 'object') {
               const rawRoomData = roomTypesData.value.data;
               const transformedRoomTypes = Object.entries(rawRoomData)
-                  .map(([type, rooms]) => ({
-                      type: type || "Unknown",
-                      count: Array.isArray(rooms) ? rooms.length : 0
-                  }))
+                  .filter(([type, rooms]) =>
+                      type && typeof type === 'string' && type.trim() !== '' &&
+                      isNaN(parseInt(type, 10)) &&
+                      Array.isArray(rooms)
+                  )
+                  .map(([type, rooms]) => ({ type: type, count: rooms.length }))
                   .filter(room => room.count > 0)
                   .sort((a, b) => b.count - a.count);
               setRoomTypeData(transformedRoomTypes);
            } else {
               console.error("Failed to fetch or process Room Types:", roomTypesData.reason || "Missing or invalid 'data' object");
-              fetchErrors.push("Room Types");
-              setRoomTypeData([]);
+              fetchErrors.push("Room Types"); setRoomTypeData([]);
            }
 
           if (assignmentsData.status === 'fulfilled' && (assignmentsData.value?.success || Array.isArray(assignmentsData.value))) {
@@ -168,14 +161,12 @@ const Dashboard = () => {
               if (Array.isArray(assignmentsArray)) {
                  setAssignments(assignmentsArray);
               } else {
-                 console.error("Fetched Assignments data is not an array:", assignmentsData.value);
-                 fetchErrors.push("Assignments (Invalid Format)");
-                 setAssignments([]);
+                 console.error("Fetched Assignments data structure is invalid (expected array):", assignmentsData.value);
+                 fetchErrors.push("Assignments (Invalid Format)"); setAssignments([]);
               }
           } else {
               console.error("Failed to fetch or process Assignments:", assignmentsData.reason || "Missing or invalid data structure");
-              fetchErrors.push("Assignments");
-              setAssignments([]);
+              fetchErrors.push("Assignments"); setAssignments([]);
           }
 
            if (fetchErrors.length > 0) {
@@ -184,17 +175,12 @@ const Dashboard = () => {
              setError(null);
            }
         }
-
       } catch (err) {
          console.error("An unexpected error occurred during dashboard data loading:", err);
          setError("An unexpected error occurred while loading dashboard data.");
          setAllFetchesFailed(true);
-         setTotalRevenue(0);
-         setTotalBookings(0);
-         setGenderDemographics({});
-         setGuestCountries([]);
-         setRoomTypeData([]);
-         setAssignments([]);
+         setTotalRevenue(0); setTotalBookings(0); setGenderDemographics({});
+         setGuestCountries([]); setRoomTypeData([]); setAssignments([]);
       } finally {
         setIsLoading(false);
       }
@@ -203,10 +189,7 @@ const Dashboard = () => {
     loadDashboardData();
   }, []);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
+  if (isLoading) { return <LoadingSpinner />; }
   if (!isLoading && allFetchesFailed) {
       return (
           <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -221,33 +204,24 @@ const Dashboard = () => {
           </div>
       );
   }
-
   return (
     <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto">
         <ErrorMessage message={error} />
-
         <h1 className={headingStyle}>
           <div className="flex flex-row gap-2 items-center">
             Welcome to the Dashboard <FaHome className="text-gray-500 ml-2" />
           </div>
         </h1>
-
-        <KeyMetrics
-          totalRevenue={totalRevenue}
-          totalBookings={totalBookings}
-        />
-
+        <KeyMetrics totalRevenue={totalRevenue} totalBookings={totalBookings} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <GuestCountryChart guestCountries={guestCountries} />
           <GenderDemographicsChart genderDemographics={genderDemographics} />
           <RoomTypeChart roomTypeData={roomTypeData} />
         </div>
-
         <div className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out">
            <AssignmentsInsights assignments={assignments} />
         </div>
-
       </div>
     </div>
   );
