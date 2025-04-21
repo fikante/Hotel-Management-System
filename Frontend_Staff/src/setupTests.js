@@ -5,3 +5,4 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 fetchMock.enableMocks();
+import 'jest-canvas-mock';

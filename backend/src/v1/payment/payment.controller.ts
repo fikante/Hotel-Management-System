@@ -7,6 +7,7 @@ import {
     Req,
     Headers,
     RawBodyRequest,
+    Get,
   } from '@nestjs/common';
   import { PaymentService } from './payment.service';
   
@@ -36,6 +37,12 @@ import {
       ) {
         const rawBody = req.body ? req.body.toString() : '';
         return this.paymentService.handleWebhook(rawBody, sig);
+      }
+      
+      // Endpoint to retrieve the billing history for a user
+      @Get('billing-history/:userId')
+      async getBillingHistory(@Param('userId') userId: string) {
+        return await this.paymentService.getBillingHistory(userId);
       }
   }
   
