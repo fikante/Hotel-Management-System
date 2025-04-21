@@ -4,13 +4,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
 import SelectGuestAndBooking from "../Process/ReservationCreation";
 import EditBooking from "./EditBooking";
-import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 import { useReservationStore } from "@/components/store/useReservationStore";
-
-export const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
 
 const ReservationListPage = () => {
   const { fetchReservations, reservations, deleteReservation, isLoading, initialized } = useReservationStore();
@@ -18,7 +13,6 @@ const ReservationListPage = () => {
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [isEditReservationOpen, setIsEditReservationOpen] = useState(false);
   const [error, setError] = useState(null);
-  console.log(reservations);
 
 
   useEffect(() => {
@@ -50,7 +44,7 @@ const ReservationListPage = () => {
       <CustomTable
         data={reservations}
         columns={reservationColumns}
-        defaultSort={[{ id: "created_at", desc: false }]}
+        defaultSort={[{ id: "createdAt", desc: true }]}
         addButtonText="Add Reservation"
         onAddClick={() => setIsAddBookOpen(true)}
         meta={{

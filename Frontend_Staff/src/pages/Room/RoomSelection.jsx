@@ -30,6 +30,7 @@ const RoomSelection = ({
       <div className="flex justify-center -mt-2">
         <Button
           variant="default"
+          data-testid="save-room-selection"
           className="bg-blue-600 hover:bg-blue-700 text-white gap-2 w-1/4"
           onClick={handleSave}
         >

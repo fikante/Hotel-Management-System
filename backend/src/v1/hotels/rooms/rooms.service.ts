@@ -45,22 +45,12 @@ export class RoomsService {
     checkInDate: Date,
     checkOutDate: Date,
   ): Promise<Room[]> {
-    // Fetch the hotel with its rooms
-    const hotel = await this.hotelRepository.findOne({
-      where: { id: hotelId },
-      relations: ['rooms'],
-    });
-  
-    if (!hotel) {
-      throw new Error('Hotel not found');
-    }
-  
-    // Filter rooms based on occupancy
-    let availableRooms = hotel.rooms.filter(
-      (room) => room.status !== 'available' 
-    );
-  
-    // Check room availability by filtering out booked rooms
+    
+    let availableRooms = await this.roomRepository.find( {
+      where: { hotel: { id: hotelId } },
+      relations: ['hotel', 'amenities'],
+    })
+    
     const filteredRooms = await Promise.all(
       availableRooms.map(async (room) => {
         const overlappingBookings = await this.bookingRepository.count({

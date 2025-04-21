@@ -41,12 +41,16 @@ export const LogoutConfirmation = ({ onLogout }) => {
         <MdLogout className="items-center" size={20} />
       </Button>
 
-
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className={"sm:max-w-xl p-6"}>
           <DialogHeader>
-            <DialogTitle className={"font-bold font-serif"}>
+            <DialogTitle
+              className={
+                "font-bold font-serif flex flex-row gap-4 items-center"
+              }
+            >
               Confirm Logout
+              <img src="/logout.svg" alt="Logout" className="size-10 text-xs" />
             </DialogTitle>
             <DialogDescription>
               Are you sure you want to log out?
@@ -58,7 +62,7 @@ export const LogoutConfirmation = ({ onLogout }) => {
             </Button>
             <Button
               variant="default"
-              className="bg-blue-700 hover:bg-blue-800 text-white flex flex-row gap-2"
+              className="bg-blue-700 hover:bg-blue-500 text-white flex flex-row gap-2"
               onClick={handleLogout}
               disabled={isLoading}
             >

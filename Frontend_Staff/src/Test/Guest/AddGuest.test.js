@@ -1,57 +1,86 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import AddGuest from "@/pages/Guests/AddGuest";
-import axios from "axios";
+import UserProfileAndBooking from "@/pages/Process/GuestCreation";
+import { api } from "@/lib/api";
+import { useGuestStore } from "@/components/store/useGuestStore";
 
-jest.mock("axios");
-jest.mock(
-  "@/components/Country/CountriesNames",
-  () =>
-    ({ value, onChange }) =>
-      (
-        <select
-          data-testid="Nationality-select"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        >
-          <option value="United States">United States</option>
-        </select>
-      )
-);
+jest.mock("@/components/store/useGuestStore");
 
 describe("AddGuest Component", () => {
   const mockFormData = {
-    firstName: "",
-    lastName: "",
-    dob: "",
-    gender: "",
-    email: "",
-    phone: "",
-    address: "",
-    nationality: "",
-    idType: "",
-    idNumber: "",
+    firstName: "John",
+    lastName: "Doe",
+    dob: "1990-01-01",
+    gender: "Male",
+    email: "john@example.com",
+    phone: "+1234567890",
+    address: "123 Main St",
+    nationality: "Croatia",
+    idType: "Passport",
+    idNumber: "123456789",
   };
 
-  const mockSetFormData = jest.fn();
-  const mockOnSubmit = jest.fn();
-  const mockSetBookingFormData = jest.fn();
+  const mockOnSuccess = jest.fn();
+
+  const mockRooms = [
+    {
+      id: 1,
+      roomNumber: "C101",
+      type: "Deluxe",
+      price: 200,
+      status: "available",
+      size: 245,
+      occupancy: 2,
+      bedType: "King",
+      amenities: [{ name: "WiFi" }],
+    },
+    {
+      id: 2,
+      roomNumber: "C102",
+      type: "Standard",
+      price: 150,
+      status: "available",
+      size: 200,
+      occupancy: 2,
+      bedType: "Queen",
+      amenities: [{ name: "WiFi" }, { name: "TV" }],
+    },
+    {
+      id: 3,
+      roomNumber: "C103",
+      type: "Suite",
+      price: 300,
+      status: "available",
+      size: 300,
+      occupancy: 4,
+      bedType: "King",
+      amenities: [{ name: "WiFi" }, { name: "TV" }, { name: "Mini Bar" }],
+    },
+  ];
+
+  let axiosGetSpy;
+  let addGuestSpy;
 
   beforeEach(() => {
+    axiosGetSpy = jest
+      .spyOn(api, "get")
+      .mockResolvedValue({ data: { data: mockRooms } });
+
+    addGuestSpy = jest.fn().mockResolvedValue({});
+    useGuestStore.mockImplementation(() => ({
+      addGuest: addGuestSpy,
+    }));
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
+  // Test 1
+
   test("renders all form fields", () => {
-    render(
-      <AddGuest
-        formData={mockFormData}
-        setFormData={mockSetFormData}
-        onSubmit={mockOnSubmit}
-        setBookingFormData={mockSetBookingFormData}
-        bookingFormData={{ checkIn: "", checkOut: "" }}
-      />
-    );
+    render(<UserProfileAndBooking onSuccess={mockOnSuccess} />);
 
     expect(screen.getByLabelText("First Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Last Name")).toBeInTheDocument();
@@ -67,159 +96,244 @@ describe("AddGuest Component", () => {
     expect(screen.getByLabelText("Nationality")).toBeInTheDocument();
   });
 
-  //   test('validates required fields on submit', async () => {
-  //     render(
-  //       <AddGuest
-  //         formData={mockFormData}
-  //         setFormData={mockSetFormData}
-  //         onSubmit={mockOnSubmit}
-  //         setBookingFormData={mockSetBookingFormData}
-  //         bookingFormData={{ checkIn: '', checkOut: '' }}
-  //       />
-  //     );
+  // Test 2
 
-  //     const submitButton = screen.getByText('Next');
-  //     userEvent.click(submitButton);
+  test("validates date constraints", () => {
+    render(<UserProfileAndBooking onSuccess={mockOnSuccess} />);
 
-  //     await waitFor(() => {
-  //       expect(screen.getByText('First Name is required')).toBeInTheDocument();
-  //       expect(screen.getByText('Last Name is required')).toBeInTheDocument();
-  //       expect(screen.getByText('Date of Birth is required')).toBeInTheDocument();
-  //       expect(screen.getByText('Gender is required')).toBeInTheDocument();
-  //       expect(screen.getByText('Phone is required')).toBeInTheDocument();
-  //       expect(screen.getByText('Address is required')).toBeInTheDocument();
-  //       expect(screen.getByText('ID Type is required')).toBeInTheDocument();
-  //       expect(screen.getByText('ID Number is required')).toBeInTheDocument();
-  //       expect(screen.getByText('Check-In Date is required')).toBeInTheDocument();
-  //       expect(screen.getByText('Check-Out Date is required')).toBeInTheDocument();
-  //     });
-  //   });
+    userEvent.type(screen.getByLabelText("First Name"), "Mikias");
+    userEvent.type(screen.getByLabelText("Last Name"), "Berhanu");
+    userEvent.type(screen.getByLabelText("Date of Birth"), "1990-01-01");
+    userEvent.selectOptions(screen.getByLabelText("Gender"), "Male");
+    userEvent.type(screen.getByLabelText("Email"), "mikias@example.com");
+    userEvent.type(screen.getByLabelText("Phone"), "+251912345678");
+    userEvent.type(screen.getByLabelText("Address"), "123 Main St");
+    userEvent.selectOptions(screen.getByLabelText("Nationality"), "Ethiopia");
+    userEvent.selectOptions(
+      screen.getByLabelText("Identification Type"),
+      "Passport"
+    );
+    userEvent.type(screen.getByLabelText("Identification Number"), "A12345678");
 
-  //   test('validates email format', async () => {
-  //     render(
-  //       <AddGuest
-  //         formData={{ ...mockFormData, email: 'invalid' }}
-  //         setFormData={mockSetFormData}
-  //         onSubmit={mockOnSubmit}
-  //         setBookingFormData={mockSetBookingFormData}
-  //         bookingFormData={{ checkIn: '', checkOut: '' }}
-  //       />
-  //     );
+    fireEvent.change(screen.getByLabelText("Check-In Date"), {
+      target: { value: "2025-05-02" },
+    });
+    fireEvent.change(screen.getByLabelText("Check-Out Date"), {
+      target: { value: "2025-05-01" },
+    });
 
-  //     const submitButton = screen.getByText('Next');
-  //     userEvent.click(submitButton);
+    userEvent.click(screen.getByTestId("submit-button"));
 
-  //     await waitFor(() => {
-  //       expect(screen.getByText('Invalid email format')).toBeInTheDocument();
-  //     });
-  //   });
+    const checkInInput = screen.getByLabelText("Check-In Date");
+    const checkOutInput = screen.getByLabelText("Check-Out Date");
 
-  //   test('validates phone number format', async () => {
-  //     render(
-  //       <AddGuest
-  //         formData={{ ...mockFormData, phone: 'abc' }}
-  //         setFormData={mockSetFormData}
-  //         onSubmit={mockOnSubmit}
-  //         setBookingFormData={mockSetBookingFormData}
-  //         bookingFormData={{ checkIn: '', checkOut: '' }}
-  //       />
-  //     );
+    expect(checkInInput.min).toBe(new Date().toISOString().split("T")[0]);
+    expect(checkOutInput.min).toBe(checkInInput.value);
+  });
 
-  //     const submitButton = screen.getByText('Next');
-  //     userEvent.click(submitButton);
+  // Test 3
 
-  //     await waitFor(() => {
-  //       expect(screen.getByText('Invalid phone number')).toBeInTheDocument();
-  //     });
-  //   });
+  test("calls onSubmit with valid data", async () => {
+    render(<UserProfileAndBooking onSuccess={mockOnSuccess} />);
 
-  //   test('validates date constraints', () => {
-  //     render(
-  //       <AddGuest
-  //         formData={mockFormData}
-  //         setFormData={mockSetFormData}
-  //         onSubmit={mockOnSubmit}
-  //         setBookingFormData={mockSetBookingFormData}
-  //         bookingFormData={{ checkIn: '2023-01-01', checkOut: '2023-01-05' }}
-  //       />
-  //     );
+    fireEvent.change(screen.getByLabelText("First Name"), {
+      target: { value: "Mikias" },
+    });
+    fireEvent.change(screen.getByLabelText("Last Name"), {
+      target: { value: "Berhanu" },
+    });
+    fireEvent.change(screen.getByLabelText("Date of Birth"), {
+      target: { value: "1990-01-01" },
+    });
 
-  //     const checkInInput = screen.getByLabelText('Check-In Date');
-  //     const checkOutInput = screen.getByLabelText('Check-Out Date');
+    fireEvent.change(screen.getByLabelText("Gender"), {
+      target: { value: "Male" },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "mikias@example.com" },
+    });
 
-  //     expect(checkInInput.min).toBe(new Date().toISOString().split('T')[0]);
-  //     expect(checkOutInput.min).toBe('2023-01-01');
-  //   });
+    fireEvent.change(screen.getByLabelText("Phone"), {
+      target: { value: "+251912345678" },
+    });
+    fireEvent.change(screen.getByLabelText("Address"), {
+      target: { value: "123 Main St" },
+    });
+    fireEvent.change(screen.getByLabelText("Identification Type"), {
+      target: { value: "Passport" },
+    });
+    fireEvent.change(screen.getByLabelText("Identification Number"), {
+      target: { value: "A12345678" },
+    });
+    fireEvent.change(screen.getByLabelText("Check-In Date"), {
+      target: { value: "2025-05-02" },
+    });
+    fireEvent.change(screen.getByLabelText("Check-Out Date"), {
+      target: { value: "2025-05-05" },
+    });
 
-  //   test('calls onSubmit with valid data', async () => {
-  //     const validFormData = {
-  //       firstName: 'John',
-  //       lastName: 'Doe',
-  //       dob: '1990-01-01',
-  //       gender: 'Male',
-  //       email: 'john@example.com',
-  //       phone: '+1234567890',
-  //       address: '123 Main St',
-  //       nationality: 'US',
-  //       idType: 'Passport',
-  //       idNumber: '123456789'
-  //     };
+    fireEvent.change(screen.getByLabelText("Nationality"), {
+      target: { value: "Ethiopia" },
+    });
 
-  //     render(
-  //       <AddGuest
-  //         formData={validFormData}
-  //         setFormData={mockSetFormData}
-  //         onSubmit={mockOnSubmit}
-  //         setBookingFormData={mockSetBookingFormData}
-  //         bookingFormData={{ checkIn: '2023-01-01', checkOut: '2023-01-05' }}
-  //       />
-  //     );
+    fireEvent.click(screen.getByTestId("submit-button"));
 
-  //     const submitButton = screen.getByText('Next');
-  //     userEvent.click(submitButton);
+    await waitFor(() => {
+      expect(axiosGetSpy).toHaveBeenCalledWith(
+        "/hotels/1/availablerooms?check_in=2025-05-02&check_out=2025-05-05"
+      );
+    });
+  });
 
-  //     await waitFor(() => {
-  //       expect(mockOnSubmit).toHaveBeenCalledWith(validFormData);
-  //     });
-  //   });
+  // Test 4
+  test("transition to Room Selection and Submit form", async () => {
+    render(<UserProfileAndBooking onSuccess={mockOnSuccess} />);
 
-  //   test('updates form data on input change', () => {
-  //     render(
-  //       <AddGuest
-  //         formData={mockFormData}
-  //         setFormData={mockSetFormData}
-  //         onSubmit={mockOnSubmit}
-  //         setBookingFormData={mockSetBookingFormData}
-  //         bookingFormData={{ checkIn: '', checkOut: '' }}
-  //       />
-  //     );
+    fireEvent.change(screen.getByLabelText("First Name"), {
+      target: { value: "Mikias" },
+    });
+    fireEvent.change(screen.getByLabelText("Last Name"), {
+      target: { value: "Berhanu" },
+    });
+    fireEvent.change(screen.getByLabelText("Date of Birth"), {
+      target: { value: "1990-01-01" },
+    });
 
-  //     const firstNameInput = screen.getByLabelText('First Name');
-  //     fireEvent.change(firstNameInput, { target: { value: 'John', name: 'firstName' } });
+    fireEvent.change(screen.getByLabelText("Gender"), {
+      target: { value: "Male" },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "mikias@example.com" },
+    });
 
-  //     expect(mockSetFormData).toHaveBeenCalledWith({
-  //       ...mockFormData,
-  //       firstName: 'John'
-  //     });
-  //   });
+    fireEvent.change(screen.getByLabelText("Phone"), {
+      target: { value: "+251912345678" },
+    });
+    fireEvent.change(screen.getByLabelText("Address"), {
+      target: { value: "123 Main St" },
+    });
+    fireEvent.change(screen.getByLabelText("Identification Type"), {
+      target: { value: "Passport" },
+    });
+    fireEvent.change(screen.getByLabelText("Identification Number"), {
+      target: { value: "A12345678" },
+    });
+    fireEvent.change(screen.getByLabelText("Check-In Date"), {
+      target: { value: "2025-05-02" },
+    });
+    fireEvent.change(screen.getByLabelText("Check-Out Date"), {
+      target: { value: "2025-05-05" },
+    });
 
-  //   test('updates booking dates on change', () => {
-  //     render(
-  //       <AddGuest
-  //         formData={mockFormData}
-  //         setFormData={mockSetFormData}
-  //         onSubmit={mockOnSubmit}
-  //         setBookingFormData={mockSetBookingFormData}
-  //         bookingFormData={{ checkIn: '', checkOut: '' }}
-  //       />
-  //     );
+    fireEvent.change(screen.getByLabelText("Nationality"), {
+      target: { value: "Ethiopia" },
+    });
 
-  //     const checkInInput = screen.getByLabelText('Check-In Date');
-  //     fireEvent.change(checkInInput, { target: { value: '2023-01-01', name: 'checkIn' } });
+    fireEvent.click(screen.getByTestId("submit-button"));
 
-  //     expect(mockSetBookingFormData).toHaveBeenCalledWith({
-  //       checkIn: '2023-01-01',
-  //       checkOut: ''
-  //     });
-  //   });
+    await waitFor(() => {
+      expect(axiosGetSpy).toHaveBeenCalledWith(
+        "/hotels/1/availablerooms?check_in=2025-05-02&check_out=2025-05-05"
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("All Fields")).toBeInTheDocument();
+      expect(screen.getByText("C101")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByTestId("select-radio-2"));
+    fireEvent.click(screen.getByTestId("save-room-selection"));
+
+    await waitFor(() => {
+      expect(addGuestSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          firstName: "Mikias",
+          lastName: "Berhanu",
+          dob: "1990-01-01",
+          gender: "Male",
+          email: "mikias@example.com",
+          phone: "+251912345678",
+          address: "123 Main St",
+          nationality: "Ethiopia",
+          idType: "Passport",
+          idNumber: "A12345678",
+        }),
+        expect.objectContaining({
+          amenities: ["WiFi", "TV"],
+          bedType: "Queen",
+          id: 2,
+          maxOccupancy: 2,
+          price: 150,
+          roomNumber: "C102",
+          roomType: "Standard",
+          status: "available",
+          size: 200,
+        }),
+        expect.objectContaining({
+          checkIn: "2025-05-02",
+          checkOut: "2025-05-05",
+        })
+      );
+    });
+  });
+
+  // Test 5
+
+  test("displays error message on API failure", async () => {
+    axiosGetSpy.mockRejectedValueOnce(new Error("API error"));
+
+    render(<UserProfileAndBooking onSuccess={mockOnSuccess} />);
+
+    fireEvent.change(screen.getByLabelText("First Name"), {
+      target: { value: "Mikias" },
+    });
+    fireEvent.change(screen.getByLabelText("Last Name"), {
+      target: { value: "Berhanu" },
+    });
+    fireEvent.change(screen.getByLabelText("Date of Birth"), {
+      target: { value: "1990-01-01" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Gender"), {
+      target: { value: "Male" },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "mikias@example.com" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Phone"), {
+      target: { value: "+251912345678" },
+    });
+    fireEvent.change(screen.getByLabelText("Address"), {
+      target: { value: "123 Main St" },
+    });
+    fireEvent.change(screen.getByLabelText("Identification Type"), {
+      target: { value: "Passport" },
+    });
+    fireEvent.change(screen.getByLabelText("Identification Number"), {
+      target: { value: "A12345678" },
+    });
+    fireEvent.change(screen.getByLabelText("Check-In Date"), {
+      target: { value: "2025-05-02" },
+    });
+    fireEvent.change(screen.getByLabelText("Check-Out Date"), {
+      target: { value: "2025-05-05" },
+    });
+
+    fireEvent.change(screen.getByLabelText("Nationality"), {
+      target: { value: "Ethiopia" },
+    });
+
+    fireEvent.click(screen.getByTestId("submit-button"));
+
+    await waitFor(() => {
+      expect(axiosGetSpy).toHaveBeenCalledWith(
+        "/hotels/1/availablerooms?check_in=2025-05-02&check_out=2025-05-05"
+      );
+    });
+    await waitFor(() => {
+      expect(screen.getByText("Failed to load room")).toBeInTheDocument();
+    });
+  });
 });

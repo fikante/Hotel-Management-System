@@ -199,6 +199,7 @@ const CountrySelect = ({ value, onChange }) => {
   return (
     <select
       id="nationality"
+      name="nationality"
       value={value}
       onChange={onChange}
       required

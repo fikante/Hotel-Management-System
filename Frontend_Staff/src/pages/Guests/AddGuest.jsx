@@ -31,7 +31,7 @@ const AddGuest = ({
 
   return (
     <div className="p-4 w-full">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" role="form">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div className="space-y-1">
             <label className="block font-medium text-gray-700" htmlFor="firstName">
@@ -40,6 +40,7 @@ const AddGuest = ({
             <input
               type="text"
               id="firstName"
+              name="firstName"
               value={formData.firstName}
               onChange={handleChange}
               required
@@ -52,6 +53,7 @@ const AddGuest = ({
             <input
               type="text"
               id="lastName"
+              name="lastName"
               value={formData.lastName}
               onChange={handleChange}
               required
@@ -66,6 +68,7 @@ const AddGuest = ({
             <input
               type="date"
               id="dob"
+              name="dob"
               value={formData.dob}
               required
               onChange={handleChange}
@@ -77,6 +80,7 @@ const AddGuest = ({
               Gender</label>
             <select
               id="gender"
+              name="gender"
               value={formData.gender}
               onChange={handleChange}
               required
@@ -94,6 +98,7 @@ const AddGuest = ({
             <input
               type="email"
               id="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="natan1995@gmail.com"
@@ -105,6 +110,7 @@ const AddGuest = ({
             <input
               type="tel"
               id="phone"
+              name="phone"
               value={formData.phone}
               required
               onChange={handleChange}
@@ -118,6 +124,7 @@ const AddGuest = ({
             <input
               type="text"
               id="address"
+              name="address"
               value={formData.address}
               onChange={handleChange}
               required
@@ -130,7 +137,6 @@ const AddGuest = ({
               Nationality
             </label>
             <CountrySelect
-              id = "nationality"
               value={formData.nationality}
               onChange={handleChange}
             />
@@ -141,6 +147,7 @@ const AddGuest = ({
             </label>
             <select
               id="idType"
+              name="idType"
               value={formData.idType}
               onChange={handleChange}
               required
@@ -159,6 +166,7 @@ const AddGuest = ({
             <input
               type="text"
               id="idNumber"
+              name="idNumber"
               value={formData.idNumber}
               onChange={handleChange}
               placeholder="123456789"
@@ -181,6 +189,7 @@ const AddGuest = ({
             <input
               type="date"
               id="checkIn"
+              name="checkIn"
               value={bookingFormData.checkIn}
               onChange={handleBookingChange}
               required
@@ -195,6 +204,7 @@ const AddGuest = ({
             <input
               type="date"
               id="checkOut"
+              name="checkOut"
               value={bookingFormData.checkOut}
               onChange={handleBookingChange}
               required
@@ -205,6 +215,7 @@ const AddGuest = ({
         </div>
         <div className="flex justify-end">
           <button
+            data-testid="submit-button"
             type="submit"
             className="w-1/4 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
           >
