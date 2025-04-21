@@ -127,18 +127,30 @@ export const useGuestStore = create((set, get) => ({
         phone: data.phone,
         nationality: data.nationality,
         identificationType: data.idType,
-        idNumber: data.idNumber,
+        identificationNumber: data.idNumber,
       };
-      console.log("Guest Data:", guestData);
+      // console.log("Guest Data:", guestData);
 
       const response = await axios.patch(
         `${API_BASE_URL}/hotels/1/guest/${id}`,
         guestData
       );
 
+      const updatedGuest = {
+        firstName: data.fname,
+        lastName: data.lname,
+        gender: data.gender,
+        email: data.email,
+        phone: data.phone,
+        nationality: data.nationality,
+        idType: data.idType,
+        idNumber: data.idNumber,
+
+      }
+
       set((state) => ({
         guests: state.guests.map((guest) =>
-          guest.id === id ? { ...guest, ...guestData } : guest
+          guest.id === id ? { ...guest, ...updatedGuest } : guest
         ),
         isLoading: false,
         error: null,

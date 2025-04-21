@@ -4,10 +4,8 @@ import SelectGuest from "../Guests/SelectGuest";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 import { useReservationStore } from "@/components/store/useReservationStore";
+import { api } from "@/lib/api";
 
-export const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
 
 const SelectGuestAndBooking = ({ onSuccess }) => {
   const {addReservation} = useReservationStore();
@@ -22,20 +20,22 @@ const SelectGuestAndBooking = ({ onSuccess }) => {
 
   useEffect(() => {
     const fetchGuest = async () => {
+      console.log("Fetching guests from:", "http://localhost:3000/api/v1/hotels/1/guests");
       try {
         setIsLoading(true);
         const response = await api.get("/hotels/1/guests");
         const data = response.data?.data;
+        console.log(data, "data from api");
         const formattedGuest = data.map((guest) => ({
           id: guest.id,
-          firstName: guest.firstName || "John",
-          lastName: guest.lastName || "Doe",
+          firstName: guest.firstName,
+          lastName: guest.lastName,
           gender: guest.gender,
           email: guest.email,
           phone: guest.phone,
           address: guest.address,
           nationality: guest.nationality,
-          idType: guest.idType,
+          idType: guest.identificationType,
           idNumber: guest.idNumber,
         }));
 
@@ -44,7 +44,7 @@ const SelectGuestAndBooking = ({ onSuccess }) => {
         setGuest(formattedGuest);
         setError(null);
       } catch (error) {
-        console.error("Error fetching guests:", error);
+        console.error("Error fetching guests:", error.mess);
         setError("Failed to load guests");
         setGuest([]);
       } finally {
@@ -72,11 +72,12 @@ const SelectGuestAndBooking = ({ onSuccess }) => {
 
     const fetchRoom = async () => {
       try {
+        console.log("Fetching rooms from:", `/hotels/1/availablerooms?check_in=${bookingFormData.checkIn}&check_out=${bookingFormData.checkOut}`);
         const response = await api.get(
-          "hotels/1/rooms?check_in=2025-01-11&check_out=2025-12-13"
+          `/hotels/1/availablerooms?check_in=${bookingFormData.checkIn}&check_out=${bookingFormData.checkOut}`
         );
-        console.log(response.data.rooms.data);
-        const data = response.data.rooms.data;
+        
+        const data = response.data.data;
         const formattedRoom = data.map((room) => ({
           id: room.id,
           roomNumber: room.roomNumber,
@@ -86,7 +87,7 @@ const SelectGuestAndBooking = ({ onSuccess }) => {
           size: room.size,
           maxOccupancy: room.occupancy,
           bedType: room.bedType,
-          amenities: room.amenities,
+          amenities: room.amenities.map((amenity) => amenity.name),
         }));
         console.log(formattedRoom);
         setRoom(formattedRoom);
@@ -95,7 +96,7 @@ const SelectGuestAndBooking = ({ onSuccess }) => {
           setActiveButton("book");
         }
       } catch (error) {
-        console.error("Error fetching room:", error);
+        // console.error("Error fetching room:", error);
         setError("Failed to load room");
         setRoom([]);
       } finally {

@@ -43,14 +43,15 @@ export const CustomTable = ({
           header: "Select",
           cell: ({ row }) => (
             <input
-              type="radio"
-              checked={selectedRowId === row.id}
-              onChange={() => {
-                setSelectedRowId(row.id);
-                onSelectionChange(row.original);
-              }}
-              onClick={(e) => e.stopPropagation()}
-              className="size-4"
+            type="radio"
+            checked={selectedRowId === row.id}
+            onChange={() => {
+              setSelectedRowId(row.id);
+              onSelectionChange(row.original);
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="size-4"
+            data-testid={`select-radio-${row.original.id}`}
             />
           ),
           size: 40,
@@ -81,7 +82,7 @@ export const CustomTable = ({
       },
     },
   });
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
 
   return (
     <div className="space-y-4">
@@ -89,7 +90,7 @@ export const CustomTable = ({
         table={table}
         addButtonText={addButtonText}
         onAddClick={onAddClick}
-        role = {user?.role}
+        role={user?.role}
       />
 
       <div className="rounded-md border bg-white shadow-sm overflow-hidden">

@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import AddGuest from "../Guests/AddGuest";
 import RoomSelection from "../Room/RoomSelection";
-import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 import { useGuestStore } from "@/components/store/useGuestStore";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
+import { api } from "@/lib/api";
 
 const UserProfileAndBooking = ({ onSuccess }) => {
   const { addGuest } = useGuestStore();
@@ -21,12 +17,14 @@ const UserProfileAndBooking = ({ onSuccess }) => {
   const handleGuestFormSubmit = () => {
     setIsLoading(true);
 
+    // console.log(`/hotels/1/availablerooms?check_in=${bookingFormData.checkIn}&check_out=${bookingFormData.checkOut}`);
     const fetchRoom = async () => {
       try {
         const response = await api.get(
-          "hotels/1/rooms?check_in=2025-01-11&check_out=2025-12-13"
+          `/hotels/1/availablerooms?check_in=${bookingFormData.checkIn}&check_out=${bookingFormData.checkOut}`
         );
-        const data = response.data.rooms.data;
+        // console.log(response)
+        const data = response.data.data;
         const formattedRoom = data.map((room) => ({
           id: room.id,
           roomNumber: room.roomNumber,
@@ -35,7 +33,8 @@ const UserProfileAndBooking = ({ onSuccess }) => {
           status: room.status,
           maxOccupancy: room.occupancy,
           bedType: room.bedType,
-          amenities: room.amenities,
+          amenities: room.amenities.map((amenity) => amenity.name),
+          size: room.size,
         }));
 
         if (formattedRoom.length !== 0) {
@@ -143,6 +142,9 @@ const UserProfileAndBooking = ({ onSuccess }) => {
           handleRoomSelection={handleRoomSelection}
           room={room}
         />
+      )}
+      {error && (
+        <div className="text-red-500 text-center mt-4">{error}</div>
       )}
     </div>
   );

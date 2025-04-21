@@ -2,13 +2,8 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
 import { useGuestStore } from "@/components/store/useGuestStore";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
 
 const EditGuest = ({ guestData, onSuccess }) => {
   const { editGuest } = useGuestStore();
@@ -22,7 +17,7 @@ const EditGuest = ({ guestData, onSuccess }) => {
       email: guestData.email,
       phone: guestData.phone,
       nationality: guestData.nationality,
-      idType: guestData.idType.toLowerCase(),
+      idType: guestData.idType,
       idNumber: guestData.idNumber,
       id: guestData.id,
     },
@@ -40,7 +35,7 @@ const EditGuest = ({ guestData, onSuccess }) => {
         email: guestData.email,
         phone: guestData.phone,
         nationality: guestData.nationality,
-        idType: guestData.idType.toLowerCase(),
+        idType: guestData.idType,
         idNumber: guestData.idNumber,
         id: guestData.id,
       });
@@ -80,9 +75,11 @@ const EditGuest = ({ guestData, onSuccess }) => {
       >
         <div className="flex flex-col gap-3 w-full">
           <div className="flex flex-col items-start justify-center gap-2 ">
-            <label className="text-[#232323] ">First Name</label>
+            <label className="text-[#232323] " htmlFor="firstName">
+              First Name
+            </label>
             <input
-              id="fname"
+              id="firstName"
               {...register("fname", {
                 required: {
                   value: true,
@@ -92,11 +89,18 @@ const EditGuest = ({ guestData, onSuccess }) => {
               placeholder="First Name"
               className="rounded-xl p-3 border w-full"
             />
+            {errors.fname && (
+              <span className="text-red-500 text-sm">
+                {errors.fname.message}
+              </span>
+            )}
           </div>
           <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] ">Last Name</label>
+            <label className="text-[#232323] " htmlFor="lastName">
+              Last Name
+            </label>
             <input
-              id="lname"
+              id="lastName"
               {...register("lname", {
                 required: {
                   value: true,
@@ -106,10 +110,17 @@ const EditGuest = ({ guestData, onSuccess }) => {
               placeholder="Last Name"
               className="rounded-xl p-3 border w-full"
             />
+            {errors.lname && (
+              <span className="text-red-500 text-sm">
+                {errors.lname.message}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] ">Gender</label>
+            <label className="text-[#232323] " htmlFor="gender">
+              Gender
+            </label>
             <select
               id="gender"
               {...register("gender", {
@@ -124,10 +135,15 @@ const EditGuest = ({ guestData, onSuccess }) => {
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
+            {errors.gender && (
+              <span className="text-red-500 text-sm">
+                {errors.gender.message}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] ">Email</label>
+            <label className="text-[#232323] " htmlFor="email">Email</label>
             <input
               placeholder="Email"
               type="email"
@@ -144,15 +160,20 @@ const EditGuest = ({ guestData, onSuccess }) => {
               })}
               className="rounded-xl p-3 border w-full"
             />
+            {errors.email && (
+              <span className="text-red-500 text-sm">
+                {errors.email.message}
+              </span>
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-3 w-full">
           <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] ">Phone Number</label>
+            <label className="text-[#232323] " htmlFor="phoneNumber">Phone Number</label>
             <input
               type="tel"
               placeholder="Phone Number"
-              id="phone"
+              id="phoneNumber"
               {...register("phone", {
                 required: {
                   value: true,
@@ -166,10 +187,15 @@ const EditGuest = ({ guestData, onSuccess }) => {
               })}
               className="rounded-xl p-3 border w-full"
             />
+            {errors.phone && (
+              <span className="text-red-500 text-sm">
+                {errors.phone.message}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] ">Nationality</label>
+            <label className="text-[#232323] " htmlFor="nationality">Nationality</label>
             <input
               type="text"
               placeholder="Nationality"
@@ -182,10 +208,16 @@ const EditGuest = ({ guestData, onSuccess }) => {
               })}
               className="rounded-xl p-3 border w-full"
             />
+            {errors.nationality && (
+              <span className="text-red-500 text-sm">
+                {errors.nationality.message}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] ">Identification Type</label>
+            <label className="text-[#232323] " htmlFor="idType">
+              Identification Type</label>
             <select
               id="idType"
               {...register("idType", {
@@ -201,10 +233,16 @@ const EditGuest = ({ guestData, onSuccess }) => {
               <option value="Driver License">Driving License</option>
               <option value="National ID">National ID</option>
             </select>
+            {errors.idType && (
+              <span className="text-red-500 text-sm">
+                {errors.idType.message}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] ">Identification Number</label>
+            <label className="text-[#232323] " htmlFor="idNumber">
+              Identification Number</label>
             <input
               type="text"
               placeholder="ID Number"
@@ -217,6 +255,11 @@ const EditGuest = ({ guestData, onSuccess }) => {
               })}
               className="rounded-xl p-3 border w-full"
             />
+            {errors.idNumber && (
+              <span className="text-red-500 text-sm">
+                {errors.idNumber.message}
+              </span>
+            )}
           </div>
 
           <div className="flex justify-end mt-8">

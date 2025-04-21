@@ -201,7 +201,7 @@ export class StaffService {
         { id, hotel: { id: hotelId } },
         { 
           ...updateStaffDto, 
-          role: updateStaffDto.role ? { name: updateStaffDto.role } as any : undefined 
+          role: updateStaffDto.role 
         }
       );
         

@@ -53,7 +53,7 @@ export const roomSelection = [
         </div>
       </div>
     ),
-    size: 120,
+    size: 180,
     enableSorting: false,
   },
   {
@@ -73,7 +73,7 @@ export const roomSelection = [
         {row.original.maxOccupancy}
       </p>
     ),
-    size: 100,
+    size: 80,
   },
   {
     id: "price",

@@ -31,14 +31,15 @@ const AddGuest = ({
 
   return (
     <div className="p-4 w-full">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" role="form">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="firstName">
               First Name
             </label>
             <input
               type="text"
+              id="firstName"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
@@ -48,9 +49,10 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">Last Name</label>
+            <label className="block font-medium text-gray-700" htmlFor="lastName">Last Name</label>
             <input
               type="text"
+              id="lastName"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
@@ -60,11 +62,12 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="dob">
               Date of Birth
             </label>
             <input
               type="date"
+              id="dob"
               name="dob"
               value={formData.dob}
               required
@@ -73,8 +76,10 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">Gender</label>
+            <label className="block font-medium text-gray-700" htmlFor="gender">
+              Gender</label>
             <select
+              id="gender"
               name="gender"
               value={formData.gender}
               onChange={handleChange}
@@ -88,9 +93,11 @@ const AddGuest = ({
             </select>
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">Email</label>
+            <label className="block font-medium text-gray-700" htmlFor="email">
+              Email</label>
             <input
               type="email"
+              id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -99,9 +106,10 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700 ">Phone</label>
+            <label className="block font-medium text-gray-700 " htmlFor="phone">Phone</label>
             <input
               type="tel"
+              id="phone"
               name="phone"
               value={formData.phone}
               required
@@ -111,9 +119,11 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700 ">Address</label>
+            <label className="block font-medium text-gray-700 " htmlFor="address">
+              Address</label>
             <input
               type="text"
+              id="address"
               name="address"
               value={formData.address}
               onChange={handleChange}
@@ -123,7 +133,7 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700 mb-1">
+            <label className="block font-medium text-gray-700 mb-1" htmlFor="nationality">
               Nationality
             </label>
             <CountrySelect
@@ -132,10 +142,11 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="idType">
               Identification Type
             </label>
             <select
+              id="idType"
               name="idType"
               value={formData.idType}
               onChange={handleChange}
@@ -149,11 +160,12 @@ const AddGuest = ({
             </select>
           </div>
           <div className="space-y-1">
-            <label className="block font-medium text-gray-700">
+            <label className="block font-medium text-gray-700" htmlFor="idNumber">
               Identification Number
             </label>
             <input
               type="text"
+              id="idNumber"
               name="idNumber"
               value={formData.idNumber}
               onChange={handleChange}
@@ -171,11 +183,12 @@ const AddGuest = ({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="checkIn">
               Check-In Date
             </label>
             <input
               type="date"
+              id="checkIn"
               name="checkIn"
               value={bookingFormData.checkIn}
               onChange={handleBookingChange}
@@ -185,11 +198,12 @@ const AddGuest = ({
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="checkOut">
               Check-Out Date
             </label>
             <input
               type="date"
+              id="checkOut"
               name="checkOut"
               value={bookingFormData.checkOut}
               onChange={handleBookingChange}
@@ -201,6 +215,7 @@ const AddGuest = ({
         </div>
         <div className="flex justify-end">
           <button
+            data-testid="submit-button"
             type="submit"
             className="w-1/4 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
           >

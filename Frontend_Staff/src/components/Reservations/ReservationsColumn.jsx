@@ -174,12 +174,3 @@ export const reservationColumns = [
   },
 ];
 
-const handleDelete = async (id) => {
-  try {
-    const response = await api.delete(`/hotels/1/bookings/${id}`);
-    console.log("Delete Response:", response.data);
-    alert("Reservation deleted successfully!");
-  } catch (error) {
-    console.error("Error deleting guest:", error);
-  }
-};
