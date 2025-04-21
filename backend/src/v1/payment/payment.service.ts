@@ -145,4 +145,15 @@ export class PaymentService {
     return 'Received webhook';
   }
 
+  async getBillingHistory(userId: string): Promise<Transaction[]> {
+    const transactions = await this.transactionRepository.find({
+      where: { booking: { guest: { id: userId } } },
+      relations: ['booking'],
+    });
+    if (!transactions) {
+      throw new NotFoundException('No billing history found for this user');
+    }
+    return transactions;
+  }
+
 }
