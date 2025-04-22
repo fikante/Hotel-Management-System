@@ -24,20 +24,19 @@ export class StaffJwtStrategy extends PassportStrategy(Strategy, 'staff-jwt') {
   }
 
   async validate(payload: any) {
-    // Validate required fields
-    if (!payload.sub || !payload.email || !payload.role) {
+    if (!payload.id || !payload.email || !payload.role) {
       throw new UnauthorizedException('Invalid token payload');
     }
 
     return {
-      sub: payload.sub,
-      staffId: payload.sub,
+      id: payload.id,
       email: payload.email,
       role: payload.role,
       firstName: payload.firstName,
       lastName: payload.lastName,
       phone: payload.phone,
-      dateOfBirth: payload.dateOfBirth
+      dateOfBirth: payload.dateOfBirth,
+      profilePic: payload.profilePic
     };
   }
 }
@@ -53,12 +52,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   validate(payload: any) {
     return {
-      sub: payload.sub,
-      userId: payload.sub,
+      sub: payload.id,
+      userId: payload.id,
       email: payload.email,
       role: payload.role
     };
   }
 }
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
-console.log('STAFF_JWT_SECRET:', process.env.STAFF_JWT_SECRET);

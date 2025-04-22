@@ -32,6 +32,9 @@ export class CreateManagerDto {
     @IsString()
     phoneNumber: string;
 
+    @IsString()
+    role : string = 'manager';
+
     @Transform(({ value }) => Number(value))
     hotelId: number;
 }

@@ -24,9 +24,17 @@ export class CreateStaffDto {
   @IsString()
   password: string;
 
-  @IsNotEmpty()
   @IsString()
   role: string;
+
+  @IsNotEmpty()
+  @IsString()
+  position: string;
+  
+  @IsNotEmpty()
+  @IsString()
+  address: string;
+
 
   @IsNotEmpty()
   @IsEmail()

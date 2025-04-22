@@ -17,14 +17,15 @@ export const useAuthStore = create(
       message: null,
       lastAuthCheck: null,
 
-      login: async (email, password) => {
+      login: async (email, password, role) => {
         set({ loading: true, error: null });
         try {
           const response = await axios.post(
-            `${API_BASE_URL}/auth/staff/login`,
+            `${API_BASE_URL}/auth/hms/login`,
             {
               email,
               password,
+              role,
             }
           );
           set({
@@ -48,7 +49,7 @@ export const useAuthStore = create(
       logout: async () => {
         set({ loading: true });
         try {
-          await axios.post(`${API_BASE_URL}/auth/staff/logout`);
+          await axios.post(`${API_BASE_URL}/auth/hms/logout`);
           set({
             user: null,
             role: null,
@@ -68,7 +69,7 @@ export const useAuthStore = create(
       initializeAuth: async () => {
         set({ loading: true, isCheckingAuth: true, error: null });
         try {
-          const res = await axios.get(`${API_BASE_URL}/auth/staff/checkAuth`);
+          const res = await axios.get(`${API_BASE_URL}/auth/hms/checkAuth`);
           set({
             user: res.data?.user,
             role: res.data?.user?.role,

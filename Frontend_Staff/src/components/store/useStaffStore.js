@@ -22,6 +22,7 @@ export const useStaffStore = create((set, get) => ({
         phonenumber: staff.phonenumber,
         profilePic: staff.profilePic,
         staffRole: staff.staffRole,
+        staffPosition: staff.staffPosition,
         staffStatus: staff.status,
         employedAt: staff.employedAt,
         staffSalary: staff.staffSalary,
@@ -46,6 +47,36 @@ export const useStaffStore = create((set, get) => ({
   addStaff: async (staff) => {
     try {
     } catch (error) {}
+  },
+
+  editStaff: async (id, staff) => {
+    try {
+
+      const staffFormattedData = {
+        email: staff.email,
+        phonenumber: staff.phone,
+        salary: staff.salary,
+        position: staff.position,
+        employedAt: staff.employed_at,
+        status: staff.status,
+        firstname: staff.fname,
+        lastname: staff.lname,
+      };
+      console.log(staffFormattedData);
+      const response = await axios.patch(
+        `${API_BASE_URL}/hms/hotels/1/staff/update/${id}`,
+        staffFormattedData
+      );
+      
+    } catch (error) {
+      console.error("Error fetching food items:", error);
+      set({
+        staff: [],
+        isLoading: false,
+        error: "Failed to fetch food items",
+      });
+      throw error;
+    }
   },
 
   deleteStaff: async (id) => {

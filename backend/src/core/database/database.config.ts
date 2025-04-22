@@ -15,6 +15,7 @@ import { Room } from 'src/common/entities/room.entity';
 import { Staff } from 'src/common/entities/staff.entity';
 import { Transaction } from 'src/common/entities/transaction.entity';
 import { User } from 'src/common/entities/user.entity';
+import { Admin } from 'src/common/entities/admin.entity';
 
 export default registerAs('database', (): TypeOrmModuleOptions => {
   return {
@@ -41,6 +42,7 @@ export default registerAs('database', (): TypeOrmModuleOptions => {
       Order,
       OrderItem,
       Transaction,
+      Admin,
     ],
     synchronize: true,
     autoLoadEntities: true,

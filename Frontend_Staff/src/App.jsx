@@ -12,7 +12,7 @@ import Food from "./pages/Food/Food";
 import Staff from "./pages/Staff/Staff";
 import Setting from "./pages/Setting/Setting";
 import Login from "./pages/Auth/Login";
-import Signup from "./pages/Auth/Signup";
+import CreateAdminAccount from "./components/Admin/CreateAdmin";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import RoomList from "./pages/Room/RoomList";
 import ResetPassLink from "./pages/Auth/ResetPassLink";
@@ -35,7 +35,7 @@ const AuthRedirect = ({ children }) => {
     console.log(isAuthenticated, user, "in auth redirect");
     if (isAuthenticated && user) {
       if (user?.role === "admin") {
-          navigate("/admin/hotels");
+        navigate("/admin/hotels");
       } else {
         navigate("/dashboard");
       }
@@ -92,7 +92,7 @@ const App = () => {
           path="/admin/signup"
           element={
             <ProtectedRoute requiredRole={["admin"]}>
-              <Signup />
+              <CreateAdminAccount />
             </ProtectedRoute>
           }
         />

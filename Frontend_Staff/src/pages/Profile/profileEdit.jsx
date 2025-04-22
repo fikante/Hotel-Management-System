@@ -3,21 +3,16 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const ProfileSetting = ({ userProfile }) => {
-  console.log(userProfile);
+  // console.log(userProfile);
   const form = useForm({
     defaultValues: {
       fname: userProfile?.firstName,
       lname: userProfile?.lastName,
       email: userProfile?.email,
       phone: userProfile?.phone,
-      // userProfile.dateOfBirth: "2025-03-31T21:00:00.000Z" in this format, change in date format
       dob: userProfile?.dateOfBirth.split("T")[0],
-      // dob: userProfile.dateOfBirth,
       address: userProfile?.address,
-      salary: userProfile?.salary,
       role: userProfile?.role,
-      employed_at: userProfile?.employedAt,
-      status: userProfile?.status,
       picture: userProfile?.profilePic,
     },
   });
@@ -33,10 +28,7 @@ const ProfileSetting = ({ userProfile }) => {
         phone: userProfile?.phone,
         dob: userProfile?.dateOfBirth.split("T")[0],
         address: userProfile?.address,
-        salary: userProfile?.salary,
         role: userProfile?.role,
-        employed_at: userProfile?.employedAt,
-        status: userProfile?.status.toLowerCase(),
         picture: userProfile?.profilePic,
       });
     }
@@ -86,7 +78,7 @@ const ProfileSetting = ({ userProfile }) => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-3 w-3/4">
+        <div className="flex flex-col gap-5 w-3/4">
           <div className="flex flex-col items-start justify-center gap-2 ">
             <label className="text-[#232323] font-semibold ">First Name</label>
             <input
@@ -164,6 +156,8 @@ const ProfileSetting = ({ userProfile }) => {
               <p className="text-red-500 text-xs">{errors.dob.message}</p>
             )}
           </div>
+        </div>
+        <div className="flex flex-col gap-5 w-full">
           <div className="flex flex-col items-start justify-center gap-2">
             <label className="text-[#232323] font-semibold">Address</label>
             <input
@@ -182,8 +176,6 @@ const ProfileSetting = ({ userProfile }) => {
               <p className="text-red-500 text-xs">{errors.address.message}</p>
             )}
           </div>
-        </div>
-        <div className="flex flex-col gap-3 w-full">
           <div className="flex flex-col items-start justify-center gap-2">
             <label className="text-[#232323] font-semibold">Phone Number</label>
             <input
@@ -207,22 +199,7 @@ const ProfileSetting = ({ userProfile }) => {
               <p className="text-red-500 text-xs">{errors.phone.message}</p>
             )}
           </div>
-          <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] font-semibold">Salary</label>
-            <input
-              type="text"
-              placeholder="Salary"
-              id="salary"
-              disabled={true}
-              {...register("salary", {
-                required: {
-                  value: true,
-                  message: "Salary is required",
-                },
-              })}
-              className="rounded-xl p-3 border w-full"
-            />
-          </div>
+
           <div className="flex flex-col items-start justify-center gap-2">
             <label className="text-[#232323] font-semibold">Role</label>
             <input
@@ -239,49 +216,11 @@ const ProfileSetting = ({ userProfile }) => {
               className="rounded-xl p-3 border w-full"
             />
           </div>
-          <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] font-semibold">Employed At</label>
-            <input
-              type="date"
-              id="employed_at"
-              disabled={true}
-              {...register("employed_at", {
-                required: {
-                  value: true,
-                  message: "Employed At is required",
-                },
-              })}
-              className="rounded-xl p-3 border w-full"
-            />
-            {errors.employed_at && (
-              <p className="text-red-500 text-xs">
-                {errors.employed_at.message}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-col items-start justify-center gap-2">
-            <label className="text-[#232323] font-semibold">Status</label>
-            <select
-              id="status"
-              disabled={true}
-              {...register("status", {
-                required: {
-                  value: true,
-                  message: "Status is required",
-                },
-              })}
-              className="rounded-xl p-3 border w-full"
-            >
-              <option value="">Select Status</option>
-              <option value="available">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="on Leave">On Leave</option>
-            </select>
-          </div>
-          <div className="flex w-full justify-end ">
+
+          <div className="flex w-full justify-end mt-5">
             <button
               type="submit"
-              className="px-10 py-3 text-white rounded-xl bg-[#1814F3]"
+              className="px-10 py-3 text-white rounded-xl bg-[#1814F3] w-1/2"
             >
               Save
             </button>
