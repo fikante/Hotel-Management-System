@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import Button from "../../components/SignUp/Button";
-import SubmissionStatus from "../../components/SignUp/SubmissionStatus";
+import Button from "../SignUp/Button";
+import SubmissionStatus from "../SignUp/SubmissionStatus";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "@/lib/api";
 import {
   FaUserPlus,
   FaIdBadge,
@@ -12,14 +13,13 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const Signup = () => {
+const CreateAdminAccount = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const navigate = useNavigate();
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [picture, setPicture] = useState(null);
@@ -27,16 +27,24 @@ const Signup = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      console.log(data);
-      setSubmissionStatus({
-        type: "success",
-        message: "New Admin account created successfully!",
+      const formData = new FormData();
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("email", data.email);
+      formData.append("dateOfBirth", data.dob);
+      formData.append("address", data.address);
+      formData.append("phoneNumber", data.phone);
+      formData.append("profilePic", picture);
+
+      const response = await api.post("/admin", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+      console.log("Admin added successfully:", response.data);
+      alert("Admin added successfully!");
     } catch (error) {
-      setSubmissionStatus({
-        type: "error",
-        message: error.message || "Staff account creation failed",
-      });
+      console.error("Submission error:", error);
     } finally {
       setLoading(false);
     }
@@ -133,32 +141,32 @@ const Signup = () => {
 
           <div className="md:flex items-center justify-center w-full">
             <motion.div
-              className=" to-teal-500 p-2"
+              className="relative"
               variants={fadeInAnimation}
               initial="initial"
               animate="animate"
             >
-              <label
-                htmlFor="fileInput"
-                className="cursor-pointer bg-gray-200 hover:text-gray-700 rounded-full size-32 flex text-center items-center justify-center"
-              >
-                {picture ? (
-                  <img
-                    src={URL.createObjectURL(picture)}
-                    alt="Profile"
-                    className="size-32 rounded-full object-cover"
-                  />
-                ) : (
-                  <p>Upload profile picture</p>
-                )}
-                <input
-                  type="file"
-                  id="fileInput"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => setPicture(e.target.files[0])}
+              {picture ? (
+                <img
+                  src={URL.createObjectURL(picture)}
+                  alt="Profile"
+                  className="size-32 rounded-full"
                 />
-              </label>
+              ) : (
+                <img src="/placePP.png" className="size-32" />
+              )}
+              <div className="bg-[#1814F3] h-8 w-8 flex justify-center items-center rounded-full absolute right-0 top-20 hover:brightness-200 transition duration-200">
+                <label htmlFor="fileInput" className="cursor-pointer">
+                  <img src="/pencil.svg" />
+                </label>
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setPicture(e.target.files[0])}
+                  className="hidden"
+                />
+              </div>
             </motion.div>
           </div>
 
@@ -431,4 +439,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default CreateAdminAccount;

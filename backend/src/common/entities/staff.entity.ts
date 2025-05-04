@@ -21,7 +21,7 @@ import { Role } from '../../common/enums/role.enum';
     @Column()
     lastname: string;
     
-    @Column({default: Role.MANAGER})
+    @Column({default: Role.STAFF})
     role: string;
   
     @Column({ unique: true })
@@ -32,6 +32,12 @@ import { Role } from '../../common/enums/role.enum';
     
     @Column()
     dateOfBirth: Date;
+
+    @Column()
+    position: string;
+
+    @Column()
+    address: string;
     
     
     @Column({ default: true })
@@ -55,12 +61,7 @@ import { Role } from '../../common/enums/role.enum';
   
     @Column({ type: 'date' })
     employedAt: Date;
-  
-    // @CreateDateColumn({ name: 'created_at' })
-    // createdAt: Date;
-  
-    // @UpdateDateColumn({ name: 'updated_at' })
-    // updatedAt: Date;
+    
   
     @ManyToOne(() => Hotel, (hotel) => hotel.staff)
     hotel: Hotel;
@@ -73,7 +74,7 @@ import { Role } from '../../common/enums/role.enum';
 
 
     @OneToMany(() => Assignment, (assignment) => assignment.staff)
-    assignments: Assignment[]; //currently not being used
+    assignments: Assignment[];
     
     // @BeforeInsert()
     // @BeforeUpdate()

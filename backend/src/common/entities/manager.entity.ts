@@ -35,6 +35,10 @@ export class Manager{
     @Column({nullable: true})
     profilePic: string;
 
+    // role
+    @Column({default: 'manager'})
+    role: string;
+
     @OneToOne(() => Hotel, (hotel) => hotel.manager, { cascade: true, eager: true })
     @JoinColumn() // This decorator specifies that this side owns the relationship
     hotel: Hotel;

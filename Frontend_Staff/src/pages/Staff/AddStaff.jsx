@@ -3,10 +3,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
-
-export const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
+import { api } from "@/lib/api";
 
 const AddStaff = ({ onSuccess }) => {
   const form = useForm({
@@ -42,13 +39,15 @@ const AddStaff = ({ onSuccess }) => {
       formData.append("lastname", data.lname);
       formData.append("email", data.email);
       formData.append("dateOfBirth", data.dob);
-      // formData.append("address", data.address);
+      formData.append("address", data.address);
       formData.append("phonenumber", data.phone);
       formData.append("salary", data.salary);
       formData.append("role", data.role);
       formData.append("employedAt", data.employed_at);
       formData.append("status", data.status);
+      formData.append("position", data.position);
       formData.append("image", profileImage);
+
       formData.append("password", "");
 
       const response = await api.post("/hms/hotels/1/staff", formData, {
@@ -236,12 +235,12 @@ const AddStaff = ({ onSuccess }) => {
               <label className="text-[#232323] ">Position</label>
               <input
                 type="text"
-                id="role"
-                placeholder="Role"
-                {...register("role", {
+                id="position"
+                placeholder="position"
+                {...register("position", {
                   required: {
                     value: true,
-                    message: "Role is required",
+                    message: "Position is required",
                   },
                 })}
                 className="rounded-xl p-3 border w-full"

@@ -7,8 +7,9 @@ import { BookingsModule } from './bookings/booking.module';
 import { FoodModule } from './food-menu/food.module';
 import { StaffModule } from './staff/staff.module';
 import { ManagerModule } from './manager/manager.module';
+import { AdminModule } from './admin/admin.module';
 @Module({
-  imports: [DashboardModule,RoomsModule,BookingsModule, FoodModule, StaffModule, ManagerModule],
+  imports: [DashboardModule,RoomsModule,BookingsModule, FoodModule, StaffModule, ManagerModule, AdminModule],
   providers: [HmsService],
   controllers: [HmsController]
 })

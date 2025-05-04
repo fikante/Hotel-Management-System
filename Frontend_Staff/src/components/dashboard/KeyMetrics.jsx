@@ -1,25 +1,27 @@
 import React from "react";
 import MetricCard from "./MetricCard";
 import { FaChartLine, FaCalendarCheck } from "react-icons/fa";
+import { useAuthStore } from "../Auth/authStore";
 
 const KeyMetrics = ({ totalRevenue, totalBookings }) => {
-
   const formattedRevenue = (totalRevenue / 100).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
-
+  const { user } = useAuthStore();
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-      <MetricCard
-        title="Total Revenue"
-        value={formattedRevenue} 
-        icon={FaChartLine}
-        label="All Time"
-        valueClassName="text-blue-600"
-        iconClassName="text-blue-500"
-      />
+      {user?.role === "manager" && (
+        <MetricCard
+          title="Total Revenue"
+          value={formattedRevenue}
+          icon={FaChartLine}
+          label="All Time"
+          valueClassName="text-blue-600"
+          iconClassName="text-blue-500"
+        />
+      )}
       <MetricCard
         title="Total Bookings"
         value={totalBookings}

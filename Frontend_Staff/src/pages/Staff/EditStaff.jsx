@@ -5,38 +5,20 @@ import { useForm } from "react-hook-form";
 
 import axios from "axios";
 import SpinPage from "@/components/Spin/Spin";
-
-const api = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
-});
+import { useStaffStore } from "@/components/store/useStaffStore";
 
 const EditStaff = ({ staffData, onSuccess }) => {
+  const { editStaff } = useStaffStore();
   const [profileImage, setProfileImage] = useState(null);
-  const [existingImage, setExistingImage] = useState(
-    staffData?.picture || null
-  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log("staffData", staffData);
-
-  // "staffId": "80d77d0c-edf1-4db3-86e2-0b58e4399356",
-  // "staffName": "Christopher Johnson",
-  // "staffRole": "user",
-  // "staffSalary": "456.00",
-  // "status": "available",
-  // "employedAt": "2025-04-24",
-  // "profilePic": "https://res.cloudinary.com/dznryrysy/image/upload/v1744015496/staff-1744015495498.png",
-  // "phonenumber": "+251 92 177 8842",
-  // "email": "ralim71244@carspure.com",
-  // "assignedRoomId": null
 
   const form = useForm({
     defaultValues: {
       email: staffData.email,
       phone: staffData.phonenumber,
       salary: staffData.staffSalary,
-      role: staffData.staffRole,
+      position: staffData.staffPosition,
       employed_at: staffData.employedAt,
       status: staffData.staffStatus,
       profile_picture: staffData.profilePic,
@@ -56,12 +38,11 @@ const EditStaff = ({ staffData, onSuccess }) => {
         email: staffData.email,
         phone: staffData.phonenumber,
         salary: staffData.staffSalary,
-        role: staffData.staffRole,
+        position: staffData.staffPosition,
         employed_at: staffData.employedAt,
         status: staffData.staffStatus,
         profile_picture: staffData.profilePic,
       });
-      setExistingImage(staffData.picture);
     }
   }, [staffData, reset]);
 
@@ -73,11 +54,27 @@ const EditStaff = ({ staffData, onSuccess }) => {
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setLoading(true);
+    try {
+      await editStaff(staffData.id, data)
+      alert("Staff updated successfully!");
+      onSuccess();
+    } catch (error) {
+      console.error("Error updating staff:", error);
+      setError("Failed to update staff. Please try again.");
+    }
 
-    onSuccess();
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center flex-col items-center p-10">
+        <div className="text-center text-gray-500">Loading...</div>
+        <SpinPage />
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center flex-col justify-center font-serif p-4 gap-3">
@@ -93,14 +90,12 @@ const EditStaff = ({ staffData, onSuccess }) => {
               alt="Profile"
               className="size-32 rounded-full"
             />
-          ) : existingImage ? (
+          ) : (
             <img
-              src={existingImage}
+              src={staffData?.profilePic}
               alt="Profile"
               className="size-32 rounded-full"
             />
-          ) : (
-            <img src="/placePP.png" className="size-32" />
           )}
           <div className="bg-[#1814F3] h-8 w-8 flex justify-center items-center rounded-full absolute right-0 top-20 hover:brightness-200 transition duration-200">
             <label htmlFor="fileInput" className="cursor-pointer">
@@ -204,15 +199,15 @@ const EditStaff = ({ staffData, onSuccess }) => {
               />
             </div>
             <div className="flex flex-col items-start justify-center gap-2">
-              <label className="text-[#232323] ">Role</label>
+              <label className="text-[#232323] ">Position</label>
               <input
                 type="text"
-                id="role"
-                placeholder="Role"
-                {...register("role", {
+                id="position"
+                placeholder="Position"
+                {...register("position", {
                   required: {
                     value: true,
-                    message: "Role is required",
+                    message: "Position is required",
                   },
                 })}
                 className="rounded-xl p-3 border w-full"

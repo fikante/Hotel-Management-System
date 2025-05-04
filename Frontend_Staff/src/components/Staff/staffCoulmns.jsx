@@ -81,14 +81,14 @@ const staffColumns = [
     size: 24,
   },
   {
-    id: "staffRole",
-    accessorKey: "staffRole",
+    id: "staffPosition",
+    accessorKey: "staffPosition",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Role
+        Position
         <ArrowUpDown className="size-4" />
       </Button>
     ),

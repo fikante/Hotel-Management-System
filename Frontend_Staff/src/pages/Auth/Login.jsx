@@ -45,14 +45,14 @@ const Login = () => {
   const navigate = useNavigate();
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const { loading, login, user, isAuthenticated } = useAuthStore();
-  const [userType, setUserType] = useState("staff");
+  const [role, setRole] = useState("staff");
 
   const onSubmit = async (data) => {
     setSubmissionStatus(null);
-    console.log(userType, "user type");
     try {
       const { email, password } = data;
-      const res = await login(email, password);
+      console.log(email, password, role)
+      const res = await login(email, password, role);
       setSubmissionStatus({
         type: "success",
         message: "Login successful! Redirecting...",
@@ -254,22 +254,22 @@ const Login = () => {
               )}
             </motion.div>
 
-            {/* <motion.div
+            <motion.div
               variants={fadeInAnimation}
               initial="initial"
               animate="animate"
-              className="flex flex-row gap-2 items-center"
+              className="flex flex-row gap-2 items-center border p-2 rounded-md border-gray-300 shadow-md"
             >
               <label className=" text-sm font-medium text-gray-700 w-full">
-                User Type
+                Role
               </label>
               <RadioGroup
                 defaultValue="staff"
-                onValueChange={setUserType}
                 className="flex space-x-4 "
+                onValueChange={setRole}
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="admin" id="admin"/>
+                  <RadioGroupItem value="admin" id="admin" />
                   <label className="cursor-pointer">Admin</label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -281,7 +281,12 @@ const Login = () => {
                   <label className="cursor-pointer">Staff</label>
                 </div>
               </RadioGroup>
-            </motion.div> */}
+              {errors.role && (
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.role.message}
+                </p>
+              )}
+            </motion.div>
 
             <motion.div
               variants={fadeInAnimation}

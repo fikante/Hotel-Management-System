@@ -67,6 +67,7 @@ export class StaffService {
     //upload image
     const imageUrl = await this.imageUploadService.uploadImage(createStaffDto.profilePic, `staff-${Date.now()}`);
     createStaffDto.profilePic = imageUrl;
+    createStaffDto.role = "staff"
     const staff = this.staffRepository.create({
       ...createStaffDto,
       hotel: targetHotel,
@@ -153,6 +154,7 @@ export class StaffService {
       staffId: staff.id,
       staffName: `${staff.firstname} ${staff.lastname}`,
       staffRole: staff.role,
+      staffPosition: staff.position,
       staffSalary: staff.salary,
       status: staff.status,
       employedAt: staff.employedAt,
@@ -161,6 +163,7 @@ export class StaffService {
       email: staff.email,
       assignedRoomId: staff.assignedRoomId,
       currentTask: staff.currentTask,
+      staffAddress: staff.address
     }));
 
     return {
@@ -168,6 +171,8 @@ export class StaffService {
       data: formattedStaff,
     };
   }
+
+  
   async deleteStaff(id: string, hotelId: number): Promise<{ success: boolean; message: string }> {
     const staff = await this.staffRepository.findOne({
       where: { id, hotel: { id: hotelId } },
@@ -200,8 +205,7 @@ export class StaffService {
       await this.staffRepository.update(
         { id, hotel: { id: hotelId } },
         { 
-          ...updateStaffDto, 
-          role: updateStaffDto.role 
+          ...updateStaffDto,
         }
       );
         

@@ -74,6 +74,7 @@ const SelectGuest = ({
           className="bg-blue-700 w-1/4 hover:bg-blue-600"
           type="submit"
           form="bookingForm"
+          onClick={handleSubmit}
           data-testid="next-button"
         >
           Next

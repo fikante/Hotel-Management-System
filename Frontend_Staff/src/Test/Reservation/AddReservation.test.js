@@ -73,6 +73,7 @@ describe("ReservationCreation", () => {
   ];
 
   let apiGetSpy;
+  let addReservationSpy;
 
   beforeEach(() => {
     apiGetSpy = jest.spyOn(api, "get").mockImplementation((url) => {
@@ -231,7 +232,10 @@ describe("ReservationCreation", () => {
     await waitFor(() => {
       expect(apiGetSpy).toHaveBeenCalledWith("/hotels/1/guests");
     });
-
+    await waitFor(() => {
+      expect(screen.getByLabelText("Check-In Date")).toBeInTheDocument();
+      expect(screen.getByLabelText("Check-Out Date")).toBeInTheDocument();
+    });
     fireEvent.click(screen.getByTestId("next-button"));
     await waitFor(() => {
       expect(apiGetSpy).not.toHaveBeenCalledWith(

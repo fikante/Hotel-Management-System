@@ -7,14 +7,18 @@ import { AuthController } from './controllers/auth.controller';
 import { StaffAuthController } from './controllers/staff-auth.controller';
 import { User } from '../../common/entities/user.entity';
 import { Staff } from '../../common/entities/staff.entity';
+import { Admin } from 'src/common/entities/admin.entity';
+import { Manager } from 'src/common/entities/manager.entity';
 import { AuthService } from './services/auth.service';
 import { StaffAuthService } from './services/staff-auth.service';
+import { AdminAuthService } from './services/admin-auth.service';
+import { ManagerAuthService } from './services/manager-auth.service';
 import { JwtStrategy, StaffJwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     // Register the Guest_Auth and Staff_Auth entities for use with TypeORM.
-    TypeOrmModule.forFeature([User, Staff]),
+    TypeOrmModule.forFeature([User, Staff, Admin, Manager]),
 
     // Import PassportModule to enable authentication features.
     PassportModule,
@@ -34,7 +38,7 @@ import { JwtStrategy, StaffJwtStrategy } from './strategies/jwt.strategy';
   controllers: [AuthController, StaffAuthController],
 
   // Provide the services and strategies for dependency injection.
-  providers: [AuthService, StaffAuthService, JwtStrategy, StaffJwtStrategy],
+  providers: [AuthService, StaffAuthService, JwtStrategy, StaffJwtStrategy,AdminAuthService, ManagerAuthService],
   exports: [JwtModule],
 })
 export class AuthModule {}

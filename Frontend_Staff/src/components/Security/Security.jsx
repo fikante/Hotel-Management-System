@@ -29,10 +29,8 @@ const Security = () => {
     setError(null);
 
     const { currentPassword, newPassword } = data;
-    console.log(currentPassword, newPassword);
-
     try {
-      const response = await api.patch("/auth/staff/change-password", {
+      const response = await api.patch("/auth/hms/change-password", {
         oldPassword: currentPassword,
         newPassword: newPassword,
       });

@@ -5,13 +5,14 @@ import { useForm } from "react-hook-form";
 const AdminUserProfile = ({ userProfile }) => {
   const form = useForm({
     defaultValues: {
-      fname: userProfile.firstName,
-      lname: userProfile.lastName,
-      email: userProfile.email,
-      phone: userProfile.phone,
-      dob: userProfile.dob,
-      role: userProfile.role,
-      picture: userProfile.profilePic,
+      fname: userProfile?.firstName,
+      lname: userProfile?.lastName,
+      email: userProfile?.email,
+      phone: userProfile?.phone,
+      dob: userProfile?.dateOfBirth.split("T")[0],
+      address: userProfile?.address,
+      role: userProfile?.role,
+      picture: userProfile?.profilePic,
     },
   });
   const { register, handleSubmit, formState, reset } = form;
@@ -20,13 +21,14 @@ const AdminUserProfile = ({ userProfile }) => {
   useEffect(() => {
     if (userProfile) {
       form.reset({
-        fname: userProfile.firstName,
-        lname: userProfile.lastName,
-        email: userProfile.email,
-        phone: userProfile.phone,
-        dob: userProfile.dob,
-        role: userProfile.role,
-        picture: userProfile.profilePic,
+        fname: userProfile?.firstName,
+        lname: userProfile?.lastName,
+        email: userProfile?.email,
+        phone: userProfile?.phone,
+        dob: userProfile?.dateOfBirth.split("T")[0],
+        address: userProfile?.address,
+        role: userProfile?.role,
+        picture: userProfile?.profilePic,
       });
     }
   }, [userProfile, reset]);
@@ -35,7 +37,7 @@ const AdminUserProfile = ({ userProfile }) => {
     console.log(data);
   };
   const [profileImage, setProfileImage] = useState(
-    userProfile.profilePic ? userProfile.profilePic : null
+    userProfile?.profilePic ? userProfile?.profilePic : null
   );
 
   const handleProfilePictureChange = (event) => {
@@ -75,7 +77,7 @@ const AdminUserProfile = ({ userProfile }) => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-3 w-3/4">
+        <div className="flex flex-col gap-5 w-3/4">
           <div className="flex flex-col items-start justify-center gap-2 ">
             <label className="text-[#232323] font-semibold ">First Name</label>
             <input
@@ -133,8 +135,7 @@ const AdminUserProfile = ({ userProfile }) => {
               <p className="text-red-500 text-xs">{errors.email.message}</p>
             )}
           </div>
-        </div>
-        <div className="flex flex-col gap-3 w-full">
+
           <div className="flex flex-col items-start justify-center gap-2">
             <label className="text-[#232323] font-semibold">
               Date of Birth
@@ -152,6 +153,26 @@ const AdminUserProfile = ({ userProfile }) => {
             />
             {errors.dob && (
               <p className="text-red-500 text-xs">{errors.dob.message}</p>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-5 w-full">
+          <div className="flex flex-col items-start justify-center gap-2">
+            <label className="text-[#232323] font-semibold">Address</label>
+            <input
+              type="text"
+              id="address"
+              placeholder="Address"
+              {...register("address", {
+                required: {
+                  value: true,
+                  message: "Address is required",
+                },
+              })}
+              className="rounded-xl p-3 border w-full"
+            />
+            {errors.address && (
+              <p className="text-red-500 text-xs">{errors.address.message}</p>
             )}
           </div>
           <div className="flex flex-col items-start justify-center gap-2">
@@ -195,10 +216,10 @@ const AdminUserProfile = ({ userProfile }) => {
             />
           </div>
 
-          <div className="flex w-full justify-end ">
+          <div className="flex w-full justify-end mt-5">
             <button
               type="submit"
-              className="px-10 py-3 text-white rounded-xl bg-[#1814F3]"
+              className="px-10 py-3 text-white rounded-xl bg-[#1814F3] w-1/2"
             >
               Save
             </button>
